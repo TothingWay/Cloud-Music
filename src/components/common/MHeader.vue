@@ -1,7 +1,6 @@
 <template>
   <x-header>
     <i class="fa fa-music" slot="overwrite-left"></i>
-    <!-- <img src="../assets/logo.svg" slot="overwrite-left" alt="logo" width="62"> -->
     <search
     slot="overwrite-title"
     @result-click="resultClick"

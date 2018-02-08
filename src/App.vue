@@ -55,18 +55,19 @@ h2.title {
 }
 .mask {
   position: absolute;
+  z-index: 101;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   background-color: hsla(0,0%,100%,.9);
-  .loading {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+}
+.loading {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .weui-cells {
   margin-top: 0 !important;

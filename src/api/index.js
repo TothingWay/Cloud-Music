@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Jsonp from 'jsonp'
+import jsonp from '../assets/js/jsonp'
 // 导入地址
 import site from './config'
 
@@ -40,6 +40,17 @@ export default {
    */
   singerRank () {
     return axios.get(site.singerRank)
+  },
+  /*
+    @method 歌手单曲
+    @param: id
+   */
+  getArtists (id) {
+    return axios.get(site.artists, {
+      params: {
+        id
+      }
+    })
   },
   /*
     @method 排行榜
@@ -87,25 +98,4 @@ export default {
       }
     })
   }
-}
-function jsonp (url, data, option) {
-  url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
-  return new Promise((resolve, reject) => {
-    Jsonp(url, option, (err, data) => {
-      if (!err) {
-        resolve(data)
-      } else {
-        reject(err)
-      }
-    })
-  })
-}
-
-function param (data) {
-  let url = ''
-  for (var key in data) {
-    let value = data[key] !== undefined ? data[key] : ''
-    url += `&${key}=${encodeURIComponent(value)}`
-  }
-  return url ? url.substring(1) : ''
 }

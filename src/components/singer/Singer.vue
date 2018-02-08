@@ -13,7 +13,7 @@
         </popover>
       </div>
       <group>
-        <cell-box v-for="(item,index) in artists" :key="index">
+        <cell-box v-for="(item,index) in artists" :key="index" :link="{path:'/singer/'+item.id}" @click.native="selectSinger(item)">
           <!-- 对应排名 -->
           <div class="rankWrap">
             <div class="rank" v-text="index+1"></div>
@@ -44,12 +44,14 @@
         <spinner type="crescent" size="30px"></spinner>
       </div>
     </div>
+    <router-view></router-view>
   </scroll>
 </template>
 
 <script>
 import Scroll from '../common/Scroll'
 import { CellBox, Group, dateFormat, Popover, Spinner } from 'vux'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -87,7 +89,13 @@ export default {
             This.update = data.list.updateTime
           }
         })
-    }
+    },
+    selectSinger (singer) {
+      this.setSinger(singer)
+    },
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    })
   },
   created () {
     this.getSinger()
