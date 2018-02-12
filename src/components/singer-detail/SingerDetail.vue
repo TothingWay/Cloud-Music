@@ -8,19 +8,18 @@
       <div class="layer" ref="layer"></div>
       <scroll @scroll="scroll" :probe-type="probeType" :listen-scroll="listenScroll" :data="songs" ref="list" class="list">
         <div class="song-list-wrapper">
-          <songList :list="songs"></songList>
+          <songList @select="selectItem" :list="songs"></songList>
         </div>
         <div class="loading" v-show="!songs.length">
           <spinner type="crescent" size="30px"></spinner>
         </div>
       </scroll>
-
     </div>
   </transition>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { XHeader, Spinner } from 'vux'
 import Scroll from '../common/Scroll'
 import SongList from '../common/SongList'
@@ -68,15 +67,59 @@ export default {
                 id: data[i].id,
                 duration: data[i].dt,
                 songName: data[i].name,
-                albumName: data[i].al.name
+                albumName: data[i].al.name,
+                picUrl: data[i].al.picUrl
               })
             }
+            for (let i = 0; i < This.songs.length; i++) {
+              This.http.getMusicUrl(This.songs[i].id)
+                .then(function (res) {
+                  if (res.data.code === 200) {
+                    This.songs[i].musicUrl = res.data.data[0].url
+                  }
+                })
+                .catch(function (err) {
+                  console.log(err)
+                })
+            }
           }
+        })
+        .catch(function (err) {
+          console.log(err)
         })
     },
     scroll (pos) {
       this.scrollY = pos.y
-    }
+    },
+    selectItem (item, index) {
+      // 获取音乐url
+      this.selectPlay({
+        list: this.songs,
+        index
+      })
+      /* This.http.getMusicUrl(item.id)
+        .then(function (res) {
+          if (res.data.code === 200) {
+            for (let i = 0; i < This.songs.length; i++) {
+              This.songs[i].musicUrl = res.data.data[0].url
+            }
+            // 提交到vuex中
+            This.selectPlay({
+              list: This.songs,
+              index
+            })
+          }
+        })
+        .catch(function (err) {
+          console.log(err)
+        }) */
+    },
+    getMusic (id) {
+
+    },
+    ...mapActions([
+      'selectPlay'
+    ])
   },
   created () {
     this.getSong()

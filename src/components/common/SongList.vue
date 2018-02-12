@@ -1,6 +1,6 @@
 <template>
   <group>
-    <cell-box v-for="(item,index) in list" :key="index">
+    <cell-box @click.native="selectItem(item,index)" v-for="(item,index) in list" :key="index">
       <div class="index">{{index+1}}</div>
       <div class="singer-wrapper">
         <div class="name" v-text="item.songName"></div>
@@ -20,6 +20,11 @@ export default {
   components: {
     CellBox,
     Group
+  },
+  methods: {
+    selectItem (item, index) {
+      this.$emit('select', item, index)
+    }
   }
 }
 </script>

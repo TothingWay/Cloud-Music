@@ -52,6 +52,13 @@ export default {
       }
     })
   },
+  getMusicUrl (id) {
+    return axios.get(site.musicUrl, {
+      params: {
+        id
+      }
+    })
+  },
   /*
     @method 排行榜
     @param idx
