@@ -21,7 +21,7 @@
         <div class="song-wrap">
           <div class="song-cd">
             <div class="disc" ref="disc">
-              <div class="rotate" :class="rotateCls">
+              <div class="rotate" :class="rotate">
                 <img src="../../assets/images/disc.png" class="disc-img">
                 <img :src="currentsong.picUrl" class="disc-cover">
               </div>
@@ -29,20 +29,38 @@
           </div>
         </div>
         <div class="footer">
-          <div class="operators">
-            <div class="icon right">
-              <i class="iconfont icon-circle operate"></i>
+          <div class="progress-container">
+            <span class="currentTime">{{formatTime(currentTime)}}</span>
+            <div class="progress-bar-container">
+              <div class="progress-bar" ref="progressBar" @click="clickProgress">
+                <div class="innerbar">
+                  <div class="progress" ref="progress" :style="{width:percent}"></div>
+                  <div class="progress-btn-container" ref="progressBtn"
+                       @touchstart.prevent="btnTouchStart"
+                       @touchmove.prevent="btnTouchMove"
+                       @touchend="btnTouchEnd"
+                  >
+                    <div class="progress-btn"></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="icon right" :class="disable">
+            <span class="duration">{{formatTime(currentsong.duration/1000)}}</span>
+          </div>
+          <div class="operators">
+            <div class="icon" @click="changeMode">
+              <i class="iconfont operate" :class="playMode"></i>
+            </div>
+            <div class="icon" :class="disable">
               <i @click="prev" class="iconfont icon-pre direct"></i>
             </div>
             <div class="icon center" :class="disable">
               <i @click="togglePlay" class="iconfont play" :class="{'icon-play': !playing , 'icon-pause': playing}"></i>
             </div>
-            <div class="icon left" :class="disable">
+            <div class="icon" :class="disable">
               <i @click="next" class="iconfont icon-next direct"></i>
             </div>
-            <div class="icon left">
+            <div class="icon">
               <i class="fa fa-heart-o collect"></i>
             </div>
           </div>
@@ -52,7 +70,7 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="openPlayer">
         <div class="disc">
-          <div class="img-wrap" :class="rotateCls">
+          <div class="img-wrap" :class="rotate">
             <img :src="currentsong.picUrl" width="40" height="40">
           </div>
         </div>
@@ -61,14 +79,16 @@
           <p class="singer-name">{{singer.name}}</p>
         </div>
         <div class="control setplay">
-          <i @click.stop="togglePlay" class="iconfont" :class="{'icon-play': !playing , 'icon-pause': playing}"></i>
+          <progressCircle :percent="percent">
+            <i @click.stop="togglePlay" class="iconfont circle-content" :class="{'icon-play': !playing , 'icon-pause': playing}"></i>
+          </progressCircle>
         </div>
         <div class="control music-list">
           <x-icon type="ios-list-outline" size="32"></x-icon>
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentsong.musicUrl" @canplay="ready" @error="error"></audio>
+    <audio ref="audio" :src="currentsong.musicUrl" @ended="audioEnd" @timeupdate="timeUpdate" @canplay="ready" @error="error"></audio>
   </div>
 </template>
 
@@ -76,13 +96,18 @@
 import { mapGetters, mapMutations } from 'vuex'
 import animations from 'create-keyframe-animation'
 import autoprefix from '../../assets/js/autoprefix'
+import progressCircle from './progress-bar'
+import { playMode } from '../../assets/js/config'
+import { shuffle } from '../../assets/js/until'
 
 const transform = autoprefix('transform')
+const progressBtnWidth = 16
 
 export default {
   data () {
     return {
-      songReady: false
+      songReady: false,
+      currentTime: 0
     }
   },
   computed: {
@@ -92,16 +117,24 @@ export default {
       'currentsong',
       'currentIndex',
       'singer',
-      'playing'
+      'playing',
+      'mode',
+      'sequenceList'
     ]),
+    playMode () {
+      return this.mode === playMode.sequence ? 'icon-circle' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
+    },
     imgUrl () {
       return `background-image:url(${this.currentsong.picUrl})`
     },
-    rotateCls () {
+    rotate () {
       return this.playing ? 'play' : 'play pause'
     },
     disable () {
       return this.songReady ? '' : 'disable'
+    },
+    percent () {
+      return this.currentTime / (this.currentsong.duration / 1000)
     }
   },
   methods: {
@@ -120,7 +153,11 @@ export default {
       // 播放暂停
       setPlaying: 'SET_PLAYING',
       // 当前歌曲索引
-      setCurrentIndex: 'SET_CURRENT_INDEX'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      // 播放模式
+      setPlayMode: 'SET_PLAY_MODE',
+      // 设置当前播放列表
+      setPlayList: 'SET_PLAYLIST'
     }),
     // 动画相关
     enter (el, done) {
@@ -184,6 +221,24 @@ export default {
     togglePlay () {
       this.setPlaying(!this.playing)
     },
+    changeMode () {
+      const mode = (this.mode + 1) % 3
+      this.setPlayMode(mode)
+      let list = null
+      if (mode === playMode.random) {
+        list = shuffle(this.sequenceList)
+      } else {
+        list = this.sequenceList
+      }
+      this.resetCurrentIndex(list)
+      this.setPlayList(list)
+    },
+    resetCurrentIndex (list) {
+      let index = list.findIndex((item) => {
+        return item.id === this.currentsong.id
+      })
+      this.setCurrentIndex(index)
+    },
     next () {
       if (!this.songReady) {
         return
@@ -212,16 +267,83 @@ export default {
       }
       this.songReady = false
     },
+    // audio相关
     ready () {
       this.songReady = true
     },
     error () {
       // 使网络错误或者歌曲url失效的情况下功能能够正常使用
       this.songReady = true
+    },
+    loop () {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+    },
+    audioEnd () {
+      if (this.mode === playMode.loop) {
+        this.loop()
+      } else {
+        this.next()
+      }
+    },
+    // audio 时间
+    timeUpdate (ev) {
+      this.currentTime = ev.target.currentTime
+    },
+    formatTime (time) {
+      time = Math.floor(time)
+      const minute = Math.floor(time / 60) < 10 ? '0' + Math.floor(time / 60) : Math.floor(time / 60)
+      const second = time % 60 < 10 ? '0' + (time % 60) : time % 60
+      return `${minute}:${second}`
+    },
+    // 进度条事件
+    btnTouchStart (ev) {
+      this.touch.init = true
+      this.touch.startX = ev.touches[0].pageX
+      this.touch.left = this.$refs.progress.clientWidth
+    },
+    btnTouchMove (ev) {
+      if (!this.touch.init) {
+        return
+      }
+      const disX = ev.touches[0].pageX - this.touch.startX
+      const offsetWidth = Math.min(this.$refs.progressBar.clientWidth - progressBtnWidth, Math.max(0, this.touch.left + disX))
+      this.setOffset(offsetWidth)
+    },
+    btnTouchEnd () {
+      this.touch.init = false
+      this.setCurrentTime()
+    },
+    clickProgress (ev) {
+      const rect = this.$refs.progressBar.getBoundingClientRect()
+      const offsetWidth = ev.pageX - rect.left
+      this.setOffset(offsetWidth)
+      this.setCurrentTime()
+    },
+    setOffset (offsetWidth) {
+      this.$refs.progress.style.width = `${offsetWidth}px`
+      this.$refs.progressBtn.style[transform] = `translate3d(${offsetWidth}px ,0,0)`
+    },
+    setCurrentTime () {
+      const progressBarWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
+      const percent = this.$refs.progress.clientWidth / progressBarWidth
+      this.$refs.audio.currentTime = this.currentsong.duration / 1000 * percent
+      if (!this.playing) {
+        this.togglePlay()
+      }
     }
   },
+  created () {
+    this.touch = {}
+  },
+  components: {
+    progressCircle
+  },
   watch: {
-    currentsong () {
+    currentsong (newValue, oldValue) {
+      if (newValue.id === oldValue.id) {
+        return
+      }
       this.$nextTick(() => {
         this.$refs.audio.play()
       })
@@ -231,6 +353,15 @@ export default {
       this.$nextTick(() => {
         newValue ? audio.play() : audio.pause()
       })
+    },
+    percent (newValue) {
+      if (newValue >= 0 && !this.touch.init) {
+        // 进度条总长度
+        const progressBarWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
+        // 进度条偏移长度
+        const offsetWidth = newValue * progressBarWidth
+        this.setOffset(offsetWidth)
+      }
     }
   }
 }
@@ -238,11 +369,11 @@ export default {
 <style lang='scss' scoped>
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1518411284431'); /* IE9*/
-  src: url('iconfont.eot?t=1518411284431#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),
-  url('iconfont.ttf?t=1518411284431') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1518411284431#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1518500096163'); /* IE9*/
+  src: url('iconfont.eot?t=1518500096163#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),
+  url('iconfont.ttf?t=1518500096163') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1518500096163#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -260,8 +391,6 @@ export default {
 .icon-play:before { content: "\e662"; }
 
 .icon-pause:before { content: "\e670"; }
-
-.icon-musicList:before { content: "\e95c"; }
 
 .icon-random:before { content: "\e66b"; }
 
@@ -404,6 +533,7 @@ export default {
     align-items: center;
     .icon {
       flex: 1;
+      text-align: center;
       .operate {
         font-size: 26px;
         position: relative;
@@ -425,7 +555,7 @@ export default {
       }
     }
     .center {
-      padding: 0 20px;
+      padding: 0 15px;
       text-align: center;
     }
     .left {
@@ -433,6 +563,63 @@ export default {
     }
     .right {
       text-align: right;
+    }
+  }
+  .progress-container {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px 0;
+    .currentTime {
+      text-align: left;
+      font-size: 12px;
+      flex: 0 0 40px;
+      line-height: 30px;
+      width: 30px;
+    }
+    .progress-bar-container {
+      flex: 1;
+    }
+    .progress-bar {
+      height: 30px;
+    }
+    .innerbar {
+      position: relative;
+      top: 13px;
+      height: 4px;
+      background: rgba(#fff,.3);
+    }
+    .progress {
+      position: absolute;
+      height: 100%;
+      background: #04BE02;
+    }
+    .progress-btn-container {
+      position: absolute;
+      left: -8px;
+      top: -13px;
+      width: 30px;
+      height: 30px;
+    }
+    .progress-btn {
+      position: relative;
+      top: 7px;
+      left: 7px;
+      box-sizing: border-box;
+      width: 16px;
+      height: 16px;
+      border: 6px solid #fff;
+      border-radius: 50%;
+      background: #04BE02;
+    }
+    .duration {
+      text-align: right;
+      color: #fff;
+      font-size: 12px;
+      flex: 0 0 40px;
+      line-height: 30px;
+      width: 30px;
     }
   }
 }
@@ -494,6 +681,11 @@ export default {
     padding-right: 15px;
     .icon-musicList {
       font-size: 32px;
+    }
+    .circle-content {
+      position: absolute;
+      top: -11px;
+      left: -1px;
     }
   }
   .setplay {
