@@ -52,8 +52,23 @@ export default {
       }
     })
   },
+  /*
+    @method 歌曲地址
+    @param: id
+   */
   getMusicUrl (id) {
     return axios.get(site.musicUrl, {
+      params: {
+        id
+      }
+    })
+  },
+  /*
+    @method 歌曲歌词
+    @param: id
+   */
+  getMusiclyric (id) {
+    return axios.get(site.lyric, {
       params: {
         id
       }

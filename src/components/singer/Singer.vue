@@ -1,5 +1,5 @@
 <template>
-  <scroll :data="artists">
+  <scroll :data="artists" ref="scroll">
     <div class="singer">
       <div class="update">
         <p v-text="updateTime" class="time"></p>
@@ -52,7 +52,9 @@
 import Scroll from '../common/Scroll'
 import { CellBox, Group, dateFormat, Popover, Spinner } from 'vux'
 import { mapMutations } from 'vuex'
+import { scrollMixin } from '../../assets/js/mixin'
 export default {
+  mixins: [scrollMixin],
   data () {
     return {
       artists: [],
@@ -95,7 +97,12 @@ export default {
     },
     ...mapMutations({
       setSinger: 'SET_SINGER'
-    })
+    }),
+    handlePlaylist (playlist) {
+      const height = playlist.length > 0 ? 'calc(100% - 139px)' : 'calc(100% - 79px)'
+      this.$refs.scroll.$el.style.height = height
+      this.$refs.scroll.refresh()
+    }
   },
   created () {
     this.getSinger()

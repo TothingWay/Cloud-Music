@@ -1,5 +1,5 @@
 <template>
-  <scroll :data="remdData">
+  <scroll :data="remdData" ref="scroll">
     <div class="remd">
       <Banner :banner="remdData.banner"></Banner>
       <RemdList :remdList1="remdData.remdList1" :remdList2="remdData.remdList2"></RemdList>
@@ -19,7 +19,9 @@ import RemdList from '../recommend/RemdList'
 import RemdSong from '../recommend/RemdSong'
 import Scroll from '../common/Scroll'
 import { Spinner } from 'vux'
+import { scrollMixin } from '../../assets/js/mixin'
 export default {
+  mixins: [scrollMixin],
   data () {
     return {
       // 轮播图数据
@@ -107,6 +109,11 @@ export default {
         .catch(function (err) {
           console.log(err)
         })
+    },
+    handlePlaylist (playlist) {
+      const height = playlist.length > 0 ? 'calc(100% - 139px)' : 'calc(100% - 79px)'
+      this.$refs.scroll.$el.style.height = height
+      this.$refs.scroll.refresh()
     }
   },
   created () {

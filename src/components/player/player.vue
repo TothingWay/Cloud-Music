@@ -16,17 +16,30 @@
           </div>
           <h2>{{currentsong.songName}}</h2>
           <h4>{{singer.name}}</h4>
-          <img src="../../assets/images/needle.png" class="needle">
+          <transition name="fade">
+            <img v-if="show" src="../../assets/images/needle.png" class="needle" :class="{'needle-pause':!playing}">
+          </transition>
         </div>
-        <div class="song-wrap">
-          <div class="song-cd">
-            <div class="disc" ref="disc">
-              <div class="rotate" :class="rotate">
-                <img src="../../assets/images/disc.png" class="disc-img">
-                <img :src="currentsong.picUrl" class="disc-cover">
+        <div class="song-wrap" @click="toggleWrap">
+          <transition name="fade">
+            <div class="song-cd" v-show="show" mode="out-in">
+              <div class="disc" ref="disc">
+                <div class="rotate" :class="rotate">
+                  <img src="../../assets/images/disc.png" class="disc-img">
+                  <img :src="currentsong.picUrl" class="disc-cover">
+                </div>
               </div>
             </div>
-          </div>
+          </transition>
+          <transition name="fade" mode="out-in">
+            <scroll class="lyric" ref="lyric" v-show="!show" :data="currentLyric && currentLyric.lines">
+              <div class="lyric-wrapper">
+                <div v-if="currentLyric">
+                  <p v-for="(line, index) in currentLyric.lines" ref="lyricLine" :class="{'lyricActive':currentLyricLine === index}" class="text" :key="index">{{line.txt}}</p>
+                </div>
+              </div>
+            </scroll>
+          </transition>
         </div>
         <div class="footer">
           <div class="progress-container">
@@ -99,6 +112,9 @@ import autoprefix from '../../assets/js/autoprefix'
 import progressCircle from './progress-bar'
 import { playMode } from '../../assets/js/config'
 import { shuffle } from '../../assets/js/until'
+import Lyric from 'lyric-parser'
+import Scroll from '../common/Scroll'
+import { setTimeout } from 'timers'
 
 const transform = autoprefix('transform')
 const progressBtnWidth = 16
@@ -107,7 +123,10 @@ export default {
   data () {
     return {
       songReady: false,
-      currentTime: 0
+      currentTime: 0,
+      currentLyric: null,
+      currentLyricLine: 0,
+      show: true
     }
   },
   computed: {
@@ -157,7 +176,9 @@ export default {
       // 播放模式
       setPlayMode: 'SET_PLAY_MODE',
       // 设置当前播放列表
-      setPlayList: 'SET_PLAYLIST'
+      setPlayList: 'SET_PLAYLIST',
+      // 设置当前播放歌词
+      setCurrentSong: 'SET_CURRENT_LYRIC'
     }),
     // 动画相关
     enter (el, done) {
@@ -219,7 +240,14 @@ export default {
     },
     // 播放控制相关
     togglePlay () {
+      if (!this.songReady) {
+        return
+      }
       this.setPlaying(!this.playing)
+      // 歌词播放暂停
+      if (this.currentLyric) {
+        this.currentLyric.togglePlay()
+      }
     },
     changeMode () {
       const mode = (this.mode + 1) % 3
@@ -243,13 +271,17 @@ export default {
       if (!this.songReady) {
         return
       }
-      let index = this.currentIndex + 1
-      if (index === this.playlist.length) {
-        index = 0
-      }
-      this.setCurrentIndex(index)
-      if (!this.playing) {
-        this.togglePlay()
+      if (this.playlist.length === 1) {
+        this.loop()
+      } else {
+        let index = this.currentIndex + 1
+        if (index === this.playlist.length) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlay()
+        }
       }
       this.songReady = false
     },
@@ -257,13 +289,17 @@ export default {
       if (!this.songReady) {
         return
       }
-      let index = this.currentIndex - 1
-      if (index === -1) {
-        index = this.playlist.length
-      }
-      this.setCurrentIndex(index)
-      if (!this.playing) {
-        this.togglePlay()
+      if (this.playlist.length === 1) {
+        this.loop()
+      } else {
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.playlist.length
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlay()
+        }
       }
       this.songReady = false
     },
@@ -278,6 +314,9 @@ export default {
     loop () {
       this.$refs.audio.currentTime = 0
       this.$refs.audio.play()
+      if (this.currentLyric) {
+        this.currentLyric.seek(0)
+      }
     },
     audioEnd () {
       if (this.mode === playMode.loop) {
@@ -331,22 +370,59 @@ export default {
       if (!this.playing) {
         this.togglePlay()
       }
+      if (this.currentLyric) {
+        this.currentLyric.seek(this.currentsong.duration * percent)
+      }
+    },
+    // 歌词相关
+    getLyric () {
+      this.currentsong.getLyric()
+        .then((lyric) => {
+          this.currentLyric = new Lyric(lyric, this.handleLyric)
+          if (this.playing) {
+            this.currentLyric.play()
+          }
+          console.log(this.currentLyric)
+        })
+        .catch(() => {
+          this.currentLyric = null
+          this.currentLyricLine = 0
+        })
+    },
+    handleLyric ({lineNum, txt}) {
+      this.currentLyricLine = lineNum
+      if (lineNum > 5) {
+        let eleLine = this.$refs.lyricLine[lineNum - 5]
+        this.$refs.lyric.scrollToElement(eleLine, 1000)
+      } else {
+        this.$refs.lyric.scrollTo(0, 0, 1000)
+      }
+    },
+    // 界面切换
+    toggleWrap () {
+      this.show = !this.show
     }
   },
   created () {
     this.touch = {}
   },
   components: {
-    progressCircle
+    progressCircle,
+    Scroll
   },
   watch: {
     currentsong (newValue, oldValue) {
       if (newValue.id === oldValue.id) {
         return
       }
-      this.$nextTick(() => {
+      if (this.currentLyric) {
+        this.currentLyric.stop()
+      }
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
         this.$refs.audio.play()
-      })
+        this.getLyric()
+      }, 1000)
     },
     playing (newValue) {
       const audio = this.$refs.audio
@@ -474,6 +550,11 @@ export default {
       top: 46px;
       left: 50%;
       margin-left: -15px;
+      transform-origin: 15px 2px;
+      transition: all .3s;
+    }
+    .needle-pause {
+      transform: rotate(-30deg);
     }
   }
   .song-wrap {
@@ -482,11 +563,13 @@ export default {
     top: 116px;
     bottom: 170px;
     z-index: 99;
+    white-space: nowrap;
     .song-cd {
       position: relative;
       vertical-align: center;
-      height: 0;
       height: 100%;
+      width: 100%;
+      display: inline-block;
       .disc {
         position: relative;
         margin: 0 auto;
@@ -520,6 +603,26 @@ export default {
           height: 188px;
           margin: -94px 0 0 -94px;
         }
+      }
+    }
+    .lyric {
+      top: -40px;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      .lyric-wrapper {
+        width: 90%;
+        margin: 0 auto;
+        overflow: hidden;
+        text-align: center;
+      }
+      .text {
+        line-height: 32px;
+        color: hsla(0,0,100%,.5);
+        font-size: 14px;
+      }
+      .lyricActive {
+        color: #fff;
       }
     }
   }
@@ -722,6 +825,12 @@ export default {
 }
 .disable {
   color: #999;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 @keyframes rotate {
   0% {

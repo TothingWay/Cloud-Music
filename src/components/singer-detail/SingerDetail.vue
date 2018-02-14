@@ -24,19 +24,24 @@ import { XHeader, Spinner } from 'vux'
 import Scroll from '../common/Scroll'
 import SongList from '../common/SongList'
 import autoprefix from '../../assets/js/autoprefix'
+import { createSong } from '../../assets/js/song'
+import { scrollMixin } from '../../assets/js/mixin'
 
 const transform = autoprefix('transform')
 const backdropFilter = autoprefix('backdro-filter')
 export default {
+  mixins: [scrollMixin],
   data () {
     return {
       songs: [],
-      scrollY: 0
+      scrollY: 0,
+      currentLineNum: 0
     }
   },
   computed: {
     ...mapGetters([
-      'singer'
+      'singer',
+      'playing'
     ]),
     singerName: function () {
       return this.singer.alias ? this.singer.alias.length !== 0 ? this.singer.name + ' (' + this.singer.alias[0] + ')' : this.singer.name : ''
@@ -58,20 +63,15 @@ export default {
         This.$router.push('/singer')
         return
       }
+      // 获取歌手数据
       This.http.getArtists(This.singer.id)
         .then(function (res) {
           if (res.data.code === 200) {
             let data = res.data.hotSongs
-            for (let i = 0; i < data.length; i++) {
-              This.songs.push({
-                id: data[i].id,
-                duration: data[i].dt,
-                songName: data[i].name,
-                albumName: data[i].al.name,
-                picUrl: data[i].al.picUrl
-              })
-            }
+            This.songs = This.normalizeSongs(data)
+
             for (let i = 0; i < This.songs.length; i++) {
+              // 获取音乐url
               This.http.getMusicUrl(This.songs[i].id)
                 .then(function (res) {
                   if (res.data.code === 200) {
@@ -88,38 +88,30 @@ export default {
           console.log(err)
         })
     },
+    normalizeSongs (list) {
+      let retrn = []
+      list.forEach((item) => {
+        retrn.push(createSong(item))
+      })
+      return retrn
+    },
     scroll (pos) {
       this.scrollY = pos.y
     },
     selectItem (item, index) {
-      // 获取音乐url
       this.selectPlay({
         list: this.songs,
         index
       })
-      /* This.http.getMusicUrl(item.id)
-        .then(function (res) {
-          if (res.data.code === 200) {
-            for (let i = 0; i < This.songs.length; i++) {
-              This.songs[i].musicUrl = res.data.data[0].url
-            }
-            // 提交到vuex中
-            This.selectPlay({
-              list: This.songs,
-              index
-            })
-          }
-        })
-        .catch(function (err) {
-          console.log(err)
-        }) */
-    },
-    getMusic (id) {
-
     },
     ...mapActions([
       'selectPlay'
-    ])
+    ]),
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.list.$el.style.bottom = bottom
+      this.$refs.list.refresh()
+    }
   },
   created () {
     this.getSong()

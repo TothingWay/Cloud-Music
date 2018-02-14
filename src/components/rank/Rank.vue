@@ -1,5 +1,5 @@
 <template>
-  <scroll>
+  <scroll ref="scroll">
     <div class="rank">
       <h2 class="title">云音乐官方榜</h2>
       <!-- 热歌榜 -->
@@ -29,7 +29,9 @@ import SoaringList from '../rank/SoaringList'
 import NewList from '../rank/NewList'
 import OriginalList from '../rank/OriginalList'
 import HipHopList from '../rank/HipHopList'
+import { scrollMixin } from '../../assets/js/mixin'
 export default {
+  mixins: [scrollMixin],
   data () {
     return {
       hotList: [],
@@ -70,6 +72,11 @@ export default {
     },
     getHipHop (data) {
       this.hipHopList = data
+    },
+    handlePlaylist (playlist) {
+      const height = playlist.length > 0 ? 'calc(100% - 139px)' : 'calc(100% - 79px)'
+      this.$refs.scroll.$el.style.height = height
+      this.$refs.scroll.refresh()
     }
   },
   created () {
