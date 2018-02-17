@@ -12,6 +12,10 @@ const state = {
   // 播放模式
   mode: playMode.sequence,
   // 当前播放歌曲的序号
-  currentIndex: -1
+  currentIndex: -1,
+  // 推荐歌单
+  remdList: {},
+  // 推荐新音乐
+  remdSong: {}
 }
 export default state

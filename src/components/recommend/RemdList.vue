@@ -2,7 +2,7 @@
   <div class="remdList">
     <h2 class="title">推荐歌单</h2>
     <flexbox :gutter="2">
-      <flexbox-item v-for="(item, index) in remdList1" :key="index">
+      <flexbox-item v-for="(item, index) in remdList1" :key="index" @click.native="selectItem(item)">
         <div class="stance">
           <img v-lazy="item.img">
         </div>
@@ -11,7 +11,7 @@
       </flexbox-item>
     </flexbox>
     <flexbox :gutter="2">
-      <flexbox-item v-for="(item, index) in remdList2" :key="index">
+      <flexbox-item v-for="(item, index) in remdList2" :key="index" @click.native="selectItem(item)">
         <div class="stance">
           <img v-lazy="item.img">
         </div>
@@ -24,11 +24,23 @@
 
 <script>
 import { Flexbox, FlexboxItem } from 'vux'
+import { mapMutations } from 'vuex'
 export default {
   props: ['remdList1', 'remdList2'],
   components: {
     Flexbox,
     FlexboxItem
+  },
+  methods: {
+    selectItem (item) {
+      this.$router.push({
+        path: `/recommend/${item.id}`
+      })
+      this.setRemdList(item)
+    },
+    ...mapMutations({
+      setRemdList: 'SET_REMD_LIST'
+    })
   }
 }
 </script>

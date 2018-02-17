@@ -10,6 +10,7 @@
         <spinner type="crescent" size="30px"></spinner>
       </div>
     </div>
+    <router-view></router-view>
   </scroll>
 </template>
 
@@ -20,6 +21,8 @@ import RemdSong from '../recommend/RemdSong'
 import Scroll from '../common/Scroll'
 import { Spinner } from 'vux'
 import { scrollMixin } from '../../assets/js/mixin'
+import { createNewSong } from '../../assets/js/song'
+
 export default {
   mixins: [scrollMixin],
   data () {
@@ -30,14 +33,13 @@ export default {
         // 推荐歌单第一行和第二行数据
         remdList1: [],
         remdList2: [],
-        // 最新音乐数据
         remdSong: []
       }
     }
   },
   computed: {
-    load: function () {
-      return !this.remdData.banner.length || !this.remdData.remdList1.length || !this.remdData.remdList2.length || !this.remdData.remdSong.length
+    load () {
+      return !this.remdData.banner.length || !this.remdData.remdList1.length || !this.remdData.remdList2.length
     }
   },
   components: {
@@ -103,7 +105,21 @@ export default {
       This.http.newSong()
         .then(function (res) {
           if (res.data.code === 200) {
-            This.remdData.remdSong = res.data.result
+            let data = res.data.result
+            This.remdData.remdSong = This.normalizeSongs(data)
+
+            for (let i = 0; i < This.remdData.remdSong.length; i++) {
+              // 获取音乐url
+              This.http.getMusicUrl(This.remdData.remdSong[i].id)
+                .then(function (res) {
+                  if (res.data.code === 200) {
+                    This.remdData.remdSong[i].musicUrl = res.data.data[0].url
+                  }
+                })
+                .catch(function (err) {
+                  console.log(err)
+                })
+            }
           }
         })
         .catch(function (err) {
@@ -114,7 +130,17 @@ export default {
       const height = playlist.length > 0 ? 'calc(100% - 139px)' : 'calc(100% - 79px)'
       this.$refs.scroll.$el.style.height = height
       this.$refs.scroll.refresh()
+    },
+    normalizeSongs (list) {
+      let retrn = []
+      list.forEach((item) => {
+        retrn.push(createNewSong(item))
+      })
+      return retrn
     }
+    /* ...mapMutations({
+      setRemdSong: 'SET_REMD_SONG'
+    }) */
   },
   created () {
     // 推荐页面数据初始化

@@ -21,6 +21,12 @@ const mutations = {
   },
   [types.SET_CURRENT_INDEX] (state, index) {
     state.currentIndex = index
+  },
+  [types.SET_REMD_LIST] (state, remdList) {
+    state.remdList = remdList
+  },
+  [types.SET_REMD_SONG] (state, remdSong) {
+    state.remdSong = remdSong
   }
 }
 

@@ -30,6 +30,17 @@ export default {
     return axios.get(site.personalized)
   },
   /*
+    @method 歌单详情
+    @param: id
+   */
+  remdListDetail (id) {
+    return axios.get(site.playlistDetail, {
+      params: {
+        id
+      }
+    })
+  },
+  /*
     @method 最新音乐
    */
   newSong () {

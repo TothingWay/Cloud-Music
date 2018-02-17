@@ -6,7 +6,7 @@
                 @leave="leave"
                 @afterLeave="afterLeave"
     >
-      <div class="fullScreen" v-show="fullScreen">
+      <div class="fullScreen" v-show="isFullScreen">
         <div class="blur-bg" :style="imgUrl">
           <div class="bg-mask"></div>
         </div>
@@ -15,7 +15,7 @@
             <div class="down-arrow"></div>
           </div>
           <h2>{{currentsong.songName}}</h2>
-          <h4>{{singer.name}}</h4>
+          <h4>{{currentsong.singerName}}</h4>
           <transition name="fade">
             <img v-if="show" src="../../assets/images/needle.png" class="needle" :class="{'needle-pause':!playing}">
           </transition>
@@ -81,7 +81,7 @@
       </div>
     </transition>
     <transition name="mini">
-      <div class="mini-player" v-show="!fullScreen" @click="openPlayer">
+      <div class="mini-player" v-show="!isFullScreen" @click="openPlayer">
         <div class="disc">
           <div class="img-wrap" :class="rotate">
             <img :src="currentsong.picUrl" width="40" height="40">
@@ -89,7 +89,7 @@
         </div>
         <div class="describe">
           <h2 class="name">{{currentsong.songName}}</h2>
-          <p class="singer-name">{{singer.name}}</p>
+          <p class="singer-name">{{currentsong.singerName}}</p>
         </div>
         <div class="control setplay">
           <progressCircle :percent="percent">
@@ -154,6 +154,9 @@ export default {
     },
     percent () {
       return this.currentTime / (this.currentsong.duration / 1000)
+    },
+    isFullScreen () {
+      return this.fullScreen
     }
   },
   methods: {
@@ -382,7 +385,6 @@ export default {
           if (this.playing) {
             this.currentLyric.play()
           }
-          console.log(this.currentLyric)
         })
         .catch(() => {
           this.currentLyric = null
@@ -437,6 +439,13 @@ export default {
         // 进度条偏移长度
         const offsetWidth = newValue * progressBarWidth
         this.setOffset(offsetWidth)
+      }
+    },
+    fullScreen (newValue) {
+      if (newValue) {
+        setTimeout(() => {
+          this.$refs.lyric.refresh()
+        }, 20)
       }
     }
   }
@@ -538,7 +547,7 @@ export default {
       .down-arrow {
         width: 12px;
         height: 12px;
-        border: 1px solid #ccc;
+        border: 1px solid #fff;
         border-width: 1px 0 0 1px;
         transform: rotate(225deg);
       }

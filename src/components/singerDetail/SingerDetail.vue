@@ -178,7 +178,7 @@ export default {
 .slide-enter,.slide-leave-to {
   transform: translate3d(100%,0,0)
 }
-.vux-header {
+.vux-header /deep/{
   width: 100%;
   z-index: 102;
   position: absolute;

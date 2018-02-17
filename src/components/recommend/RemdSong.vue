@@ -2,17 +2,14 @@
   <div class="remdSong">
     <h2 class="title">最新音乐</h2>
     <group>
-      <CellBox v-for="(item,index) in remdSong" :key="index">
-        <img v-lazy="item.song.album.picUrl" class="img">
+      <CellBox v-for="(item,index) in remdSong" :key="index" @click.native="selectItem(item, index)">
+        <img v-lazy="item.picUrl" class="img">
         <div class="music">
-          <div class="name ellipsis"><span class="songName" v-text="item.name"></span><span class="alias" v-if="item.song.alias.length!==0">（{{item.song.alias[0]}}）</span></div>
+          <div class="name ellipsis"><span class="songName" v-text="item.songName"></span><span class="alias" v-if="item.alias.length!==0">（{{item.alias[0]}}）</span></div>
           <div class="singer ellipsis">
-            <span v-for="(singer,index2) in item.song.artists" :key="index2">
-              {{singer.name}}
-              <span v-if="index2<item.song.artists.length-1">/</span>
-            </span>
+            <span>{{item.singerName}}</span>
             -
-            <span v-text="item.song.album.name"></span>
+            <span v-text="item.albumName"></span>
           </div>
           <i class="fa fa-play-circle"></i>
         </div>
@@ -23,11 +20,28 @@
 
 <script>
 import { CellBox, Group } from 'vux'
+import { mapActions, mapMutations } from 'vuex'
+
 export default {
   props: ['remdSong'],
   components: {
     CellBox,
     Group
+  },
+  methods: {
+    selectItem (item, index) {
+      this.setRemdSong(item)
+      this.selectPlay({
+        list: this.remdSong,
+        index
+      })
+    },
+    ...mapActions([
+      'selectPlay'
+    ]),
+    ...mapMutations({
+      setRemdSong: 'SET_REMD_SONG'
+    })
   }
 }
 </script>
