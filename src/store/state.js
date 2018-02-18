@@ -16,6 +16,8 @@ const state = {
   // 推荐歌单
   remdList: {},
   // 推荐新音乐
-  remdSong: {}
+  remdSong: {},
+  // 排行榜
+  rankList: {}
 }
 export default state

@@ -5,6 +5,7 @@ import Rank from '@/components/rank/Rank'
 import Singer from '@/components/singer/Singer'
 import SingerDetail from '@/components/singerDetail/singerDetail'
 import RemdListDetail from '@/components/remdListDetail/RemdListDetail'
+import RankDetail from '@/components/rankDetail/RankDetail'
 
 Vue.use(Router)
 
@@ -25,7 +26,13 @@ export default new Router({
     {
       path: '/rank',
       name: 'rank',
-      component: Rank
+      component: Rank,
+      children: [
+        {
+          path: ':id',
+          component: RankDetail
+        }
+      ]
     },
     {
       path: '/singer',

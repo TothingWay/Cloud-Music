@@ -27,6 +27,9 @@ const mutations = {
   },
   [types.SET_REMD_SONG] (state, remdSong) {
     state.remdSong = remdSong
+  },
+  [types.SET_RANK_LIST] (state, rankList) {
+    state.rankList = rankList
   }
 }
 

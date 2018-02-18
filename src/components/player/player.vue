@@ -6,7 +6,7 @@
                 @leave="leave"
                 @afterLeave="afterLeave"
     >
-      <div class="fullScreen" v-show="isFullScreen">
+      <div class="fullScreen" v-show="fullScreen">
         <div class="blur-bg" :style="imgUrl">
           <div class="bg-mask"></div>
         </div>
@@ -81,7 +81,7 @@
       </div>
     </transition>
     <transition name="mini">
-      <div class="mini-player" v-show="!isFullScreen" @click="openPlayer">
+      <div class="mini-player" v-show="!fullScreen" @click="openPlayer">
         <div class="disc">
           <div class="img-wrap" :class="rotate">
             <img :src="currentsong.picUrl" width="40" height="40">
@@ -154,9 +154,6 @@ export default {
     },
     percent () {
       return this.currentTime / (this.currentsong.duration / 1000)
-    },
-    isFullScreen () {
-      return this.fullScreen
     }
   },
   methods: {

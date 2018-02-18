@@ -15,3 +15,5 @@ export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX'
 export const SET_REMD_LIST = 'SET_REMD_LIST'
 
 export const SET_REMD_SONG = 'SET_REMD_SONG'
+
+export const SET_RANK_LIST = 'SET_RANK_LIST'
