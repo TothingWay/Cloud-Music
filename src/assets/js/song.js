@@ -1,6 +1,6 @@
 import api from '../../api/index'
 export default class Song {
-  constructor ({ id, songName, albumName, singerName, picUrl, duration, url, alias }) {
+  constructor ({ id, songName, albumName, singerName, picUrl, duration, alias }) {
     this.id = id
     this.songName = songName
     this.albumName = albumName
@@ -32,8 +32,7 @@ export function createSong (data) {
     albumName: data.al.name,
     picUrl: data.al.picUrl,
     duration: data.dt,
-    singerName: filterSinger(data.ar),
-    alias: ''
+    singerName: filterSinger(data.ar)
   })
 }
 
@@ -48,7 +47,17 @@ export function createNewSong (data) {
     alias: data.song.alias
   })
 }
-
+export function createSearchSong (data) {
+  return new Song({
+    id: data.id,
+    songName: data.name,
+    albumName: data.album.name,
+    picUrl: `//music.163.com/api/img/blur/${data.album.picId}`,
+    duration: data.duration,
+    singerName: filterSinger(data.artists),
+    alias: data.alias
+  })
+}
 function getLyric (id) {
   return api.getMusiclyric(id)
     .then((res) => {

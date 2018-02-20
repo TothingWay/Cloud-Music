@@ -1,7 +1,7 @@
 <template>
   <div class="progress-circle">
     <svg :width="radius" :height="radius" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
-      <circle class="progress-bar" r="47" cx="53" cy="49" fill="transparent" :stroke-dasharray="dashArray"
+      <circle class="progress-bar" r="47" cx="51" cy="49" fill="transparent" :stroke-dasharray="dashArray"
               :stroke-dashoffset="dashOffset"/>
     </svg>
     <slot></slot>
@@ -36,7 +36,7 @@ export default {
   position: relative;
   top: 2px;
   circle {
-    stroke-width: 4px;
+    stroke-width: 6px;
     transform-origin: center;
     &.progress-bar {
       transform: scale(0.9) rotate(-90deg);

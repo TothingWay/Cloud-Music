@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <MHeader></MHeader>
-    <Tab></Tab>
+    <search></search>
+    <tab></tab>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import MHeader from './components/common/MHeader'
+import Search from './components/search/Search'
 import Tab from './components/common/Tab'
 import Player from './components/player/player'
 
 export default {
   name: 'App',
   components: {
-    MHeader,
+    Search,
     Tab,
     Player
   }

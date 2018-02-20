@@ -121,11 +121,41 @@ export default {
     })
   },
   /*
+    @method 热门搜索
+   */
+  getHotKey () {
+    return jsonp(site.hotKey, {
+      g_tk: 1888361161,
+      uin: 0,
+      format: 'jsonp',
+      inCharset: 'utf-8',
+      outCharset: 'utf-8',
+      notice: 0,
+      platform: 'h5',
+      needNewCode: 1
+    }, {
+      param: 'jsonpCallback'
+    })
+  },
+  /*
     @method 搜索
     @param: keywords
    */
-  search (keywords) {
+  search (keywords, page) {
     return axios.get(site.search, {
+      params: {
+        keywords,
+        offset: page * 30
+      }
+    })
+  },
+  /*
+    @method 搜索建议
+    @param: keywords
+    @param: offset  偏移数
+   */
+  suggest (keywords) {
+    return axios.get(site.searchSuggest, {
       params: {
         keywords
       }

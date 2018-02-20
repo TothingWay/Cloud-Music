@@ -794,7 +794,7 @@ export default {
     .circle-content {
       position: absolute;
       top: -11px;
-      left: -1px;
+      left: -2px;
     }
   }
   .setplay {
