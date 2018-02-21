@@ -19,28 +19,27 @@
           <transition name="fade">
             <img v-if="show" src="../../assets/images/needle.png" class="needle" :class="{'needle-pause':!playing}">
           </transition>
+          <transition name="fade">
+            <img v-if="show" src="../../assets/images/circle.png" class="circle">
+          </transition>
         </div>
         <div class="song-wrap" @click="toggleWrap">
-          <transition name="fade">
-            <div class="song-cd" v-show="show" mode="out-in">
-              <div class="disc" ref="disc">
-                <div class="rotate" :class="rotate">
-                  <img src="../../assets/images/disc.png" class="disc-img">
-                  <img :src="currentsong.picUrl" class="disc-cover">
-                </div>
+          <div class="song-cd" ref="songCd">
+            <div class="disc" ref="disc">
+              <div class="rotate" :class="rotate">
+                <img src="../../assets/images/disc.png" class="disc-img">
+                <img :src="currentsong.picUrl" class="disc-cover">
               </div>
             </div>
-          </transition>
-          <transition name="fade" mode="out-in">
-            <scroll class="lyric" ref="lyric" v-show="!show" :data="currentLyric && currentLyric.lines">
-              <div class="lyric-wrapper">
-                <div v-if="currentLyric">
-                  <p v-for="(line, index) in currentLyric.lines" ref="lyricLine" :class="{'lyricActive':currentLyricLine === index}" class="text" :key="index">{{line.txt}}</p>
-                </div>
-                <p v-if="currentLyric && !currentLyric.lines.length" class="noLyric">暂无歌词</p>
+          </div>
+          <scroll class="lyric" ref="lyric" :data="currentLyric && currentLyric.lines">
+            <div class="lyric-wrapper" style="opacity: 0;" ref="lyricWrapper">
+              <div v-if="currentLyric">
+                <p v-for="(line, index) in currentLyric.lines" ref="lyricLine" :class="{'lyricActive':currentLyricLine === index}" class="text" :key="index">{{line.txt}}</p>
               </div>
-            </scroll>
-          </transition>
+              <p v-if="currentLyric && !currentLyric.lines.length" class="noLyric">暂无歌词</p>
+            </div>
+          </scroll>
         </div>
         <div class="footer">
           <div class="progress-container">
@@ -116,6 +115,7 @@ import { shuffle } from '../../assets/js/until'
 import Lyric from 'lyric-parser'
 import Scroll from '../common/Scroll'
 import { setTimeout } from 'timers'
+import animation from '../../assets/js/animation'
 
 const transform = autoprefix('transform')
 const progressBtnWidth = 16
@@ -401,6 +401,13 @@ export default {
     // 界面切换
     toggleWrap () {
       this.show = !this.show
+      if (this.$refs.songCd.style.opacity === '0') {
+        animation(this.$refs.songCd, { opacity: '100' })
+        animation(this.$refs.lyricWrapper, { opacity: '0' })
+      } else {
+        animation(this.$refs.songCd, { opacity: '0' })
+        animation(this.$refs.lyricWrapper, { opacity: '100' })
+      }
     }
   },
   created () {
@@ -550,7 +557,8 @@ export default {
         transform: rotate(225deg);
       }
     }
-    .needle {
+    .needle,
+    .circle {
       position: absolute;
       width: 96px;
       height: 137px;
@@ -572,16 +580,20 @@ export default {
     z-index: 99;
     white-space: nowrap;
     .song-cd {
-      position: relative;
+      position: absolute;
       vertical-align: center;
       height: 100%;
       width: 100%;
       display: inline-block;
+      top: 0;
+      left: 0;
       .disc {
-        position: relative;
-        margin: 0 auto;
         width: 300px;
         height: 300px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -150px;
       }
       .rotate {
         position: relative;
@@ -622,7 +634,6 @@ export default {
         margin: 0 auto;
         overflow: hidden;
         text-align: center;
-        height: 100%;
       }
       .text {
         line-height: 32px;
