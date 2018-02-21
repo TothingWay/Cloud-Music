@@ -1,9 +1,9 @@
 <template>
-  <scroll :data="remdData" ref="scroll">
+  <scroll :data="scrollData" ref="scroll">
     <div class="remd">
-      <Banner :banner="remdData.banner"></Banner>
-      <RemdList :remdList1="remdData.remdList1" :remdList2="remdData.remdList2"></RemdList>
-      <RemdSong :remdSong="remdData.remdSong"></RemdSong>
+      <Banner :banner="banner"></Banner>
+      <RemdList :remdList1="remdList1" :remdList2="remdList2"></RemdList>
+      <RemdSong :remdSong="remdSong"></RemdSong>
     </div>
     <div class="mask" v-show="load">
       <div class="loading">
@@ -28,18 +28,19 @@ export default {
   data () {
     return {
       // 轮播图数据
-      remdData: {
-        banner: [],
-        // 推荐歌单第一行和第二行数据
-        remdList1: [],
-        remdList2: [],
-        remdSong: []
-      }
+      banner: [],
+      // 推荐歌单第一行和第二行数据
+      remdList1: [],
+      remdList2: [],
+      remdSong: []
     }
   },
   computed: {
     load () {
-      return !this.remdData.banner.length || !this.remdData.remdList1.length || !this.remdData.remdList2.length
+      return !this.banner.length || !this.remdList1.length || !this.remdList2.length
+    },
+    scrollData () {
+      return this.banner.concat(this.remdList1, this.remdList2, this.remdSong)
     }
   },
   components: {
@@ -56,9 +57,9 @@ export default {
       This.http.banner().then((res) => {
         if (res.code === 0) {
           let data = res.data.slider
-          This.remdData.banner = []
+          This.banner = []
           for (let i = 0; i < data.length; i++) {
-            This.remdData.banner.push({
+            This.banner.push({
               url: data[i].linkUrl,
               img: data[i].picUrl
             })
@@ -74,18 +75,18 @@ export default {
           if (res.data.code === 200) {
             let data = res.data.result
             let max = 6
-            This.remdData.remdList1 = []
-            This.remdData.remdList2 = []
+            This.remdList1 = []
+            This.remdList2 = []
             for (let i = 0; i < max; i++) {
               if (i < 3) {
-                This.remdData.remdList1.push({
+                This.remdList1.push({
                   id: data[i].id,
                   name: data[i].name,
                   img: data[i].picUrl,
                   playCount: data[i].playCount > 10000 ? Math.round(data[i].playCount / 10000) + '万' : Math.round(data[i].playCount)
                 })
               } else {
-                This.remdData.remdList2.push({
+                This.remdList2.push({
                   id: data[i].id,
                   name: data[i].name,
                   img: data[i].picUrl,
@@ -106,14 +107,14 @@ export default {
         .then(function (res) {
           if (res.data.code === 200) {
             let data = res.data.result
-            This.remdData.remdSong = This.normalizeSongs(data)
+            This.remdSong = This.normalizeSongs(data)
 
-            for (let i = 0; i < This.remdData.remdSong.length; i++) {
+            for (let i = 0; i < This.remdSong.length; i++) {
               // 获取音乐url
-              This.http.getMusicUrl(This.remdData.remdSong[i].id)
+              This.http.getMusicUrl(This.remdSong[i].id)
                 .then(function (res) {
                   if (res.data.code === 200) {
-                    This.remdData.remdSong[i].musicUrl = res.data.data[0].url
+                    This.remdSong[i].musicUrl = res.data.data[0].url
                   }
                 })
                 .catch(function (err) {

@@ -42,6 +42,7 @@ export default {
        * 列表的数据
        */
     data: {
+      type: Array,
       default: null
     },
     /**
@@ -148,13 +149,18 @@ export default {
   },
   watch: {
     // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
-    data: {
-      handler (newValue, oldValue) {
-        setTimeout(() => {
-          this.refresh()
-        }, this.refreshDelay)
-      },
-      deep: true
+    // data: {
+    //   handler (newValue, oldValue) {
+    //     setTimeout(() => {
+    //       this.refresh()
+    //     }, this.refreshDelay)
+    //   },
+    //   deep: true
+    // },
+    data () {
+      setTimeout(() => {
+        this.refresh()
+      }, this.refreshDelay)
     }
   }
 }

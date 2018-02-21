@@ -1,5 +1,6 @@
 <template>
   <scroll class="search-result"
+          ref="scroll"
           :data="scrollData"
           :pullup="pullup"
           :beforeScroll="beforeScroll"
@@ -34,7 +35,9 @@ import Scroll from '../common/Scroll'
 import { Group, CellBox, Spinner, Divider } from 'vux'
 import { createSearchSong } from '../../assets/js/song'
 import { mapMutations, mapActions } from 'vuex'
+import { scrollMixin } from '../../assets/js/mixin'
 export default {
+  mixins: [scrollMixin],
   props: {
     keywords: {
       type: String,
@@ -171,6 +174,11 @@ export default {
     },
     scrollList () {
       this.$emit('scrollList')
+    },
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : '0'
+      this.$refs.scroll.$el.style.bottom = bottom
+      this.$refs.scroll.refresh()
     }
   },
   watch: {
@@ -188,7 +196,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100% !important;
+  height: auto !important;
   background-color: #fff;
   .weui-cells {
     &:before,

@@ -19,27 +19,40 @@
       </transition>
     </a>
     <div class="search-content" v-show="!showIcon">
-      <div class="hotkey">
-        <h3 class="title">热门搜索</h3>
-        <ul class="hotList">
-          <li @click="addKeywords(item.k)" v-for="(item, index) in hotkey" :key="index">
-            {{item.k}}
-          </li>
-        </ul>
-      </div>
-      <suggest :keywords="keywords" v-show="keywords" @scrollSuggest="blurInput" @select="select" @singerData="singerData"></suggest>
+      <scroll :data="scrollData" ref="scroll">
+        <div class="hotkey">
+          <h3 class="title">热门搜索</h3>
+          <ul class="hotList">
+            <li @click="addKeywords(item.k)" v-for="(item, index) in hotkey" :key="index">
+              {{item.k}}
+            </li>
+          </ul>
+          <h3 class="title" v-show="searchHistory.length">搜索历史</h3>
+          <ul class="history" v-show="searchHistory.length">
+            <li v-for="(item, index) in searchHistory" @click="selectHistory(item)" :key="index">
+              <icon type="waiting-circle"></icon>
+              <span>{{item}}</span>
+              <x-icon class="close" type="ios-close-empty" size="30" @click.native.stop="deleteHistory(item)"></x-icon>
+            </li>
+          </ul>
+        </div>
+      </scroll>
+      <suggest :keywords="keywords" v-show="showSuggest" @scrollSuggest="blurInput" @select="select" @singerData="singerData"></suggest>
       <searchResult v-show="selectkey" @scrollList="blurInput" :singerList="singerList" :keywords="selectkey"></searchResult>
     </div>
   </div>
 </template>
 
 <script>
-import { Icon } from 'vux'
+import { Icon, stringTrim } from 'vux'
 import Suggest from './Suggest'
 import SearchResult from './SearchResult'
-// import { scrollMixin } from '../../assets/js/mixin'
+import Scroll from '../common/Scroll'
+import { mapActions, mapGetters } from 'vuex'
+import { clearTimeout } from 'timers'
+import { scrollMixin } from '../../assets/js/mixin'
 export default {
-  // mixins: [scrollMixin],
+  mixins: [scrollMixin],
   data () {
     return {
       showIcon: true,
@@ -49,10 +62,22 @@ export default {
       singerList: []
     }
   },
+  computed: {
+    ...mapGetters([
+      'searchHistory'
+    ]),
+    showSuggest () {
+      return stringTrim(this.keywords)
+    },
+    scrollData () {
+      return this.hotkey.concat(this.searchHistory)
+    }
+  },
   components: {
     Icon,
     Suggest,
-    SearchResult
+    SearchResult,
+    Scroll
   },
   methods: {
     focus () {
@@ -92,18 +117,56 @@ export default {
     select (item) {
       this.selectkey = item
       this.keywords = item
+      this.saveSearchHistory(this.keywords)
     },
+    // 回车搜索
     search (keywords) {
-      this.selectkey = this.keywords
+      if (stringTrim(this.keywords)) {
+        this.saveSearchHistory(this.keywords)
+        this.selectkey = this.keywords
+        this.$refs.searchInput.blur()
+      } else {
+        this.keywords = ''
+      }
+    },
+    // 搜索历史记录
+    selectHistory (item) {
+      if (stringTrim(item)) {
+        this.selectkey = item
+        this.keywords = item
+        this.saveSearchHistory(item)
+      }
       this.$refs.searchInput.blur()
+    },
+    // 删除历史记录
+    deleteHistory (item) {
+      this.deleteSearchHistory(item)
     },
     // 获取歌手数据
     singerData (data) {
       this.singerList = data
+    },
+    ...mapActions([
+      'saveSearchHistory',
+      'deleteSearchHistory'
+    ]),
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : '0'
+      this.$refs.scroll.$el.style.bottom = bottom
+      this.$refs.scroll.refresh()
     }
   },
   created () {
     this.gethotkey()
+  },
+  watch: {
+    showIcon (newValue) {
+      let timer
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        this.$refs.scroll.refresh()
+      }, 20)
+    }
   }
 }
 </script>
@@ -243,17 +306,25 @@ export default {
   width: 100%;
 
   background-color: #fff;
+  .wrapper {
+    position: absolute;
+    height: auto;
+    top: 0;
+    bottom: 0;
+  }
   .hotkey {
     padding: 15px 10px 0;
     .title {
       color: #666;
-
-      font-size: 12px;
-      line-height: 12px;
+      position: relative;
+      font-size: 14px;
+      line-height: 1;
+      padding-bottom: 5px;
       font-weight: 400;
     }
     .hotList {
-      margin: 10px 0 7px;
+      margin-bottom: 30px;
+      margin-top: 7px;
       li {
         position: relative;
 
@@ -286,6 +357,37 @@ export default {
 
           border: 1px solid rgba(0,0,0,.1);;
           border-radius: 32px;
+        }
+      }
+    }
+    .history {
+      li {
+        width: 100%;
+        overflow: hidden;
+        font-size: 14px;
+        position: relative;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        margin-top: 10px;
+        padding-bottom: 3px;
+        i {
+          font-size: 16px;
+          color: #999;
+          position: relative;
+          top: -7px;
+        }
+        span {
+          display: inline-block;
+          width: calc(100% - 55px);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-break: normal;
+        }
+        .close {
+          position: absolute;
+          right: 0;
+          top: -4px;
+          fill: #999;
         }
       }
     }

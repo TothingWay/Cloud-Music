@@ -21,3 +21,5 @@ export const remdList = state => state.remdList
 export const remdSong = state => state.remdSong
 
 export const rankList = state => state.rankList
+
+export const searchHistory = state => state.searchHistory

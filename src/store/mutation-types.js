@@ -17,3 +17,5 @@ export const SET_REMD_LIST = 'SET_REMD_LIST'
 export const SET_REMD_SONG = 'SET_REMD_SONG'
 
 export const SET_RANK_LIST = 'SET_RANK_LIST'
+
+export const SET_SEARCH_HISTORY = 'SET_SEARCH_HISTORY'

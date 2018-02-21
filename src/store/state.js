@@ -1,4 +1,5 @@
 import { playMode } from '../assets/js/config'
+import { loadSearch } from '../assets/js/cache'
 const state = {
   singer: {},
   // 播放
@@ -18,6 +19,8 @@ const state = {
   // 推荐新音乐
   remdSong: {},
   // 排行榜
-  rankList: {}
+  rankList: {},
+  // 搜索历史记录
+  searchHistory: loadSearch()
 }
 export default state

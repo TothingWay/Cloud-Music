@@ -37,6 +37,7 @@
                 <div v-if="currentLyric">
                   <p v-for="(line, index) in currentLyric.lines" ref="lyricLine" :class="{'lyricActive':currentLyricLine === index}" class="text" :key="index">{{line.txt}}</p>
                 </div>
+                <p v-if="currentLyric && !currentLyric.lines.length" class="noLyric">暂无歌词</p>
               </div>
             </scroll>
           </transition>
@@ -621,6 +622,7 @@ export default {
         margin: 0 auto;
         overflow: hidden;
         text-align: center;
+        height: 100%;
       }
       .text {
         line-height: 32px;
@@ -629,6 +631,12 @@ export default {
       }
       .lyricActive {
         color: #fff;
+      }
+      .noLyric {
+        color: #fff;
+        font-size: 14px;
+        position: relative;
+        top: 45%;
       }
     }
   }

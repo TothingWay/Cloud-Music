@@ -1,6 +1,7 @@
 import * as types from './mutation-types'
 import { playMode } from '../assets/js/config'
 import { shuffle, findIndex } from '../assets/js/until'
+import { saveSearch, deleteSearch } from '../assets/js/cache'
 
 export const selectPlay = function ({ commit, state }, { list, index }) {
   commit(types.SET_SEQUENCE_LIST, list)
@@ -56,4 +57,12 @@ export const insertSong = function ({ commit, state }, song) {
   commit(types.SET_CURRENT_INDEX, currentIndex)
   commit(types.SET_FULL_SCREEN, true)
   commit(types.SET_PLAYING, true)
+}
+
+export const saveSearchHistory = function ({ commit }, keywords) {
+  commit(types.SET_SEARCH_HISTORY, saveSearch(keywords))
+}
+
+export const deleteSearchHistory = function ({ commit }, keywords) {
+  commit(types.SET_SEARCH_HISTORY, deleteSearch(keywords))
 }

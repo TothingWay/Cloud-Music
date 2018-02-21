@@ -1,5 +1,5 @@
 <template>
-  <scroll :data="suggestList" class="suggest" :beforeScroll="beforeScroll" @beforeScroll="scrollList">
+  <scroll ref="scroll" :data="suggestList" class="suggest" :beforeScroll="beforeScroll" @beforeScroll="scrollList">
     <group>
       <cell-box v-for="(item, index) in suggestList" :key="index" @click.native="select(item)">
         <div class="icon"><icon type="search"></icon></div>
@@ -13,7 +13,9 @@
 import { Group, CellBox, Icon } from 'vux'
 import Scroll from '../common/Scroll'
 import { debounce } from '../../assets/js/until'
+import { scrollMixin } from '../../assets/js/mixin'
 export default {
+  mixins: [scrollMixin],
   props: [
     'keywords'
   ],
@@ -80,6 +82,11 @@ export default {
     },
     scrollList () {
       this.$emit('scrollSuggest')
+    },
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : '0'
+      this.$refs.scroll.$el.style.bottom = bottom
+      this.$refs.scroll.refresh()
     }
   },
   created () {
@@ -100,7 +107,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100% !important;
+  height: auto !important;
   background-color: #fff;
   .icon {
     i {
