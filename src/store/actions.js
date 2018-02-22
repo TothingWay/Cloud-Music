@@ -1,7 +1,7 @@
 import * as types from './mutation-types'
 import { playMode } from '../assets/js/config'
 import { shuffle, findIndex } from '../assets/js/until'
-import { saveSearch, deleteSearch } from '../assets/js/cache'
+import { saveSearch, deleteSearch, saveCollect, deleteCollect } from '../assets/js/cache'
 
 export const selectPlay = function ({ commit, state }, { list, index }) {
   commit(types.SET_SEQUENCE_LIST, list)
@@ -92,4 +92,12 @@ export const deleteSongList = function ({ commit }) {
   commit(types.SET_SEQUENCE_LIST, [])
   commit(types.SET_CURRENT_INDEX, -1)
   commit(types.SET_PLAYING, false)
+}
+
+export const saveCollectList = function ({ commit }, song) {
+  commit(types.SET_COLLECT_LIST, saveCollect(song))
+}
+
+export const deleteCollectList = function ({ commit }, song) {
+  commit(types.SET_COLLECT_LIST, deleteCollect(song))
 }

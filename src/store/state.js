@@ -1,5 +1,5 @@
 import { playMode } from '../assets/js/config'
-import { loadSearch } from '../assets/js/cache'
+import { loadSearch, loadCollect } from '../assets/js/cache'
 const state = {
   singer: {},
   // 播放
@@ -23,6 +23,6 @@ const state = {
   // 搜索历史记录
   searchHistory: loadSearch(),
   // 收藏列表
-  collectList: []
+  collectList: loadCollect()
 }
 export default state

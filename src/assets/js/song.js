@@ -1,12 +1,13 @@
 import api from '../../api/index'
 export default class Song {
-  constructor ({ id, songName, albumName, singerName, picUrl, duration, alias }) {
+  constructor ({ id, songName, albumName, singerName, picUrl, duration, alias, musicUrl }) {
     this.id = id
     this.songName = songName
     this.albumName = albumName
     this.picUrl = picUrl
     this.duration = duration
     this.singerName = singerName
+    this.musicUrl = musicUrl || ''
     this.alias = alias
   }
 

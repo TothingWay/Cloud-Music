@@ -18,7 +18,7 @@
                 -
                 <span class="singer">{{item.singerName}}</span>
               </div>
-              <i class="fa fa-heart-o"></i>
+              <i class="fa collect" @click.stop="toggleCollect(item)" :class="getCollectIcon(item)"></i>
               <x-icon class="delete" type="ios-close-empty" size="26" @click.native.stop="deleteItem(item)"></x-icon>
             </li>
           </transition-group>
@@ -62,7 +62,8 @@ export default {
       'sequenceList',
       'currentsong',
       'playlist',
-      'mode'
+      'mode',
+      'collectList'
     ]),
     iconMode () {
       return this.mode === playMode.sequence ? 'icon-circle' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
@@ -156,7 +157,32 @@ export default {
         return item.id === this.currentsong.id
       })
       this.setCurrentIndex(index)
-    }
+    },
+    // 收藏
+    getCollectIcon (song) {
+      if (this.isCollect(song)) {
+        return 'fa-heart'
+      } else {
+        return 'fa-heart-o'
+      }
+    },
+    toggleCollect (song) {
+      if (this.isCollect(song)) {
+        this.deleteCollectList(song)
+      } else {
+        this.saveCollectList(song)
+      }
+    },
+    isCollect (song) {
+      const index = this.collectList.findIndex((item) => {
+        return item.id === song.id
+      })
+      return index > -1
+    },
+    ...mapActions([
+      'saveCollectList',
+      'deleteCollectList'
+    ])
   },
   components: {
     Scroll,
@@ -263,11 +289,14 @@ li {
   .name {
     color: #2c3e50;
   }
-  .fa-heart-o {
+  .collect {
     position: absolute;
     right: 35px;
     top: 11px;
     color: #999;
+  }
+  .fa-heart {
+    color: #d93f30;
   }
   .delete {
     position: absolute;

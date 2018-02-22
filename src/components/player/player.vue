@@ -74,7 +74,7 @@
               <i @click="next" class="iconfont icon-next direct"></i>
             </div>
             <div class="icon">
-              <i class="fa fa-heart-o collect"></i>
+              <i class="fa collect" @click="toggleCollect(currentsong)" :class="getCollectIcon(currentsong)"></i>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import animations from 'create-keyframe-animation'
 import autoprefix from '../../assets/js/autoprefix'
 import progressCircle from './progress-bar'
@@ -141,7 +141,8 @@ export default {
       'singer',
       'playing',
       'mode',
-      'sequenceList'
+      'sequenceList',
+      'collectList'
     ]),
     iconMode () {
       return this.mode === playMode.sequence ? 'icon-circle' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
@@ -414,7 +415,32 @@ export default {
     // 歌曲播放列表显示隐藏
     showPlaylists () {
       this.$refs.playlist.show()
-    }
+    },
+    // 收藏
+    getCollectIcon (song) {
+      if (this.isCollect(song)) {
+        return 'fa-heart'
+      } else {
+        return 'fa-heart-o'
+      }
+    },
+    toggleCollect (song) {
+      if (this.isCollect(song)) {
+        this.deleteCollectList(song)
+      } else {
+        this.saveCollectList(song)
+      }
+    },
+    isCollect (song) {
+      const index = this.collectList.findIndex((item) => {
+        return item.id === song.id
+      })
+      return index > -1
+    },
+    ...mapActions([
+      'saveCollectList',
+      'deleteCollectList'
+    ])
   },
   created () {
     this.touch = {}
@@ -654,7 +680,7 @@ export default {
         position: relative;
         top: 1px;
       }
-      .red {
+      .red, .fa-heart {
         color: #d93f30;
       }
       .play {
