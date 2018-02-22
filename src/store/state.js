@@ -21,6 +21,8 @@ const state = {
   // 排行榜
   rankList: {},
   // 搜索历史记录
-  searchHistory: loadSearch()
+  searchHistory: loadSearch(),
+  // 收藏列表
+  collectList: []
 }
 export default state

@@ -14,7 +14,7 @@
     </div>
     <a slot="right" class="record">
       <transition name="focus" mode="out-in">
-        <i class="fa fa-address-book-o" v-if="showIcon"></i>
+        <i class="fa fa-address-book-o" v-if="showIcon" @click="openUser"></i>
         <span v-if="!showIcon" @click="blur">取消</span>
       </transition>
     </a>
@@ -154,6 +154,11 @@ export default {
       const bottom = playlist.length > 0 ? '60px' : '0'
       this.$refs.scroll.$el.style.bottom = bottom
       this.$refs.scroll.refresh()
+    },
+    openUser () {
+      this.$router.push({
+        path: '/user'
+      })
     }
   },
   created () {

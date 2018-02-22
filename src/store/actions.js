@@ -66,3 +66,30 @@ export const saveSearchHistory = function ({ commit }, keywords) {
 export const deleteSearchHistory = function ({ commit }, keywords) {
   commit(types.SET_SEARCH_HISTORY, deleteSearch(keywords))
 }
+
+export const deleteSong = function ({ commit, state }, song) {
+  let playlist = state.playlist.slice()
+  let sequenceList = state.sequenceList.slice()
+  let currentIndex = state.currentIndex
+  let findPlayIndex = findIndex(playlist, song)
+  playlist.splice(findPlayIndex, 1)
+  let findSIndex = findIndex(sequenceList, song)
+  sequenceList.splice(findSIndex, 1)
+  if (currentIndex > findPlayIndex || currentIndex === playlist.length) {
+    currentIndex--
+  }
+
+  commit(types.SET_PLAYLIST, playlist)
+  commit(types.SET_SEQUENCE_LIST, sequenceList)
+  commit(types.SET_CURRENT_INDEX, currentIndex)
+
+  const playing = playlist.length > 0
+  commit(types.SET_PLAYING, playing)
+}
+
+export const deleteSongList = function ({ commit }) {
+  commit(types.SET_PLAYLIST, [])
+  commit(types.SET_SEQUENCE_LIST, [])
+  commit(types.SET_CURRENT_INDEX, -1)
+  commit(types.SET_PLAYING, false)
+}

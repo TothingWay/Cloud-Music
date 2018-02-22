@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import 'font-awesome/css/font-awesome.css'
 import VueLazyload from 'vue-lazyload'
+
 // 挂载api到vue的原型对象上
 import api from './api/index'
 Vue.prototype.http = api

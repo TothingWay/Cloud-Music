@@ -6,6 +6,7 @@ import Singer from '@/components/singer/Singer'
 import SingerDetail from '@/components/singerDetail/singerDetail'
 import RemdListDetail from '@/components/remdListDetail/RemdListDetail'
 import RankDetail from '@/components/rankDetail/RankDetail'
+import User from '@/components/user/User'
 
 Vue.use(Router)
 
@@ -44,6 +45,11 @@ export default new Router({
           component: SingerDetail
         }
       ]
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: User
     },
     {
       path: '*',
