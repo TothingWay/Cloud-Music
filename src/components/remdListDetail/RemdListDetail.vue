@@ -29,8 +29,10 @@ import { XHeader } from 'vux'
 import SongList from '../common/SongList'
 import { createSong } from '../../assets/js/song'
 import Scroll from '../common/Scroll'
+import { scrollMixin } from '../../assets/js/mixin'
 
 export default {
+  mixins: [scrollMixin],
   data () {
     return {
       songs: []
@@ -95,7 +97,12 @@ export default {
     },
     ...mapActions([
       'selectPlay'
-    ])
+    ]),
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.list.$el.style.bottom = bottom
+      this.$refs.list.refresh()
+    }
   },
   created () {
     this.getRemdList()

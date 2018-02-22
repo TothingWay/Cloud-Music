@@ -1,15 +1,49 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Recommend from '@/components/recommend/Remd'
-import Rank from '@/components/rank/Rank'
-import Singer from '@/components/singer/Singer'
-import SingerDetail from '@/components/singerDetail/singerDetail'
-import RemdListDetail from '@/components/remdListDetail/RemdListDetail'
-import RankDetail from '@/components/rankDetail/RankDetail'
-import User from '@/components/user/User'
 
 Vue.use(Router)
 
+const Recommend = (resolve) => {
+  import('@/components/recommend/Remd').then((recommend) => {
+    resolve(recommend)
+  })
+}
+
+const Rank = (resolve) => {
+  import('@/components/rank/Rank').then((rank) => {
+    resolve(rank)
+  })
+}
+
+const Singer = (resolve) => {
+  import('@/components/singer/Singer').then((singer) => {
+    resolve(singer)
+  })
+}
+
+const SingerDetail = (resolve) => {
+  import('@/components/singerDetail/singerDetail').then((singerDetail) => {
+    resolve(singerDetail)
+  })
+}
+
+const RemdListDetail = (resolve) => {
+  import('@/components/remdListDetail/RemdListDetail').then((remdListDetail) => {
+    resolve(remdListDetail)
+  })
+}
+
+const RankDetail = (resolve) => {
+  import('@/components/rankDetail/RankDetail').then((rankDetail) => {
+    resolve(rankDetail)
+  })
+}
+
+const User = (resolve) => {
+  import('@/components/user/User').then((user) => {
+    resolve(user)
+  })
+}
 export default new Router({
   linkActiveClass: 'vux-tab-selected',
   routes: [
