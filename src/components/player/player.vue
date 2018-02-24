@@ -102,7 +102,7 @@
       </div>
     </transition>
     <playlist ref="playlist"></playlist>
-    <audio ref="audio" :src="currentsong.musicUrl" @ended="audioEnd" @timeupdate="timeUpdate" @play="ready" @error="error"></audio>
+    <audio id="audio" ref="audio" :src="currentsong.musicUrl" @ended="audioEnd" @timeupdate="timeUpdate" @play="ready" @error="error"></audio>
   </div>
 </template>
 
@@ -465,6 +465,9 @@ export default {
       }
       if (this.currentLyric) {
         this.currentLyric.stop()
+        this.currentTime = 0
+        this.playingLyric = ''
+        this.currentLineNum = 0
       }
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
@@ -663,7 +666,7 @@ export default {
   }
   .footer {
     position: absolute;
-    bottom: 40px;
+    bottom: 20px;
     width: 100%;
   }
   .operators {
