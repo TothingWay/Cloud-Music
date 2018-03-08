@@ -68,13 +68,13 @@ npm run build
 ├── package.json           // 项目配置文件
 ├── static                 // 放置静态资源
 ├── src                    // 生产目录
-│   ├── api                  // api请求
-│   ├── assets               // 公共的images, fonts， js资源
-│   ├── components           // 各种组件
-│   ├── store                // vuex状态管理
-│   ├── App.vue              // 主页面
-│   ├── router               // 路由配置
-│   └── main.js              // Webpack 预编译入口
+│   ├── api                   // api请求
+│   ├── assets                // 公共的images, fonts， js资源
+│   ├── components            // 各种组件
+│   ├── store                 // vuex状态管理
+│   ├── App.vue               // 主页面
+│   ├── router                // 路由配置
+│   └── main.js               // Webpack 预编译入口
 </pre>
 
 ## 说明
