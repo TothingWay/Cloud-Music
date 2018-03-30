@@ -16,7 +16,7 @@
     项目预览：<a href="http://101.132.76.13/music">http://101.132.76.13/music</a>
 </p>
 <p align="center">
-    <img src="http://p3ax469x0.bkt.clouddn.com/newcode.png">
+    <img width="190" src="http://p3ax469x0.bkt.clouddn.com/newcode.png">
 </p>
 
 ## 介绍
