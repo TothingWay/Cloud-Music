@@ -13,10 +13,10 @@
     <a href="javascript:;"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="license"></a>
 </p>
 <p align="center">
-    项目预览：<a href="http://www.tothingway.me/music">http://www.tothingway.me/music</a>
+    项目预览：<a href="http://101.132.76.13/music">http://101.132.76.13/music</a>
 </p>
 <p align="center">
-    <img src="http://p3ax469x0.bkt.clouddn.com/code.png">
+    <img src="http://p3ax469x0.bkt.clouddn.com/newcode.png">
 </p>
 
 ## 介绍
@@ -57,7 +57,7 @@ npm install
 npm run dev
 
 # build for production with minification
-npm run build   
+npm run build
 ```
 ## 项目结构
 
