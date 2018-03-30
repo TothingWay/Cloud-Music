@@ -3,7 +3,7 @@ import jsonp from '../assets/js/jsonp'
 // 导入地址
 import site from './config'
 
-axios.defaults.baseURL = 'http://www.tothingway.me:3000'
+axios.defaults.baseURL = 'http://101.132.76.13:3000'
 
 export default {
   /*

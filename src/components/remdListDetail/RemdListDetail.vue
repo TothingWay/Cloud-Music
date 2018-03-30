@@ -27,7 +27,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { XHeader } from 'vux'
 import SongList from '../common/SongList'
-import { createSong } from '../../assets/js/song'
+import { createRemdSong } from '../../assets/js/song'
 import Scroll from '../common/Scroll'
 import { scrollMixin } from '../../assets/js/mixin'
 
@@ -64,7 +64,8 @@ export default {
       This.http.remdListDetail(This.remdList.id)
         .then((res) => {
           if (res.data.code === 200) {
-            let data = res.data.playlist.tracks
+            let data = res.data.result.tracks
+
             This.songs = This.normalizeSongs(data)
 
             for (let i = 0; i < This.songs.length; i++) {
@@ -85,7 +86,7 @@ export default {
     normalizeSongs (list) {
       let retrn = []
       list.forEach((item) => {
-        retrn.push(createSong(item))
+        retrn.push(createRemdSong(item))
       })
       return retrn
     },

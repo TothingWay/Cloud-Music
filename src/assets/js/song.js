@@ -40,7 +40,16 @@ export function createSong (data) {
     singerName: filterSinger(data.ar)
   })
 }
-
+export function createRemdSong (data) {
+  return new Song({
+    id: data.id,
+    songName: data.name,
+    albumName: data.album.name,
+    picUrl: data.album.picUrl,
+    duration: data.duration,
+    singerName: filterSinger(data.artists)
+  })
+}
 export function createNewSong (data) {
   return new Song({
     id: data.id,
