@@ -62,31 +62,25 @@ npm run build
 ## 项目结构
 
 <pre>
-├── build                    // 构建服务和 webpack 配置
-├── config            		 // 项目不同环境的配置
-├── index.html          	 // 项目入口文件
-├── package.json      		 // 项目配置文件
-├── static       			 // 放置静态资源
-├── src                		 // 生产目录
-│   ├── api       			// api请求
-│   ├── assets              // 公共的images, fonts， js资源
-│   ├── components     		// 各种组件
-│   ├── store               // vuex状态管理
-│   ├── App.vue         	// 主页面
-│   ├── router     		// 路由配置
-│   └── main.js       	    // Webpack 预编译入口
+├── build                  // 构建服务和 webpack 配置
+├── config                 // 项目不同环境的配置
+├── index.html             // 项目入口文件
+├── package.json           // 项目配置文件
+├── static                 // 放置静态资源
+├── src                    // 生产目录
+│   ├── api                  // api请求
+│   ├── assets               // 公共的images, fonts， js资源
+│   ├── components           // 各种组件
+│   ├── store                // vuex状态管理
+│   ├── App.vue              // 主页面
+│   ├── router               // 路由配置
+│   └── main.js              // Webpack 预编译入口
 </pre>
 
 ## 说明
 * [API来源](https://github.com/Binaryify/NeteaseCloudMusicApi)
 * 轮播banner，热门搜索使用了QQ音乐的banner数据
 * 排行榜因调用了23次接口，所以加载会过慢
-* 音乐播放：
-    * ios下Safari、微信等大多数第三方浏览器音乐无法自动播放
-    * ios下的手机QQ、Tim、QQ空间打开能正常播放
-    * 安卓暂无发现问题
-
->    ios 下无法正常播放的原因是因为 Safari 浏览器禁止`<audio>`标签自动播放,而 iOS 中只允许使用 Safari 作为浏览器容器，所以造成其他第三方浏览器也无法正常播放。至于手机QQ等是如何做到的，猜测是它修改了浏览器沙盒的一些限制。
 
 ## 最后
 * 感谢 [Binaryify](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供给我的接口支持
