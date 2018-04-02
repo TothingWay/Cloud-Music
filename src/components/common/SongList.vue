@@ -3,8 +3,8 @@
     <cell-box @click.native="selectItem(item,index)" v-for="(item,index) in list" :key="index">
       <div class="index">{{index+1}}</div>
       <div class="singer-wrapper">
-        <div class="name" v-text="item.songName"></div>
-        <div class="album" v-text="item.albumName"></div>
+        <div class="name ellipsis" v-text="item.songName"></div>
+        <div class="album ellipsis" v-text="item.albumName"></div>
         <i class="fa fa-play-circle"></i>
       </div>
     </cell-box>
@@ -45,8 +45,10 @@ export default {
   width: calc(100% - 40px);
   .name {
     font-size: 16px;
+    width: calc(100% - 20px);
   }
   .album {
+    width: calc(100% - 20px);
     font-size: 12px;
     color: #999;
     margin-top: 4px;
@@ -59,5 +61,10 @@ export default {
     margin-top: -10px;
     color: #ccc;
   }
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
 }
 </style>
