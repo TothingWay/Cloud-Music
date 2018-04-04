@@ -18,6 +18,11 @@
         <div class="song-list-wrapper">
           <songList @select="selectItem" :list="songs"></songList>
         </div>
+        <div class="mask" v-show="load">
+          <div class="loading">
+            <spinner type="crescent" size="30px"></spinner>
+          </div>
+        </div>
       </scroll>
     </div>
   </transition>
@@ -25,7 +30,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { XHeader } from 'vux'
+import { XHeader, Spinner } from 'vux'
 import SongList from '../common/SongList'
 import { createRemdSong } from '../../assets/js/song'
 import Scroll from '../common/Scroll'
@@ -47,12 +52,16 @@ export default {
     },
     ...mapGetters([
       'remdList'
-    ])
+    ]),
+    load () {
+      return this.songs.length === 0
+    }
   },
   components: {
     XHeader,
     SongList,
-    Scroll
+    Scroll,
+    Spinner
   },
   methods: {
     getRemdList () {
