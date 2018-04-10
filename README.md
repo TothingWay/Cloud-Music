@@ -13,10 +13,10 @@
     <a href="javascript:;"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="license"></a>
 </p>
 <p align="center">
-    项目预览：<a href="http://101.132.76.13/music">http://101.132.76.13/music</a>
+    项目预览：<a href="http://www.tothingway.me/music">http://www.tothingway.me/music</a>
 </p>
 <p align="center">
-    <img width="190" src="http://p3ax469x0.bkt.clouddn.com/newcode.png">
+    <img width="190" src="http://p3ax469x0.bkt.clouddn.com/httpCode.png">
 </p>
 
 ## 介绍
