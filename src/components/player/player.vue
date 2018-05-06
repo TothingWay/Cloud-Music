@@ -300,7 +300,7 @@ export default {
       } else {
         let index = this.currentIndex - 1
         if (index === -1) {
-          index = this.playlist.length
+          index = this.playlist.length - 1
         }
         this.setCurrentIndex(index)
         if (!this.playing) {
