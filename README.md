@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/TothingWay/vue-music" target="_blank">
-        <img width="300"src="http://p3ax469x0.bkt.clouddn.com/vue-music.svg">
+        <img width="300"src="http://qiniudns.tothingway.me/vue-music.svg">
     </a>
 </p>
 <p align="center">
@@ -16,7 +16,7 @@
     项目预览：<a href="http://www.tothingway.me/music">http://www.tothingway.me/music</a>
 </p>
 <p align="center">
-    <img width="190" src="http://p3ax469x0.bkt.clouddn.com/httpCode.png">
+    <img width="190" src="http://qiniudns.tothingway.me/httpCode.png">
 </p>
 
 ## 介绍
@@ -37,14 +37,14 @@
 
 ## 项目截图
 <p align="center">
-    <img src="http://p3ax469x0.bkt.clouddn.com/remd.png" width="300">
-    <img src="http://p3ax469x0.bkt.clouddn.com/player.png" width="300">
-    <img src="http://p3ax469x0.bkt.clouddn.com/lyric.png" width="300">
-    <img src="http://p3ax469x0.bkt.clouddn.com/remdList.png" width="300">
-    <img src="http://p3ax469x0.bkt.clouddn.com/rank.png" width="300">
-    <img src="http://p3ax469x0.bkt.clouddn.com/singer.png" width="300">
-    <img src="http://p3ax469x0.bkt.clouddn.com/singerDetail.png" width="300">
-    <img src="http://p3ax469x0.bkt.clouddn.com/search.png" width="300">
+    <img src="http://qiniudns.tothingway.me/remd.png" width="300">
+    <img src="http://qiniudns.tothingway.me/player.png" width="300">
+    <img src="http://qiniudns.tothingway.me/lyric.png" width="300">
+    <img src="http://qiniudns.tothingway.me/remdList.png" width="300">
+    <img src="http://qiniudns.tothingway.me/rank.png" width="300">
+    <img src="http://qiniudns.tothingway.me/singer.png" width="300">
+    <img src="http://qiniudns.tothingway.me/singerDetail.png" width="300">
+    <img src="http://qiniudns.tothingway.me/search.png" width="300">
 </p>
 
 ## Build Setup
