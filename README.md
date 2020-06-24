@@ -1,93 +1,44 @@
-<p align="center">
-    <a href="https://github.com/TothingWay/vue-music" target="_blank">
-        <img width="300"src="http://qiniudns.tothingway.me/vue-music.svg">
-    </a>
-</p>
-<p align="center">
-    <a href="https://github.com/vuejs/vue-cli"><img src="https://img.shields.io/badge/vue--cli-v2.9.2-blue.svg" alt="vue-cli"></a>
-    <a href="https://github.com/vuejs/vue"><img src="https://img.shields.io/badge/vue-v2.5.13-blue.svg" alt="vue"></a>
-    <a href="https://github.com/vuejs/vue-router"><img src="https://img.shields.io/badge/vue--router-v3.0.1-blue.svg" alt="vue-router"></a>
-    <a href="https://github.com/vuejs/vuex"><img src="https://img.shields.io/badge/vuex-v3.0.1-blue.svg" alt="vuex"></a>
-    <a href="https://github.com/axios/axios"><img src="https://img.shields.io/badge/axios-0.17.1-blue.svg" alt="axios"></a>
-    <a href="https://github.com/airyland/vux"><img src="https://img.shields.io/badge/vux-v2.7.8-blue.svg" alt="vux"></a>
-    <a href="javascript:;"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="license"></a>
-</p>
-<p align="center">
-    项目预览：<a href="http://www.tothingway.me/music">http://www.tothingway.me/music</a>
-</p>
-<p align="center">
-    <img width="190" src="http://qiniudns.tothingway.me/httpCode.png">
-</p>
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## 介绍
-用vue制作的网页版音乐app
+## Available Scripts
 
-## 实现功能
-* 音乐播放、暂停、上一曲、下一曲、播放进度条
-* 歌曲歌词、歌词自动滚动
-* 播放列表、添加到播放列表
-* 播放模式切换
-* 搜索提示、热门搜索、搜索历史记录、搜索单曲、歌手
-* 排行榜
-* 歌手榜、歌手单曲
-* 推荐歌单
-* 推荐最新音乐
-* 轮播
-* 我喜欢
+In the project directory, you can run:
 
-## 项目截图
-<p align="center">
-    <img src="http://qiniudns.tothingway.me/remd.png" width="300">
-    <img src="http://qiniudns.tothingway.me/player.png" width="300">
-    <img src="http://qiniudns.tothingway.me/lyric.png" width="300">
-    <img src="http://qiniudns.tothingway.me/remdList.png" width="300">
-    <img src="http://qiniudns.tothingway.me/rank.png" width="300">
-    <img src="http://qiniudns.tothingway.me/singer.png" width="300">
-    <img src="http://qiniudns.tothingway.me/singerDetail.png" width="300">
-    <img src="http://qiniudns.tothingway.me/search.png" width="300">
-</p>
+### `yarn start`
 
-## Build Setup
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-``` bash
-# install dependencies
-npm install
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
 
-# serve with hot reload at localhost:8080
-npm run dev
+### `yarn test`
 
-# build for production with minification
-npm run build
-```
-## 项目结构
+Launches the test runner in the interactive watch mode.<br />
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-<pre>
-├── build                  // 构建服务和 webpack 配置
-├── config                 // 项目不同环境的配置
-├── index.html             // 项目入口文件
-├── package.json           // 项目配置文件
-├── static                 // 放置静态资源
-├── src                    // 生产目录
-│   ├── api                  // api请求
-│   ├── assets               // 公共的images, fonts， js资源
-│   ├── components           // 各种组件
-│   ├── store                // vuex状态管理
-│   ├── App.vue              // 主页面
-│   ├── router               // 路由配置
-│   └── main.js              // Webpack 预编译入口
-</pre>
+### `yarn build`
 
-## 说明
-* [API来源](https://github.com/Binaryify/NeteaseCloudMusicApi)
-* 轮播banner，热门搜索使用了QQ音乐的banner数据
-* 排行榜因调用了23次接口，所以加载会过慢
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## 最后
-* 感谢 [Binaryify](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供给我的接口支持
-* 感谢 [GitHub](https://github.com/)，让我能站在巨人的肩膀上
-* 欢迎大家提issue，如果你有什么建议或者看到了项目中的不足之处请一定要给我留言。本项目仅供学校交流使用，如侵犯了第三方版权问题请联系我
-* 你的 Star 是对我最大的鼓励，谢谢
+The build is minified and the filenames include the hashes.<br />
+Your app is ready to be deployed!
 
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `yarn eject`
 
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
