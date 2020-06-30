@@ -1,0 +1,17 @@
+.scroll-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pull-down-loading {
+  position: absolute;
+  left:0; 
+  right:0;
+  top: 0;
+  width: 2em;
+  height: 2em;
+  margin: auto;
+  z-index: 100;
+}

@@ -1,0 +1,69 @@
+@import 'styles/variables.scss';
+
+@keyframes ripple {
+  0% {
+    width: 3em;
+    height: 3em;
+    border: 1px solid $theme-light-color;
+  }
+  100% {
+    border: 1px solid $theme-light-color;
+    width: 6em;
+    height: 6em;
+    opacity: 0.1;
+  }
+}
+
+#netease-logo-stroke {
+  stroke-dasharray: 2825;
+  stroke: $theme-color;
+  stroke-linecap: round;
+}
+
+.loaded {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  width: 2em;
+  height: 2em;
+  align-items: center;
+  justify-content: center;
+
+  &:after,
+  &:before {
+    content: '';
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    border: 1px solid $theme-light-color;
+    display: block;
+    border-radius: 50%;
+    animation-name: ripple;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-timing-function: linear;
+  }
+  &:after {
+    animation-delay: 0s;
+  }
+  &:before {
+    animation-delay: 1s;
+  }
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  width: 2em;
+  height: 2em;
+  align-items: center;
+  justify-content: center;
+}
