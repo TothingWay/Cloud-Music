@@ -11,7 +11,7 @@ function NeteaseStroke({
 }: NeteaseStrokeProps) {
   return (
     <div
-      style={{ top: pullDownY - 44 + 'px' }}
+      style={{ top: pullDownY - 55 + 'px' }}
       className={strokeDashoffset === 0 ? 'loaded' : 'loading'}
     >
       <svg

@@ -7,6 +7,10 @@
   overflow: hidden;
   color: $text-color;
   background-color: $theme-background-color;
+
+  .scroll-content {
+    padding: 10px;
+  }
 }
 
 .pull-down-loading {

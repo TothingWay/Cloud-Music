@@ -1,0 +1,40 @@
+@import 'styles/variables.scss';
+
+.slide-banner-scroll {
+  position: relative;
+  min-height: 1px;
+  overflow: hidden;
+  border-radius: 6px;
+  .slide-banner-wrapper {
+    height: 160px;
+    white-space :nowrap;
+    font-size: 0;
+  }
+  .slide-item {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    transform: translate3d(0,0,0);
+    backface-visibility: hidden;
+  }
+}
+
+.docs-wrapper {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.doc {
+  display: inline-block;
+  margin: 0 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #eee;
+  &.active {
+    width: 20px;
+    border-radius: 5px;
+  }
+}

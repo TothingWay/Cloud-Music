@@ -46,12 +46,12 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
     direction = 'vertical',
     click = true,
     refresh = true,
-    pullUpLoading = false,
+    // pullUpLoading = false,
     pullDownLoading = false,
     bounceTop = true,
     bounceBottom = true,
     threshold = 70,
-    stop = 70,
+    stop = 80,
   } = props
 
   // Method props
@@ -85,6 +85,7 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
         threshold,
         stop,
       },
+      stopPropagation: true
     })
     setBScroll(scroll)
     return () => {
@@ -189,7 +190,9 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
 
   return (
     <div className={style['scroll-wrapper']} ref={scrollRef}>
-      {props.children}
+      <div className={style["scroll-content"]}>
+        {props.children}
+      </div>
       {/* 滑到底部加载动画 */}
       {/* <PullUpLoading style={ PullUpdisplayStyle }><Loading></Loading></PullUpLoading> */}
       {/* 顶部下拉刷新动画 */}
