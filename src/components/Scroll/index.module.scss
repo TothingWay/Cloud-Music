@@ -1,8 +1,12 @@
+@import 'styles/variables.scss';
+
 .scroll-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  color: $text-color;
+  background-color: $theme-background-color;
 }
 
 .pull-down-loading {

@@ -13,7 +13,7 @@ import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
 import PullDown from '@better-scroll/pull-down'
 
-import NeteaseStroke from '@/components/Loading/neteaseStroke'
+import PullDownLoading from '@/components/Loading/neteaseStroke'
 
 BScroll.use(Pullup)
 BScroll.use(PullDown)
@@ -38,6 +38,7 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
   const [bScroll, setBScroll] = useState<BScroll | null>()
   const [strokeDashoffset, setStrokeDashoffset] = useState(2825)
   const [isPulling, setIsPulling] = useState(false)
+  const [pullDownY, setPullDownY] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   // Attribute props
@@ -49,8 +50,8 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
     pullDownLoading = false,
     bounceTop = true,
     bounceBottom = true,
-    threshold = 50,
-    stop = 56,
+    threshold = 70,
+    stop = 70,
   } = props
 
   // Method props
@@ -136,10 +137,10 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
   useEffect(() => {
     if (!bScroll || !pullDownLoading) return
     let pullingDown = (pos: any) => {
-      const pullDownY = pos.y > threshold ? threshold : pos.y
+      const pullDownMaxY = pos.y > threshold ? threshold : pos.y
       setIsPulling(true)
-      
-      setStrokeDashoffset(Math.min(2825,2825 - (pullDownY * 2825) / threshold ))
+      setPullDownY(pos.y)
+      setStrokeDashoffset(Math.min(2825,2825 - (pullDownMaxY * 2825) / threshold ))
     }
     bScroll.on('scroll', pullingDown)
 
@@ -192,10 +193,7 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
       {/* 滑到底部加载动画 */}
       {/* <PullUpLoading style={ PullUpdisplayStyle }><Loading></Loading></PullUpLoading> */}
       {/* 顶部下拉刷新动画 */}
-      <NeteaseStroke strokeDashoffset={strokeDashoffset} />
-      {/* <div className={style['pull-down-loading']}>
-        
-      </div> */}
+      <PullDownLoading strokeDashoffset={strokeDashoffset} pullDownY={pullDownY}/>
     </div>
   )
 })

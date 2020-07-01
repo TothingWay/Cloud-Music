@@ -1,8 +1,8 @@
 $theme-color: #0d0d0d;
-$theme-light-color: rgba(#0d0d0d, .6);
+$theme-light-color: #666;
 $text-color: #fff;
 $theme-background-color: #0d0d0d;
-$theme-shadow: 0 1px 3px 1px rgba(0,0,0,.18);
+$theme-shadow: 0 1px 3px 1px #666;
 $font-color-light: #f1f1f1;
 $font-color-desc: #2E3030;
 $font-color-desc-v2: #bba8a8; // 略淡
@@ -21,6 +21,7 @@ $highlight-background-color: #fff;
 :export {
   themeColor: $theme-color;
   themeLightColor: $theme-light-color;
+  themeShadow: $theme-shadow;
   textColor: $text-color;
   themeBackgroundColor: $theme-background-color;
   fontColorLight: $font-color-light;

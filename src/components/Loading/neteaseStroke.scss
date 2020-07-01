@@ -2,23 +2,33 @@
 
 @keyframes ripple {
   0% {
-    width: 3em;
-    height: 3em;
+    width: 2.5em;
+    height: 2.5em;
     border: 1px solid $theme-light-color;
   }
   100% {
     border: 1px solid $theme-light-color;
-    width: 6em;
-    height: 6em;
+    width: 5em;
+    height: 5em;
     opacity: 0.1;
   }
 }
 
 #netease-logo-stroke {
-  stroke-dasharray: 2825;
-  stroke: $theme-color;
+  stroke-dasharray: 2825px;
+  stroke: $theme-light-color;
   stroke-linecap: round;
 }
+
+.svg-clone {
+  .netease-logo-stroke-path {
+    stroke-dasharray: 2825px;
+    stroke-dashoffset: 0;
+    stroke: rgba(255,255,255, .1);
+    stroke-linecap: round;
+  }
+}
+
 
 .loaded {
   position: absolute;
@@ -36,22 +46,24 @@
   &:before {
     content: '';
     position: absolute;
-    width: 2em;
-    height: 2em;
     border: 1px solid $theme-light-color;
     display: block;
     border-radius: 50%;
     animation-name: ripple;
-    animation-duration: 3s;
+    animation-duration: 2s;
     animation-iteration-count: infinite;
     animation-direction: normal;
     animation-timing-function: linear;
   }
   &:after {
+    width: 3em;
+    height: 3em;
     animation-delay: 0s;
   }
   &:before {
-    animation-delay: 1s;
+    width: 2.5em;
+    height: 2.5em;
+    animation-delay: .8s;
   }
 }
 
