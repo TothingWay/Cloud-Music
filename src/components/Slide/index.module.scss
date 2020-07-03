@@ -5,6 +5,12 @@
   min-height: 1px;
   overflow: hidden;
   border-radius: 6px;
+  .no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+  }
   .slide-banner-wrapper {
     height: 160px;
     white-space :nowrap;

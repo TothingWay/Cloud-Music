@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useRef,
   useImperativeHandle,
-  useCallback
+  useCallback,
 } from 'react'
 import style from './index.module.scss'
 import BScroll from '@better-scroll/core'
@@ -16,7 +16,7 @@ type SlideProps = {
   refresh?: boolean
   threshold?: number
   loop?: boolean
-  slideBanner: Array<string>
+  slideBanner: Array<any>
 }
 
 const Slide = forwardRef<any, SlideProps>((props, ref) => {
@@ -26,34 +26,32 @@ const Slide = forwardRef<any, SlideProps>((props, ref) => {
   const SlideRef = useRef<HTMLDivElement>(null)
 
   // Attribute props
-  const {
-    threshold = 100,
-    loop = true,
-    slideBanner = []
-  } = props
+  const { threshold = 100, loop = true, slideBanner = [] } = props
 
-  const nextPage = useCallback(()=>{
+  const nextPage = useCallback(() => {
     if (slide) {
       slide.next()
     }
-  },[slide])
+  }, [slide])
 
-  const prePage = useCallback(()=>{
+  const prePage = useCallback(() => {
     if (slide) {
       slide.prev()
     }
-  },[slide])
+  }, [slide])
 
-  const autoGoNext = useCallback(()=>{
+  const autoGoNext = useCallback(() => {
     clearTimeout(playTimer)
-    setPlayTimer(window.setTimeout(()=>{
-      nextPage()
-    }, 3000))
+    setPlayTimer(
+      window.setTimeout(() => {
+        nextPage()
+      }, 3000)
+    )
   }, [nextPage, playTimer])
 
   // init BScroll
   useEffect(() => {
-    if (slide) return
+    if (slide || !slideBanner.length) return
     clearTimeout(playTimer)
     const bScroll = new BScroll(SlideRef.current!, {
       scrollX: true,
@@ -61,7 +59,7 @@ const Slide = forwardRef<any, SlideProps>((props, ref) => {
       probeType: 2,
       slide: {
         loop,
-        threshold
+        threshold,
       },
       momentum: false,
       bounce: false,
@@ -76,7 +74,7 @@ const Slide = forwardRef<any, SlideProps>((props, ref) => {
   // user touches the slide area
   useEffect(() => {
     if (!slide) return
-    const clearPlayTimer = ()=> {
+    const clearPlayTimer = () => {
       clearTimeout(playTimer)
     }
     slide.on('beforeScrollStart', clearPlayTimer)
@@ -97,7 +95,7 @@ const Slide = forwardRef<any, SlideProps>((props, ref) => {
   // watch slide change
   useEffect(() => {
     if (!slide) return
-    const slideWillChange = (page:any)=>{
+    const slideWillChange = (page: any) => {
       setCurrentPageIndex(page.pageX)
     }
     slide.on('slideWillChange', slideWillChange)
@@ -128,24 +126,36 @@ const Slide = forwardRef<any, SlideProps>((props, ref) => {
       if (slide) {
         return slide
       }
-    }
+    },
   }))
 
   return (
     <div className={style['slide-banner-scroll']} ref={SlideRef}>
-      <div className={style["slide-banner-wrapper"]}>
-        {slideBanner.map((item, index)=>{
+      <div className={style['slide-banner-wrapper']}>
+        {slideBanner.map((item) => {
           return (
-          <div key={item + index} className={style["slide-item"]}>
-            <img src={item} width="100%" height="100%" alt="images" />
-          </div>
+            <div key={item.imageUrl} className={style['slide-item']}>
+              <img
+                src={item.imageUrl}
+                width="100%"
+                height="100%"
+                alt="images"
+              />
+            </div>
           )
         })}
       </div>
 
-      <div className={style["docs-wrapper"]}>
-        {slideBanner.map((item, index)=>{
-          return <span key={item + index} className={`${style['doc']} ${currentPageIndex === index ? style['active'] : ''}`}></span>
+      <div className={style['docs-wrapper']}>
+        {slideBanner.map((item, index) => {
+          return (
+            <span
+              key={item + index}
+              className={`${style['doc']} ${
+                currentPageIndex === index ? style['active'] : ''
+              }`}
+            ></span>
+          )
         })}
       </div>
     </div>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: process.env.baseURL,
+  baseURL: process.env.REACT_APP_BASE_URL,
 })
 
 service.interceptors.response.use(
