@@ -7,6 +7,9 @@
   justify-content: space-around;
   background-color: $tabbar-background-color;
   opacity: .92;
+  &.isIphoneX {
+    padding-bottom: 34px;
+  }
   a {
     flex: 1;
     padding: 2px 0;
