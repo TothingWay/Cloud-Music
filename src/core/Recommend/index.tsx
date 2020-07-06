@@ -6,9 +6,8 @@ import List from './list'
 import { storeType } from '@/store/data.d'
 import { getBannerListRequest, getRecommendListRequest } from '@/api/recommend'
 import * as actionTypes from '@/store/modules/Recommend/actionCreators'
-// import { renderRoutes } from "react-router-config";
-
-// import { NavLink } from 'react-router-dom';//利用NavLink组件进行路由跳转
+import { forceCheck } from 'react-lazyload'
+import Loading from '@/components/Loading'
 
 interface scrollFunc {
   finishPullDown: Function
@@ -22,6 +21,10 @@ function Recommend() {
   )
   const bannerList = useSelector(
     (state: storeType) => state.recommend.bannerList
+  )
+
+  const enterLoading = useSelector(
+    (state: storeType) => state.recommend.enterLoading
   )
 
   const dispatch = useDispatch()
@@ -38,6 +41,7 @@ function Recommend() {
     getRecommendListRequest()
       .then((data: any) => {
         dispatch(actionTypes.changeRecommendList(data.result))
+        dispatch(actionTypes.changeEnterLoading(false))
       })
       .catch(() => {
         console.log('推荐歌单数据传输错误')
@@ -56,16 +60,27 @@ function Recommend() {
   }
 
   useEffect(() => {
-    dispatchBannerData()
-    dispatchRecommendListData()
-  }, [dispatchBannerData, dispatchRecommendListData])
+    if (!bannerList.length) {
+      dispatchBannerData()
+    }
+    if (!recommendList.length) {
+      dispatchRecommendListData()
+    }
+    // eslint-disable-next-line
+  }, [])
 
   return (
-    <div style={{ height: 'calc(100vh - 44px)' }}>
-      <Scroll ref={ref} pullDownLoading={true} pullDown={handlePullDown}>
+    <div style={{ height: 'calc(100vh - 104px)' }}>
+      <Scroll
+        ref={ref}
+        pullDownLoading={true}
+        pullDown={handlePullDown}
+        onScroll={forceCheck}
+      >
         {bannerList.length ? <Slide slideBanner={bannerList} /> : null}
         <List recommendList={recommendList} />
       </Scroll>
+      {enterLoading ? <Loading/> : null}
     </div>
   )
 }

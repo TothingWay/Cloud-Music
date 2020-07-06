@@ -5,6 +5,7 @@ import produce from 'immer'
 const defaultState: RecommendStateType = {
   bannerList: [],
   recommendList: [],
+  enterLoading: true,
 }
 
 export default (state = defaultState, action: any) => {
@@ -15,6 +16,9 @@ export default (state = defaultState, action: any) => {
         break
       case actionTypes.CHANGE_RECOMMEND_LIST:
         draft.recommendList = action.data
+        break
+      case actionTypes.CHANGE_ENTER_LOADING:
+        draft.enterLoading = action.data;
         break
     }
   })

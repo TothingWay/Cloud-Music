@@ -15,6 +15,7 @@ export interface recommendType {
 export interface RecommendStateType {
   bannerList: bannerType[]
   recommendList: recommendType[]
+  enterLoading: boolean
 }
 
 export interface changeBannerListType {
@@ -25,4 +26,9 @@ export interface changeBannerListType {
 export interface changeRecommendListType {
   type: typeof actionTypes.CHANGE_RECOMMEND_LIST;
   data: RecommendStateType
+}
+
+export interface changeEnterLoadingType {
+  type: typeof actionTypes.CHANGE_ENTER_LOADING;
+  data: boolean
 }

@@ -3,6 +3,7 @@ import {
   RecommendStateType,
   changeBannerListType,
   changeRecommendListType,
+  changeEnterLoadingType,
 } from './data.d'
 
 export const changeBannerList = (
@@ -16,5 +17,10 @@ export const changeRecommendList = (
   data: RecommendStateType
 ): changeRecommendListType => ({
   type: actionTypes.CHANGE_RECOMMEND_LIST,
+  data,
+})
+
+export const changeEnterLoading = (data: boolean): changeEnterLoadingType => ({
+  type: actionTypes.CHANGE_ENTER_LOADING,
   data,
 })

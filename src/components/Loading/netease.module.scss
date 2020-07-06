@@ -4,10 +4,10 @@
   0% {
     width: 6.5em;
     height: 6.5em;
-    border: 2px solid $theme-light-color;
+    border: 2px solid $background-color;
   }
   100% {
-    border: 2px solid $theme-light-color;
+    border: 2px solid $background-color;
     width: 20em;
     height: 20em;
     opacity: 0.1;
@@ -25,7 +25,7 @@
     width: 6.5em;
     height: 6.5em;
     border-radius: 50%;
-    background: $theme-light-color;
+    background: $background-color;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,7 +36,7 @@
       position: absolute;
       width: 6.5em;
       height: 6.5em;
-      border: 2px solid $theme-light-color;
+      border: 2px solid $background-color;
       display: block;
       border-radius: 50%;
       animation-name: ripple;
@@ -57,5 +57,5 @@
 .netease-logo {
   width: 2.6em;
   height: 2.6em;
-  color: $text-color;
+  color: $theme-light-color;
 }

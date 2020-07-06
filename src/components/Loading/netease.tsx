@@ -6,7 +6,7 @@ function Netease() {
   return (
     <div className={style['loading']}>
       <div>
-        <SvgIcon iconClass="netease-logo" className={style["netease-logo"]}/>
+        <SvgIcon iconClass="netease-logo" className={style["tabbar-icon"]}/>
       </div>
     </div>
   )
