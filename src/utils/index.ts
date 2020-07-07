@@ -23,3 +23,14 @@ export const calculateCount = (count: number) => {
     return Math.floor (count / 10000000)/ 10 + "亿";
   }
 }
+
+// 判断是否是iphoneX
+export const isIphoneXDevice = () => {
+  const device =
+    window.devicePixelRatio &&
+    window.devicePixelRatio === 3 &&
+    window.screen.width === 375 &&
+    (navigator.userAgent.indexOf('iPhone') > -1)
+
+    return device
+}

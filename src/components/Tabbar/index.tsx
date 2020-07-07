@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import style from './index.module.scss'
 import { NavLink } from 'react-router-dom'
 import SvgIcon from '@/components/SvgIcon'
+interface Tabbar {
+  isIphoneX: boolean
+}
 
-export default function Tabbar() {
-  const device = window.devicePixelRatio && window.devicePixelRatio === 3 && window.screen.width === 375 && testUA('iPhone')
-  function testUA (str: string) {
-    return navigator.userAgent.indexOf(str) > -1
-  }
-  const [isIphoneX, setIsIphoneX] = useState<boolean>()
-  useEffect(()=>{
-    if (device) {
-      setIsIphoneX(true)
-    } else {
-      setIsIphoneX(false)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+export default function Tabbar({ isIphoneX }: Tabbar) {
   return (
-    <div className={`${style['tabbar']} ${isIphoneX ? style['isIphoneX'] : ''}`}>
+    <div
+      className={`${style['tabbar']} ${isIphoneX ? style['isIphoneX'] : ''}`}
+    >
       <NavLink to="/recommend" activeClassName={style['selected']}>
         <div className={style['tabbar-item']}>
           <SvgIcon iconClass="netease-logo" className={style['tabbar-icon']} />
