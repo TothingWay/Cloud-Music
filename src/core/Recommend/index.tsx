@@ -8,12 +8,7 @@ import { getBannerListRequest, getRecommendListRequest } from '@/api/recommend'
 import * as actionTypes from '@/store/modules/Recommend/actionCreators'
 import { forceCheck } from 'react-lazyload'
 import Loading from '@/components/Loading'
-
-interface scrollFunc {
-  finishPullDown: Function
-  getBScroll: Function
-  refresh: Function
-}
+import { scrollFunc } from '@/components/Scroll/data.d'
 
 function Recommend() {
   const recommendList = useSelector(
@@ -48,12 +43,12 @@ function Recommend() {
       })
   }, [dispatch])
 
-  const ref = useRef(null)
+  const ref = useRef<scrollFunc>(null)
 
   const handlePullDown = (pos: any) => {
     setTimeout(() => {
       console.log('数据已刷新')
-      const scrollRef = ref.current! as scrollFunc
+      const scrollRef = ref.current!
       scrollRef.finishPullDown()
       scrollRef.refresh()
     }, 1000)
@@ -77,8 +72,10 @@ function Recommend() {
         pullDown={handlePullDown}
         onScroll={forceCheck}
       >
-        {bannerList.length ? <Slide slideBanner={bannerList} /> : null}
-        <List recommendList={recommendList} />
+        <div style={{padding: '10px'}}>
+          {bannerList.length ? <Slide slideBanner={bannerList} /> : null}
+          <List recommendList={recommendList} />
+        </div>
       </Scroll>
       {enterLoading ? <Loading /> : null}
     </div>

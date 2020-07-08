@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+// banner
 export const getBannerListRequest = () => {
   return request({
     url: `/banner`,
@@ -7,6 +8,7 @@ export const getBannerListRequest = () => {
   })
 }
 
+// 歌单
 export const getRecommendListRequest = () => {
   return request({
     url: `/personalized`,

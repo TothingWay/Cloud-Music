@@ -1,5 +1,7 @@
-import { RecommendStateType } from '@/store/modules/Recommend/data.d'
+import { singerStateType } from '@/store/modules/Singers/data';
+import { recommendStateType } from '@/store/modules/Recommend/data.d'
 
 export type storeType = {
-  recommend: RecommendStateType
+  recommend: recommendStateType
+  singers: singerStateType
 }

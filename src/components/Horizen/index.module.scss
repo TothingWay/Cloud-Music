@@ -1,0 +1,18 @@
+@import 'styles/variables.scss';
+.list {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  justify-content: space-between;
+  overflow: hidden;
+  .list-item {
+    flex: 0 0 auto;
+    font-size: $font-size-s;
+    padding: 7px 7px;
+    border-radius: 12px;
+    background-color: $font-color-desc;
+    &.selected {
+      background-color: $active-color;
+    }
+  }
+}

@@ -26,7 +26,7 @@
       position: relative;
     }
     &.selected {
-      color: #d44439;
+      color: $active-color;
       padding-top: 6px;
       .tabbar-icon {
         font-size: $font-size-s;
@@ -41,7 +41,7 @@
           margin: auto;
           content: '';
           display: block;
-          background: #d44439;
+          background: $active-color;
           width: 23px;
           height: 23px;
           border-radius: 50%;

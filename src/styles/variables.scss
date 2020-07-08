@@ -1,6 +1,7 @@
 $theme-color: #181619;
 $theme-light-color: #666;
 $text-color: #fff;
+$active-color: #d44439;
 $theme-background-color: #181619;
 $tabbar-background-color: #000;
 $theme-shadow: 0 1px 3px 1px #666;
@@ -23,6 +24,7 @@ $highlight-background-color: #fff;
   themeLightColor: $theme-light-color;
   themeShadow: $theme-shadow;
   textColor: $text-color;
+  activeColor: $active-color;
   themeBackgroundColor: $theme-background-color;
   tabbarBackgroundColor: $tabbar-background-color;
   fontColorLight: $font-color-light;

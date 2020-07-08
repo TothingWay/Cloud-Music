@@ -12,6 +12,7 @@ import style from './index.module.scss'
 import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
 import PullDown from '@better-scroll/pull-down'
+import { scrollFunc } from './data.d'
 
 import PullDownLoading from '@/components/Loading/neteaseStroke'
 
@@ -34,7 +35,7 @@ type ScrollProps = {
   stop?: number
 }
 
-const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
+const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
   const [bScroll, setBScroll] = useState<BScroll | null>()
   const [strokeDashoffset, setStrokeDashoffset] = useState(2825)
   const [isPulling, setIsPulling] = useState(false)
@@ -85,7 +86,7 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
         threshold,
         stop,
       },
-      stopPropagation: true
+      stopPropagation: true,
     })
     setBScroll(scroll)
     return () => {
@@ -141,7 +142,9 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
       const pullDownMaxY = pos.y > threshold ? threshold : pos.y
       setIsPulling(true)
       setPullDownY(pos.y)
-      setStrokeDashoffset(Math.min(2825,2825 - (pullDownMaxY * 2825) / threshold ))
+      setStrokeDashoffset(
+        Math.min(2825, 2825 - (pullDownMaxY * 2825) / threshold)
+      )
     }
     bScroll.on('scroll', pullingDown)
 
@@ -190,13 +193,14 @@ const Scroll = forwardRef<any, ScrollProps>((props, ref) => {
 
   return (
     <div className={style['scroll-wrapper']} ref={scrollRef}>
-      <div className={style["scroll-content"]}>
-        {props.children}
-      </div>
+      {props.children}
       {/* 滑到底部加载动画 */}
       {/* <PullUpLoading style={ PullUpdisplayStyle }><Loading></Loading></PullUpLoading> */}
       {/* 顶部下拉刷新动画 */}
-      <PullDownLoading strokeDashoffset={strokeDashoffset} pullDownY={pullDownY}/>
+      <PullDownLoading
+        strokeDashoffset={strokeDashoffset}
+        pullDownY={pullDownY}
+      />
     </div>
   )
 })
