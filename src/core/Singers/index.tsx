@@ -3,21 +3,22 @@ import Horizen from '@/components/Horizen'
 import { useSelector, useDispatch } from 'react-redux'
 import { categoryTypes, singerTypes, alphaTypes } from '@/api/config'
 import Scroll from '@/components/Scroll'
+import Loading from '@/components/Loading'
 import style from './index.module.scss'
 import List from './list'
 import { storeType } from '@/store/data'
 import { getSingerListRequest } from '@/api/singer'
 import * as actionTypes from '@/store/modules/Singers/actionCreators'
 import { scrollFunc } from '@/components/Scroll/data.d'
+import { forceCheck } from 'react-lazyload'
 
 function Singers() {
   const scrollRef = useRef<scrollFunc>(null)
 
-  /* const [category, setCategory] = useState('1001')
-  const [singerType, setSingerType] = useState('-1')
-  const [alpha, setalpha] = useState('') */
   const category = useSelector((state: storeType) => state.singers.category!)
-  const singerType = useSelector((state: storeType) => state.singers.singerType!)
+  const singerType = useSelector(
+    (state: storeType) => state.singers.singerType!
+  )
   const alpha = useSelector((state: storeType) => state.singers.alpha!)
 
   const handleUpdateCategory = (val: string) => {
@@ -40,36 +41,49 @@ function Singers() {
   }
 
   const singerList = useSelector((state: storeType) => state.singers.singerList)
+  const enterLoading = useSelector(
+    (state: storeType) => state.singers.enterLoading
+  )
   const offset = useSelector((state: storeType) => state.singers.offset!)
 
   const dispatch = useDispatch()
 
-  const dispatchSingerListData = useCallback((category, alpha, singerType, offset) => {
-    getSingerListRequest(category, alpha, singerType, offset)
-      .then((data: any) => {
-        dispatch(actionTypes.changeSingerList(data.artists))
-        dispatch(actionTypes.changeEnterLoading(false))
-        dispatch(actionTypes.changePullUpLoading(false))
-        dispatch(actionTypes.changeOffset(0))
-      })
-      .catch(() => {
-        console.log('歌手数据获取失败')
-      })
-  }, [dispatch])
+  const dispatchSingerListData = useCallback(
+    (category, alpha, singerType, offset) => {
+      getSingerListRequest(category, alpha, singerType, offset)
+        .then((data: any) => {
+          dispatch(actionTypes.changeSingerList(data.artists))
+          dispatch(actionTypes.changeEnterLoading(false))
+          dispatch(actionTypes.changeOffset(data.artists.length))
+        })
+        .catch(() => {
+          console.log('歌手数据获取失败')
+        })
+    },
+    [dispatch]
+  )
 
+  const dispatchRefreshSingerListData = useCallback(
+    (category, alpha, singerType, offset) => {
+      getSingerListRequest(category, alpha, singerType, offset)
+        .then((data: any) => {
+          const list: any = [...singerList, ...data.artists]
+          dispatch(actionTypes.changeSingerList(list))
+          dispatch(actionTypes.changeOffset(list.length))
+          scrollRef.current!.finishPullDown()
+          scrollRef.current!.refresh()
+        })
+        .catch(() => {
+          console.log('歌手数据获取失败')
+        })
+    },
+    [dispatch, singerList]
+  )
 
-  const dispatchRefreshSingerListData = useCallback(() => {
-    getSingerListRequest(category, alpha, singerType, offset)
-      .then((data: any) => {
-        const list: any = [...singerList, ...data.artists]
-        dispatch(actionTypes.changeSingerList(list))
-        dispatch(actionTypes.changePullUpLoading(false))
-        dispatch(actionTypes.changeOffset(list.length))
-      })
-      .catch(() => {
-        console.log('歌手数据获取失败')
-      })
-  }, [alpha, category, dispatch, offset, singerList, singerType])
+  // 上拉加载
+  const handlePullUp = () => {
+    dispatchRefreshSingerListData(category, alpha, singerType, offset)
+  }
 
   useEffect(() => {
     if (!singerList.length) {
@@ -100,12 +114,18 @@ function Singers() {
         />
       </div>
       <div style={{ height: 'calc(100% - 130px)' }}>
-        <Scroll ref={scrollRef}>
+        <Scroll
+          ref={scrollRef}
+          onScroll={forceCheck}
+          pullUpLoading={true}
+          pullUp={handlePullUp}
+        >
           <div style={{ padding: '10px' }}>
             <List singerList={singerList} />
           </div>
         </Scroll>
       </div>
+      {enterLoading ? <Loading /> : null}
     </>
   )
 }

@@ -24,8 +24,8 @@ function List({ recommendList }: ListProps) {
                     <img
                       width="100%"
                       height="100%"
-                      src={require('@/assets/playlist-placeholder.png')}
-                      alt="Loading"
+                      src={require('@/assets/singer.png')}
+                      alt="singer"
                     />
                   }
                 >
@@ -33,7 +33,7 @@ function List({ recommendList }: ListProps) {
                     src={item.picUrl + '?param=300x300'}
                     width="100%"
                     height="100%"
-                    alt="music"
+                    alt="singer"
                   />
                 </LazyLoad>
                 <div className={style['play-count']}>

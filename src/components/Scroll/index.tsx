@@ -15,6 +15,7 @@ import PullDown from '@better-scroll/pull-down'
 import { scrollFunc } from './data.d'
 
 import PullDownLoading from '@/components/Loading/neteaseStroke'
+import PullUpLoading from '@/components/Loading/more'
 
 BScroll.use(Pullup)
 BScroll.use(PullDown)
@@ -47,7 +48,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
     direction = 'vertical',
     click = true,
     refresh = true,
-    // pullUpLoading = false,
+    pullUpLoading = false,
     pullDownLoading = false,
     bounceTop = true,
     bounceBottom = true,
@@ -82,10 +83,13 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
         top: bounceTop,
         bottom: bounceBottom,
       },
-      pullDownRefresh: {
-        threshold,
-        stop,
-      },
+      pullDownRefresh: pullDownLoading
+        ? {
+            threshold,
+            stop,
+          }
+        : false,
+      pullUpLoad: pullUpLoading,
       stopPropagation: true,
     })
     setBScroll(scroll)
@@ -184,18 +188,18 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
     },
   }))
 
-  /* const PullUpdisplayStyle = pullUpLoading
-    ? { display: '' }
-    : { display: 'none' }
-  const PullDowndisplayStyle = pullDownLoading
-    ? { display: '' }
-    : { display: 'none' } */
-
   return (
     <div className={style['scroll-wrapper']} ref={scrollRef}>
-      {props.children}
-      {/* 滑到底部加载动画 */}
-      {/* <PullUpLoading style={ PullUpdisplayStyle }><Loading></Loading></PullUpLoading> */}
+      <div>
+        {props.children}
+        {/* 滑到底部加载动画 */}
+        <div
+          className={style['pull-up-loading']}
+          style={pullUpLoading ? { display: 'block' } : { display: 'none' }}
+        >
+          <PullUpLoading />
+        </div>
+      </div>
       {/* 顶部下拉刷新动画 */}
       <PullDownLoading
         strokeDashoffset={strokeDashoffset}
