@@ -9,8 +9,9 @@ import * as actionTypes from '@/store/modules/Recommend/actionCreators'
 import { forceCheck } from 'react-lazyload'
 import Loading from '@/components/Loading'
 import { scrollFunc } from '@/components/Scroll/data.d'
+import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
 
-function Recommend() {
+function Recommend({ route }: RouteConfigComponentProps) {
   const recommendList = useSelector(
     (state: storeType) => state.recommend.recommendList
   )
@@ -65,18 +66,19 @@ function Recommend() {
   }, [])
 
   return (
-    <div style={{height: '100%'}}>
+    <div style={{ height: '100%' }}>
       <Scroll
         ref={ref}
         pullDownLoading={true}
         pullDown={handlePullDown}
         onScroll={forceCheck}
       >
-        <div style={{padding: '10px'}}>
+        <div style={{ padding: '10px' }}>
           {bannerList.length ? <Slide slideBanner={bannerList} /> : null}
           <List recommendList={recommendList} />
         </div>
       </Scroll>
+      {renderRoutes(route!.routes)}
       {enterLoading ? <Loading /> : null}
     </div>
   )

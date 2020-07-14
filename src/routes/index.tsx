@@ -4,31 +4,36 @@ import Layout from '../core/Layout'
 import Recommend from '../core/Recommend'
 import Singers from '../core/Singers'
 import Rank from '../core/Rank'
+import Album from '../core/Album'
 
 export default [
   {
-    path: "/",
+    path: '/',
     component: Layout,
     routes: [
       {
-        path: "/",
+        path: '/',
         exact: true,
-        render: () => (
-          <Redirect to={"/recommend"}/>
-        )
+        render: () => <Redirect to={'/recommend'} />,
       },
       {
-        path: "/recommend",
-        component: Recommend
+        path: '/recommend',
+        component: Recommend,
+        routes: [
+          {
+            path: '/recommend/:id',
+            component: Album,
+          },
+        ],
       },
       {
-        path: "/singers",
-        component: Singers
+        path: '/singers',
+        component: Singers,
       },
       {
-        path: "/rank",
-        component: Rank
-      }
-    ]
-  }
+        path: '/rank',
+        component: Rank,
+      },
+    ],
+  },
 ]

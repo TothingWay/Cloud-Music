@@ -5,9 +5,10 @@ import './index.scss'
 interface SvgIcon {
   iconClass: string
   className?: string
+  onClick?: ((e: React.MouseEvent<HTMLOrSVGElement>) => void)
 }
 
-function SvgIcon({ iconClass, className }: SvgIcon) {
+function SvgIcon({ iconClass, className, onClick }: SvgIcon) {
   const styleExternalIcon = {
     mask: `url(${iconClass}) no-repeat 50% 50%`,
     '-webkit-mask': `url(${iconClass}) no-repeat 50% 50%`,
@@ -21,7 +22,7 @@ function SvgIcon({ iconClass, className }: SvgIcon) {
     )
   } else {
     return (
-      <svg className={svgClass} aria-hidden="true">
+      <svg className={svgClass} aria-hidden="true" onClick={onClick}>
         <use xlinkHref={iconName} />
       </svg>
     )

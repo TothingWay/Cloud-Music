@@ -4,19 +4,27 @@ import SvgIcon from '@/components/SvgIcon'
 import style from './index.module.scss'
 import { recommendType } from '@/store/modules/Recommend/data.d'
 import LazyLoad from 'react-lazyload'
+import { withRouter, RouteComponentProps } from 'react-router'
 
 type ListProps = {
   recommendList: Array<recommendType>
 }
 
-function List({ recommendList }: ListProps) {
+function List({ recommendList, history }: ListProps & RouteComponentProps) {
+  const handleEnterDetail = (id: string) => {
+    history.push(`/recommend/${id}`)
+  }
   return (
     <div className={style['list-wrapper']}>
       <h1 className={style['title']}>推荐歌单</h1>
       <div className={style['list']}>
         {recommendList.map((item) => {
           return (
-            <div className={style['list-item']} key={item.id}>
+            <div
+              className={style['list-item']}
+              key={item.id}
+              onClick={() => handleEnterDetail(item.id)}
+            >
               <div className={style['img-wrapper']}>
                 <div className={style['decorate']}></div>
                 <LazyLoad
@@ -52,4 +60,4 @@ function List({ recommendList }: ListProps) {
   )
 }
 
-export default React.memo(List)
+export default React.memo(withRouter(List))
