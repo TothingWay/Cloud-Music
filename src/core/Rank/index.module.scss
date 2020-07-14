@@ -1,5 +1,13 @@
 @import 'styles/variables.scss';
 
+.offical,.global {
+  margin: 10px 5px;
+  padding-top: 15px;
+  font-weight: 700;
+  font-size: $font-size-ll;
+  color: $text-color;
+}
+
 .list {
   margin-top: 10px;
   padding: 0;
