@@ -190,7 +190,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
 
   return (
     <div className={style['scroll-wrapper']} ref={scrollRef}>
-      <div className={style['scroller']}>
+      <div className={direction === 'horizental' ? style['scroller'] : ''}>
         {props.children}
         {/* 滑到底部加载动画 */}
         <div
