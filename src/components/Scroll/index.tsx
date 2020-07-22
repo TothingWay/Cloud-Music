@@ -190,7 +190,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
 
   return (
     <div className={style['scroll-wrapper']} ref={scrollRef}>
-      <div>
+      <div className={style['scroller']}>
         {props.children}
         {/* 滑到底部加载动画 */}
         <div

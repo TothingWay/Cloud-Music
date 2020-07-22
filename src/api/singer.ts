@@ -10,13 +10,19 @@ export const getHotSingerListRequest = (count: string) => {
 
 // 歌手分类
 export const getSingerListRequest = (
-  category: string,
+  area: string,
   alpha: string,
   type: string,
   offset: string
 ) => {
   return request({
-    url: `/artist/list?cat=${category}&initial=${alpha.toLowerCase()}&type=${type}&offset=${offset}`,
+    url: `/artist/list`,
     method: 'get',
+    params: {
+      area,
+      initial: alpha.toLowerCase(),
+      type,
+      offset
+    }
   })
 }

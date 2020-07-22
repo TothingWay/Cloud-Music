@@ -55,6 +55,8 @@ function Singers() {
           dispatch(actionTypes.changeSingerList(data.artists))
           dispatch(actionTypes.changeEnterLoading(false))
           dispatch(actionTypes.changeOffset(data.artists.length))
+          scrollRef.current!.refresh()
+          forceCheck()
         })
         .catch(() => {
           console.log('歌手数据获取失败')
@@ -96,6 +98,12 @@ function Singers() {
     <>
       <div className={style['horizen-wrapper']}>
         <Horizen
+          list={alphaTypes}
+          handleClick={handleUpdateAlpha}
+          currentVal={alpha}
+          marginBottom={10}
+        />
+        <Horizen
           list={categoryTypes}
           handleClick={handleUpdateCategory}
           currentVal={category}
@@ -105,12 +113,6 @@ function Singers() {
           list={singerTypes}
           handleClick={handleUpdateSingerType}
           currentVal={singerType}
-          marginBottom={10}
-        />
-        <Horizen
-          list={alphaTypes}
-          handleClick={handleUpdateAlpha}
-          currentVal={alpha}
         />
       </div>
       <div style={{ height: 'calc(100% - 130px)' }}>

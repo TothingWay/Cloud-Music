@@ -8,7 +8,7 @@ const defaultState: singerStateType = {
   pullUpLoading: false,   //控制上拉加载动画
   pullDownLoading: false, //控制下拉加载动画
   offset: '0',            //这里是当前页数
-  category: '1001',       //分类
+  category: '-1',       //分类
   singerType: '-1',       //男歌手/女歌手/乐队
   alpha: '',              //热门/字母
 }

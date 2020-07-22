@@ -7,6 +7,9 @@
   overflow: hidden;
   color: $text-color;
   background-color: $theme-background-color;
+  .scroller {
+    display: inline-flex;
+  }
 }
 
 .pull-down-loading {
