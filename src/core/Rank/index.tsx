@@ -23,7 +23,7 @@ function Rank() {
         dispatch(actionTypes.changeLoading(false))
       })
       .catch(() => {
-        console.log('轮播图数据传输错误')
+        console.log('获取排行榜数据失败！')
       })
   }, [dispatch])
 

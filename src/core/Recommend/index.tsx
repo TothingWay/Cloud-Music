@@ -30,7 +30,7 @@ function Recommend({ route }: RouteConfigComponentProps) {
         dispatch(actionTypes.changeBannerList(data.banners))
       })
       .catch(() => {
-        console.log('轮播图数据传输错误')
+        console.log('获取轮播图数据失败！')
       })
   }, [dispatch])
   const dispatchRecommendListData = useCallback(() => {
@@ -40,7 +40,7 @@ function Recommend({ route }: RouteConfigComponentProps) {
         dispatch(actionTypes.changeEnterLoading(false))
       })
       .catch(() => {
-        console.log('推荐歌单数据传输错误')
+        console.log('获取推荐歌单数据失败！')
       })
   }, [dispatch])
 

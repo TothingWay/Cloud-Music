@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export const getBannerListRequest = () => {
   return request({
     url: `/banner`,
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -12,6 +12,6 @@ export const getBannerListRequest = () => {
 export const getRecommendListRequest = () => {
   return request({
     url: `/personalized`,
-    method: 'get'
+    method: 'get',
   })
 }

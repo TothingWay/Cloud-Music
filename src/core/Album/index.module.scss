@@ -1,4 +1,5 @@
 @import 'styles/variables.scss';
+@import 'styles/global.scss';
 
 .album {
   position: fixed;
@@ -9,4 +10,196 @@
   z-index: 1000;
   background: $theme-background-color;
   color: $text-color;
+}
+
+.top-desc {
+  background-size: 100%;
+  padding: 5px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 250px;
+  position: relative;
+  .background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 100%;
+    filter: blur(20px);
+    .filter {
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(7, 17, 27, 0.2);
+    }
+  }
+  .img-wrapper {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    .decorate {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 35px;
+      border-radius: 3px;
+      background: linear-gradient(hsla(0, 0%, 43%, 0.4), hsla(0, 0%, 100%, 0));
+    }
+    .play-count {
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      font-size: $font-size-s;
+      line-height: 15px;
+      color: $text-color;
+      .play {
+        vertical-align: top;
+      }
+      .icon-play {
+        margin-right: 2px;
+      }
+    }
+    img {
+      width: 120px;
+      height: 120px;
+      border-radius: 3px;
+    }
+  }
+  .desc-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 120px;
+    padding: 0 10px;
+    .title {
+      max-height: 70px;
+      color: $text-color;
+      font-weight: 700;
+      line-height: 1.5;
+      font-size: $font-size-l;
+    }
+    .person {
+      display: flex;
+      .avatar {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+      }
+      .name {
+        line-height: 20px;
+        font-size: $font-size-m;
+        color: $font-color-desc-v2;
+      }
+    }
+  }
+}
+
+.song-list {
+  border-radius: 10px;
+  opacity: 0.98;
+  background: $theme-background-color;
+  .first-line {
+    box-sizing: border-box;
+    padding: 10px 0;
+    margin-left: 10px;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $theme-light-color;
+    .play-all {
+      display: inline-block;
+      line-height: 24px;
+      color: $text-color;
+      .sum {
+        font-size: $font-size-s;
+        color: $theme-light-color;
+      }
+      > span {
+        vertical-align: top;
+      }
+      .icon-play-cycle {
+        margin-right: 2px;
+        font-size: $font-size-ll;
+      }
+    }
+    .add-list,
+    .isCollected {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 5px;
+      top: 7px;
+      padding: 0 12px;
+      background: $active-color;
+      color: $text-color;
+      border-radius: 20px;
+      line-height: 32px;
+      span {
+        font-size: 13px;
+        line-height: 32px;
+      }
+      .icon-plus {
+        font-size: $font-size-m;
+        margin-right: 5px;
+      }
+    }
+    .isCollected {
+      display: flex;
+      background: $theme-background-color;
+      color: $text-color;
+    }
+  }
+
+  .song-item {
+    margin: 0;
+    padding: 0;
+    > li {
+      display: flex;
+      height: 60px;
+      align-items: center;
+      .index {
+        flex-basis: 50px;
+        width: 50px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+      }
+      .info {
+        box-sizing: border-box;
+        flex: 1;
+        display: flex;
+        height: 100%;
+        padding: 5px 0;
+        flex-direction: column;
+        justify-content: space-around;
+        border-bottom: 1px solid $theme-light-color;
+        @extend .no-wrap;
+        > span {
+          @extend .no-wrap;
+        }
+        > span:first-child {
+          color: $text-color;
+        }
+        > span:last-child {
+          font-size: $font-size-s;
+          color: $theme-light-color;
+        }
+      }
+    }
+  }
 }

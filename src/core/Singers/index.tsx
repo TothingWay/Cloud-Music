@@ -59,7 +59,7 @@ function Singers() {
           forceCheck()
         })
         .catch(() => {
-          console.log('歌手数据获取失败')
+          console.log('歌手数据获取失败！')
         })
     },
     [dispatch]
@@ -76,7 +76,7 @@ function Singers() {
           scrollRef.current!.refresh()
         })
         .catch(() => {
-          console.log('歌手数据获取失败')
+          console.log('歌手数据获取失败！')
         })
     },
     [dispatch, singerList]
