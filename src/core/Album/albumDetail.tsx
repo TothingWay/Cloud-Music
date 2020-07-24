@@ -28,7 +28,7 @@ function AlbumDetail(props: AlbumDetailProps) {
                 (currentAlbum.subscribedCount
                   ? currentAlbum.subscribedCount
                   : 0) / 1000
-              ) / 10}{' '}
+              ) / 10}
               万
             </span>
           </div>

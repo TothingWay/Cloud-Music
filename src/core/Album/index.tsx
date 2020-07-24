@@ -18,7 +18,6 @@ export default memo(
   withRouter(function Album(props: RouteComponentProps<any>) {
     const { history, match } = props
     const [showStatus, setShowStatus] = useState(true)
-    const [scrollY, setScrollY] = useState(0)
     const [isMarquee, setIsMarquee] = useState(false)
     const [title, setTitle] = useState('歌单')
 
@@ -53,7 +52,6 @@ export default memo(
 
     const onScroll = useCallback(
       (pos) => {
-        setScrollY(parseInt(pos.y))
         let minScrollY = -HEADER_HEIGHT
         // 滑过顶部的高度开始变化
         if (pos.y < minScrollY) {
@@ -87,8 +85,6 @@ export default memo(
         <div className={style['album']}>
           <Header
             title={title}
-            bg={currentAlbum.coverImgUrl}
-            bgY={scrollY}
             handleClick={handleBack}
             isMarquee={isMarquee}
           />
