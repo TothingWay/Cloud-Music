@@ -30,7 +30,7 @@ export default memo(
     const enterLoading = useSelector(
       (state: storeType) => state.album.enterLoading
     )
-      
+
     const dispatchAlbumData = useCallback(() => {
       getAlbumDetailRequest(match.params.id)
         .then((data: any) => {
@@ -62,16 +62,13 @@ export default memo(
           setIsMarquee(false)
         }
       },
-      [currentAlbum.name]
+      [currentAlbum]
     )
 
-    const onExited = useCallback(
-      () => {
-        dispatch(actionTypes.changeCurrentAlbum({} as any))
-        history.goBack()
-      },
-      [dispatch, history]
-    )
+    const onExited = useCallback(() => {
+      dispatch(actionTypes.changeCurrentAlbum({} as any))
+      history.goBack()
+    }, [dispatch, history])
 
     return (
       <CSSTransition

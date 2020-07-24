@@ -8,8 +8,13 @@ import * as actionTypes from '@/store/modules/Rank/actionCreators'
 import { getRankListRequest } from '@/api/rank'
 import Loading from '@/components/Loading'
 import { filterIndex } from '@/utils'
+import { withRouter, RouteComponentProps } from 'react-router'
+import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
 
-function Rank() {
+function Rank({
+  history,
+  route,
+}: RouteComponentProps & RouteConfigComponentProps) {
   const rankList = useSelector((state: storeType) => state.rank.rankList)
 
   const loading = useSelector((state: storeType) => state.rank.loading)
@@ -46,7 +51,11 @@ function Rank() {
       <ul className={style['list']}>
         {list.map((item) => {
           return (
-            <li className={style['list-item']} key={item.id}>
+            <li
+              className={style['list-item']}
+              key={item.id}
+              onClick={() => enterDetail(item.id)}
+            >
               <div className={style['img-wrapper']}>
                 <img src={item.coverImgUrl} alt="img" />
                 <div className={style['decorate']}></div>
@@ -69,6 +78,10 @@ function Rank() {
     // eslint-disable-next-line
   }, [])
 
+  const enterDetail = (id: number) => {
+    history.push(`/rank/${id}`)
+  }
+
   let globalStartIndex = filterIndex(rankList)
   let officialList = rankList.slice(0, globalStartIndex)
   let globalList = rankList.slice(globalStartIndex)
@@ -89,8 +102,9 @@ function Rank() {
         </div>
       </Scroll>
       {loading ? <Loading /> : null}
+      {renderRoutes(route!.routes)}
     </div>
   )
 }
 
-export default React.memo(Rank)
+export default React.memo(withRouter(Rank))
