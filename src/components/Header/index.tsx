@@ -1,4 +1,4 @@
-import React, { forwardRef, memo } from 'react'
+import React, {forwardRef} from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import style from './index.module.scss'
 
@@ -28,4 +28,4 @@ const Header = forwardRef<HTMLDivElement, HeaderProps>((props, ref) => {
   )
 })
 
-export default memo(Header)
+export default Header

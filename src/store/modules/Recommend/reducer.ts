@@ -1,4 +1,4 @@
-import { recommendStateType } from './data.d'
+import {recommendStateType} from './data.d'
 import * as actionTypes from './constants'
 import produce from 'immer'
 
@@ -9,7 +9,7 @@ const defaultState: recommendStateType = {
 }
 
 export default (state = defaultState, action: any) => {
-  return produce(state, draft => {
+  return produce(state, (draft) => {
     switch (action.type) {
       case actionTypes.CHANGE_BANNER:
         draft.bannerList = action.data
@@ -18,7 +18,7 @@ export default (state = defaultState, action: any) => {
         draft.recommendList = action.data
         break
       case actionTypes.CHANGE_ENTER_LOADING:
-        draft.enterLoading = action.data;
+        draft.enterLoading = action.data
         break
     }
   })
