@@ -4,17 +4,17 @@ import produce from 'immer'
 
 const defaultState: singerStateType = {
   singerList: [],
-  enterLoading: true,     //控制进场Loading
-  pullUpLoading: false,   //控制上拉加载动画
+  enterLoading: true, //控制进场Loading
+  pullUpLoading: false, //控制上拉加载动画
   pullDownLoading: false, //控制下拉加载动画
-  offset: '0',            //这里是当前页数
-  category: '-1',       //分类
-  singerType: '-1',       //男歌手/女歌手/乐队
-  alpha: '',              //热门/字母
+  offset: '0', //这里是当前页数
+  category: '-1', //分类
+  singerType: '-1', //男歌手/女歌手/乐队
+  alpha: '', //热门/字母
 }
 
 export default (state = defaultState, action: any) => {
-  return produce(state, draft => {
+  return produce(state, (draft) => {
     switch (action.type) {
       case actionTypes.CHANGE_SINGER_LIST:
         draft.singerList = action.data

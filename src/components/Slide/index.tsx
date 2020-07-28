@@ -45,7 +45,7 @@ const Slide = forwardRef<any, SlideProps>((props, ref) => {
     setPlayTimer(
       window.setTimeout(() => {
         nextPage()
-      }, 3000)
+      }, 3000),
     )
   }, [nextPage, playTimer])
 
@@ -53,6 +53,7 @@ const Slide = forwardRef<any, SlideProps>((props, ref) => {
   useEffect(() => {
     if (slide || !slideBanner.length) return
     clearTimeout(playTimer)
+    // eslint-disable-next-line
     const bScroll = new BScroll(SlideRef.current!, {
       scrollX: true,
       scrollY: false,

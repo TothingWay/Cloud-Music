@@ -23,7 +23,7 @@ export const categoryTypes = [
   {
     name: '其他',
     key: '0',
-  }
+  },
 ]
 
 //歌手首字母
@@ -159,6 +159,5 @@ export const singerTypes = [
   {
     key: '3',
     name: '乐队',
-  }
+  },
 ]
-

@@ -13,7 +13,7 @@ export const getSingerListRequest = (
   area: string,
   alpha: string,
   type: string,
-  offset: string
+  offset: string,
 ) => {
   return request({
     url: `/artist/list`,
@@ -22,7 +22,7 @@ export const getSingerListRequest = (
       area,
       initial: alpha.toLowerCase(),
       type,
-      offset
-    }
+      offset,
+    },
   })
 }

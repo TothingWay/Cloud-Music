@@ -24,11 +24,11 @@ export default memo(
     const dispatch = useDispatch()
 
     const currentAlbum = useSelector(
-      (state: storeType) => state.album.currentAlbum
+      (state: storeType) => state.album.currentAlbum,
     )
 
     const enterLoading = useSelector(
-      (state: storeType) => state.album.enterLoading
+      (state: storeType) => state.album.enterLoading,
     )
 
     const dispatchAlbumData = useCallback(() => {
@@ -52,7 +52,7 @@ export default memo(
 
     const onScroll = useCallback(
       (pos) => {
-        let minScrollY = -HEADER_HEIGHT
+        const minScrollY = -HEADER_HEIGHT
         // 滑过顶部的高度开始变化
         if (pos.y < minScrollY) {
           setTitle(currentAlbum.name)
@@ -62,7 +62,7 @@ export default memo(
           setIsMarquee(false)
         }
       },
-      [currentAlbum]
+      [currentAlbum],
     )
 
     const onExited = useCallback(() => {
@@ -92,5 +92,5 @@ export default memo(
         </div>
       </CSSTransition>
     )
-  })
+  }),
 )

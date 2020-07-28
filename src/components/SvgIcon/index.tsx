@@ -5,7 +5,7 @@ import './index.scss'
 interface SvgIcon {
   iconClass: string
   className?: string
-  onClick?: ((e: React.MouseEvent<HTMLOrSVGElement>) => void)
+  onClick?: (e: React.MouseEvent<HTMLOrSVGElement>) => void
 }
 
 function SvgIcon({ iconClass, className, onClick }: SvgIcon) {

@@ -82,10 +82,10 @@ function Rank({
     history.push(`/rank/${id}`)
   }
 
-  let globalStartIndex = filterIndex(rankList)
-  let officialList = rankList.slice(0, globalStartIndex)
-  let globalList = rankList.slice(globalStartIndex)
-  let displayStyle = loading ? { display: 'none' } : { display: '' }
+  const globalStartIndex = filterIndex(rankList)
+  const officialList = rankList.slice(0, globalStartIndex)
+  const globalList = rankList.slice(globalStartIndex)
+  const displayStyle = loading ? { display: 'none' } : { display: '' }
 
   return (
     <div style={{ height: '100%' }}>
@@ -102,7 +102,10 @@ function Rank({
         </div>
       </Scroll>
       {loading ? <Loading /> : null}
-      {renderRoutes(route!.routes)}
+      {
+        // eslint-disable-next-line
+        renderRoutes(route!.routes)
+      }
     </div>
   )
 }

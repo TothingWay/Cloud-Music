@@ -10,7 +10,7 @@ interface listTypes {
 type HorizenProps = {
   list: Array<listTypes>
   currentVal: string
-  handleClick: Function
+  handleClick: (id: string) => void
   marginBottom?: number
 }
 
@@ -22,8 +22,9 @@ function Horizen(props: HorizenProps) {
 
   // 加入初始化内容宽度的逻辑
   useEffect(() => {
-    let categoryDOM = Category.current! as HTMLDivElement
-    let tagElems = categoryDOM.querySelectorAll('div')
+    // eslint-disable-next-line
+    const categoryDOM = Category.current! as HTMLDivElement
+    const tagElems = categoryDOM.querySelectorAll('div')
     let totalWidth = 0
     Array.from(tagElems).forEach((ele) => {
       totalWidth += ele.offsetWidth

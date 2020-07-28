@@ -27,7 +27,7 @@ function AlbumDetail(props: AlbumDetailProps) {
               {Math.floor(
                 (currentAlbum.subscribedCount
                   ? currentAlbum.subscribedCount
-                  : 0) / 1000
+                  : 0) / 1000,
               ) / 10}
               万
             </span>
@@ -67,7 +67,7 @@ function AlbumDetail(props: AlbumDetailProps) {
             <span>
               收藏 (
               {calculateCount(
-                currentAlbum.subscribedCount ? currentAlbum.subscribedCount : 0
+                currentAlbum.subscribedCount ? currentAlbum.subscribedCount : 0,
               )}
               )
             </span>

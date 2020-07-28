@@ -13,14 +13,14 @@ import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
 
 function Recommend({ route }: RouteConfigComponentProps) {
   const recommendList = useSelector(
-    (state: storeType) => state.recommend.recommendList
+    (state: storeType) => state.recommend.recommendList,
   )
   const bannerList = useSelector(
-    (state: storeType) => state.recommend.bannerList
+    (state: storeType) => state.recommend.bannerList,
   )
 
   const enterLoading = useSelector(
-    (state: storeType) => state.recommend.enterLoading
+    (state: storeType) => state.recommend.enterLoading,
   )
 
   const dispatch = useDispatch()
@@ -49,6 +49,7 @@ function Recommend({ route }: RouteConfigComponentProps) {
   const handlePullDown = (pos: any) => {
     setTimeout(() => {
       console.log('数据已刷新')
+      // eslint-disable-next-line
       const scrollRef = ref.current!
       scrollRef.finishPullDown()
       scrollRef.refresh()
@@ -78,7 +79,10 @@ function Recommend({ route }: RouteConfigComponentProps) {
           <List recommendList={recommendList} />
         </div>
       </Scroll>
-      {renderRoutes(route!.routes)}
+      {
+        // eslint-disable-next-line
+        renderRoutes(route!.routes)
+      }
       {enterLoading ? <Loading /> : null}
     </div>
   )

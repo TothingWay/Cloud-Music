@@ -22,9 +22,12 @@ function Layout({ route }: RouteConfigComponentProps) {
           height: isIphoneX ? 'calc(100vh - 138px)' : 'calc(100vh - 104px)',
         }}
       >
-        {renderRoutes(route!.routes)}
+        {
+          // eslint-disable-next-line
+          renderRoutes(route!.routes)
+        }
       </div>
-      <Tabbar isIphoneX={isIphoneX}/>
+      <Tabbar isIphoneX={isIphoneX} />
     </div>
   )
 }

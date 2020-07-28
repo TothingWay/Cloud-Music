@@ -3,25 +3,25 @@ import * as actionTypes from './constants'
 
 export const changeCurrentAlbum = (data: CurrentAlbum) => ({
   type: actionTypes.CHANGE_CURRENT_ALBUM,
-  data
+  data,
 })
 
-export const changePullUpLoading = (data:boolean) => ({
+export const changePullUpLoading = (data: boolean) => ({
   type: actionTypes.CHANGE_PULLUP_LOADING,
-  data
+  data,
 })
 
-export const changeEnterLoading = (data:boolean) => ({
+export const changeEnterLoading = (data: boolean) => ({
   type: actionTypes.CHANGE_ENTER_LOADING,
-  data
+  data,
 })
 
-export const changeTotalCount = (data:number) => ({
+export const changeTotalCount = (data: number) => ({
   type: actionTypes.CHANGE_TOTAL_COUNT,
-  data
+  data,
 })
 
-export const changeStartIndex = (data:number) => ({
+export const changeStartIndex = (data: number) => ({
   type: actionTypes.CHANGE_START_INDEX,
-  data
+  data,
 })

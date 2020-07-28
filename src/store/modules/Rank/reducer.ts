@@ -4,11 +4,11 @@ import produce from 'immer'
 
 const defaultState: rankStateType = {
   rankList: [],
-  loading: true
+  loading: true,
 }
 
 export default (state = defaultState, action: any) => {
-  return produce(state, draft => {
+  return produce(state, (draft) => {
     switch (action.type) {
       case actionTypes.CHANGE_RANK_LIST:
         draft.rankList = action.data

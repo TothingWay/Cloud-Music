@@ -11,7 +11,7 @@ const defaultState: AlbumDetailProps = {
 }
 
 export default (state = defaultState, action: any) => {
-  return produce(state, draft => {
+  return produce(state, (draft) => {
     switch (action.type) {
       case actionTypes.CHANGE_CURRENT_ALBUM:
         draft.currentAlbum = action.data

@@ -1,4 +1,4 @@
-import {recommendStateType} from './data.d'
+import { recommendStateType } from './data.d'
 import * as actionTypes from './constants'
 import produce from 'immer'
 

@@ -14,36 +14,42 @@ import { forceCheck } from 'react-lazyload'
 
 function Singers() {
   const scrollRef = useRef<scrollFunc>(null)
-
+  // eslint-disable-next-line
   const category = useSelector((state: storeType) => state.singers.category!)
   const singerType = useSelector(
-    (state: storeType) => state.singers.singerType!
+    // eslint-disable-next-line
+    (state: storeType) => state.singers.singerType!,
   )
+  // eslint-disable-next-line
   const alpha = useSelector((state: storeType) => state.singers.alpha!)
 
   const handleUpdateCategory = (val: string) => {
     if (category === val) return
     dispatch(actionTypes.changeCategory(val))
     dispatchSingerListData(val, alpha, singerType, offset)
+    // eslint-disable-next-line
     scrollRef.current!.refresh()
   }
   const handleUpdateSingerType = (val: string) => {
     if (singerType === val) return
     dispatch(actionTypes.changeSingerType(val))
     dispatchSingerListData(category, alpha, val, offset)
+    // eslint-disable-next-line
     scrollRef.current!.refresh()
   }
   const handleUpdateAlpha = (val: string) => {
     if (alpha === val) return
     dispatch(actionTypes.changeAlpha(val))
     dispatchSingerListData(category, val, singerType, offset)
+    // eslint-disable-next-line
     scrollRef.current!.refresh()
   }
 
   const singerList = useSelector((state: storeType) => state.singers.singerList)
   const enterLoading = useSelector(
-    (state: storeType) => state.singers.enterLoading
+    (state: storeType) => state.singers.enterLoading,
   )
+  // eslint-disable-next-line
   const offset = useSelector((state: storeType) => state.singers.offset!)
 
   const dispatch = useDispatch()
@@ -55,6 +61,7 @@ function Singers() {
           dispatch(actionTypes.changeSingerList(data.artists))
           dispatch(actionTypes.changeEnterLoading(false))
           dispatch(actionTypes.changeOffset(data.artists.length))
+          // eslint-disable-next-line
           scrollRef.current!.refresh()
           forceCheck()
         })
@@ -62,7 +69,7 @@ function Singers() {
           console.log('歌手数据获取失败！')
         })
     },
-    [dispatch]
+    [dispatch],
   )
 
   const dispatchRefreshSingerListData = useCallback(
@@ -72,14 +79,16 @@ function Singers() {
           const list: any = [...singerList, ...data.artists]
           dispatch(actionTypes.changeSingerList(list))
           dispatch(actionTypes.changeOffset(list.length))
+          // eslint-disable-next-line
           scrollRef.current!.finishPullDown()
+          // eslint-disable-next-line
           scrollRef.current!.refresh()
         })
         .catch(() => {
           console.log('歌手数据获取失败！')
         })
     },
-    [dispatch, singerList]
+    [dispatch, singerList],
   )
 
   // 上拉加载

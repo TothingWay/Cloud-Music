@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import '@/icons' // icon
-const FastClick = require('fastclick');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const FastClick = require('fastclick')
 
 FastClick.attach(document.body)
 

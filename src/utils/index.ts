@@ -1,8 +1,11 @@
 import { rankListType } from './../store/modules/Rank/data.d'
 //防抖函数
-export const debounce = (func: Function, delay: number) => {
+export const debounce = (
+  func: (func: () => void) => void,
+  delay: number,
+): (() => void) => {
   let timer: any
-  return function(this: any, ...args: any[]) {
+  return function (this: any, ...args: any) {
     if (timer) {
       clearTimeout(timer)
     }

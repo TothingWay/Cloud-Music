@@ -25,11 +25,11 @@ type ScrollProps = {
   direction?: 'vertical' | 'horizental'
   click?: boolean
   refresh?: boolean
-  onScroll?: Function
+  onScroll?: (pos: any) => void
   pullUpLoading?: boolean
   pullDownLoading?: boolean
-  pullUp?: Function
-  pullDown?: Function
+  pullUp?: (pos: any) => void
+  pullDown?: (pos: any) => void
   bounceTop?: boolean //是否支持向上吸顶
   bounceBottom?: boolean //是否支持向下吸顶
   threshold?: number
@@ -59,13 +59,13 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
   // Method props
   const { pullUp, pullDown, onScroll } = props
 
-  let pullUpDebounce = useMemo(() => {
+  const pullUpDebounce = useMemo(() => {
     if (pullUp) {
       return debounce(pullUp, 500)
     }
   }, [pullUp])
 
-  let pullDownDebounce = useMemo(() => {
+  const pullDownDebounce = useMemo(() => {
     if (pullDown) {
       return debounce(pullDown, 500)
     }
@@ -74,6 +74,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
   // init BScroll
   useEffect(() => {
     if (bScroll) return
+    // eslint-disable-next-line
     const scroll = new BScroll(scrollRef.current!, {
       scrollX: direction === 'horizental',
       scrollY: direction === 'vertical',
@@ -142,12 +143,12 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
   // watch pullingDown
   useEffect(() => {
     if (!bScroll || !pullDownLoading) return
-    let pullingDown = (pos: any) => {
+    const pullingDown = (pos: any) => {
       const pullDownMaxY = pos.y > threshold ? threshold : pos.y
       setIsPulling(true)
       setPullDownY(pos.y)
       setStrokeDashoffset(
-        Math.min(2825, 2825 - (pullDownMaxY * 2825) / threshold)
+        Math.min(2825, 2825 - (pullDownMaxY * 2825) / threshold),
       )
     }
     bScroll.on('scroll', pullingDown)

@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react'
+import React, { forwardRef } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import style from './index.module.scss'
 
