@@ -1,5 +1,5 @@
 export interface scrollFunc {
-  finishPullDown: Function
-  getBScroll: Function
-  refresh: Function
+  finishPullDown: () => void
+  getBScroll: () => void
+  refresh: () => void
 }
