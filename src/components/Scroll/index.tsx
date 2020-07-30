@@ -202,10 +202,12 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
         </div>
       </div>
       {/* 顶部下拉刷新动画 */}
-      <PullDownLoading
-        strokeDashoffset={strokeDashoffset}
-        pullDownY={pullDownY}
-      />
+      {pullDownLoading ? (
+        <PullDownLoading
+          strokeDashoffset={strokeDashoffset}
+          pullDownY={pullDownY}
+        />
+      ) : null}
     </div>
   )
 })
