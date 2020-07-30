@@ -2,13 +2,22 @@ import React from 'react'
 import { singerStateType } from '@/store/modules/Singers/data'
 import style from './index.module.scss'
 import LazyLoad from 'react-lazyload'
+import { withRouter, RouteComponentProps } from 'react-router'
 
-function List({ singerList }: singerStateType) {
+function List({ singerList, history }: singerStateType & RouteComponentProps) {
+  const enterDetail = (id: number) => {
+    history.push(`/singers/${id}`)
+  }
+
   return (
     <div className={style['list']}>
       {singerList.map((item) => {
         return (
-          <div className={style['list-item']} key={item.id}>
+          <div
+            className={style['list-item']}
+            key={item.id}
+            onClick={() => enterDetail(item.id)}
+          >
             <div className={style['img-wrapper']}>
               <LazyLoad
                 placeholder={
@@ -35,4 +44,4 @@ function List({ singerList }: singerStateType) {
     </div>
   )
 }
-export default React.memo(List)
+export default React.memo(withRouter(List))

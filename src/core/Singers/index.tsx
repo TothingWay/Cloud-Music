@@ -11,8 +11,9 @@ import { getSingerListRequest } from '@/api/singer'
 import * as actionTypes from '@/store/modules/Singers/actionCreators'
 import { scrollFunc } from '@/components/Scroll/data.d'
 import { forceCheck } from 'react-lazyload'
+import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
 
-function Singers() {
+function Singers({ route }: RouteConfigComponentProps) {
   const scrollRef = useRef<scrollFunc>(null)
   // eslint-disable-next-line
   const category = useSelector((state: storeType) => state.singers.category!)
@@ -137,6 +138,10 @@ function Singers() {
         </Scroll>
       </div>
       {enterLoading ? <Loading /> : null}
+      {
+        // eslint-disable-next-line
+        renderRoutes(route!.routes)
+      }
     </>
   )
 }
