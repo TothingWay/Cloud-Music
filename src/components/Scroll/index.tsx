@@ -34,6 +34,7 @@ type ScrollProps = {
   bounceBottom?: boolean //是否支持向下吸顶
   threshold?: number
   stop?: number
+  className?: string
 }
 
 const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
@@ -54,6 +55,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
     bounceBottom = true,
     threshold = 70,
     stop = 80,
+    className,
   } = props
 
   // Method props
@@ -190,7 +192,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
   }))
 
   return (
-    <div className={style['scroll-wrapper']} ref={scrollRef}>
+    <div className={`${style['scroll-wrapper']} ${className}`} ref={scrollRef}>
       <div className={direction === 'horizental' ? style['scroller'] : ''}>
         {props.children}
         {/* 滑到底部加载动画 */}

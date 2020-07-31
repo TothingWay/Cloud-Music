@@ -3,8 +3,11 @@ import request from '@/utils/request'
 // 热门歌手
 export const getHotSingerListRequest = (count: string) => {
   return request({
-    url: `/top/artists?offset=${count}`,
+    url: `/top/artists`,
     method: 'get',
+    params: {
+      offset: count,
+    },
   })
 }
 
@@ -23,6 +26,17 @@ export const getSingerListRequest = (
       initial: alpha.toLowerCase(),
       type,
       offset,
+    },
+  })
+}
+
+// 获取歌手单曲
+export const getSingerInfoRequest = (id: string) => {
+  return request({
+    url: `artists`,
+    method: 'get',
+    params: {
+      id,
     },
   })
 }

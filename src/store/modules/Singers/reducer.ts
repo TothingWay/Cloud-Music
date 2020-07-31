@@ -1,8 +1,8 @@
 import * as actionTypes from './constants'
-import { singerStateType } from './data.d'
+import { singersStateType } from './data.d'
 import produce from 'immer'
 
-const defaultState: singerStateType = {
+const defaultState: singersStateType = {
   singerList: [],
   enterLoading: true, //控制进场Loading
   pullUpLoading: false, //控制上拉加载动画

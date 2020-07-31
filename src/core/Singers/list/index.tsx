@@ -1,10 +1,10 @@
 import React from 'react'
-import { singerStateType } from '@/store/modules/Singers/data'
+import { singersStateType } from '@/store/modules/Singers/data'
 import style from './index.module.scss'
 import LazyLoad from 'react-lazyload'
 import { withRouter, RouteComponentProps } from 'react-router'
 
-function List({ singerList, history }: singerStateType & RouteComponentProps) {
+function List({ singerList, history }: singersStateType & RouteComponentProps) {
   const enterDetail = (id: number) => {
     history.push(`/singers/${id}`)
   }

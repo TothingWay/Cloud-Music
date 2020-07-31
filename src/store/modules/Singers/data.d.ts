@@ -5,7 +5,7 @@ export interface singerListType {
   accountId: number
 }
 
-export interface singerStateType {
+export interface singersStateType {
   singerList: singerListType[]
   enterLoading?: boolean
   pullUpLoading?: boolean

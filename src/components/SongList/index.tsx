@@ -9,7 +9,7 @@ interface songListProps {
 
 const SongsList = React.forwardRef<HTMLDivElement, songListProps>(
   (props, refs) => {
-    const { songs } = props
+    const { songs = [] } = props
 
     const totalCount = songs.length
 

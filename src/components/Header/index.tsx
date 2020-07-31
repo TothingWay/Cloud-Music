@@ -6,12 +6,17 @@ interface HeaderProps {
   handleClick: () => void
   title?: string
   isMarquee?: boolean
+  blur?: boolean
 }
 
 const Header = forwardRef<HTMLDivElement, HeaderProps>((props, ref) => {
-  const { handleClick, title, isMarquee = false } = props
+  const { handleClick, title, isMarquee = false, blur = true } = props
   return (
-    <div className={style['container']} ref={ref}>
+    <div
+      className={style['container']}
+      ref={ref}
+      style={blur ? { backdropFilter: `blur(5px)` } : {}}
+    >
       <SvgIcon
         iconClass="back"
         className={style['back']}
