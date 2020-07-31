@@ -11,11 +11,11 @@ function List({ singerList, history }: singersStateType & RouteComponentProps) {
 
   return (
     <div className={style['list']}>
-      {singerList.map((item) => {
+      {singerList.map((item, index) => {
         return (
           <div
             className={style['list-item']}
-            key={item.id}
+            key={index}
             onClick={() => enterDetail(item.id)}
           >
             <div className={style['img-wrapper']}>

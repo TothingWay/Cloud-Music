@@ -59,11 +59,10 @@ function Singers({ route }: RouteConfigComponentProps) {
     (category, alpha, singerType, offset) => {
       getSingerListRequest(category, alpha, singerType, offset)
         .then((data: any) => {
-          dispatch(actionTypes.changeSingerList(data.artists))
+          dispatch(actionTypes.changeSingerList([...data.artists]))
           dispatch(actionTypes.changeEnterLoading(false))
-          dispatch(actionTypes.changeOffset(data.artists.length))
+          dispatch(actionTypes.changeOffset(0))
           // eslint-disable-next-line
-          scrollRef.current!.refresh()
           forceCheck()
         })
         .catch(() => {
@@ -81,11 +80,11 @@ function Singers({ route }: RouteConfigComponentProps) {
           dispatch(actionTypes.changeSingerList(list))
           dispatch(actionTypes.changeOffset(list.length))
           // eslint-disable-next-line
-          scrollRef.current!.finishPullDown()
-          // eslint-disable-next-line
           scrollRef.current!.refresh()
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err)
+
           console.log('歌手数据获取失败！')
         })
     },
