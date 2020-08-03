@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
 import style from './index.module.scss'
 import Tabbar from '@/components/Tabbar'
+import Player from '@/core/Player'
 import { isIphoneXDevice } from '@/utils/index'
 
 function Layout({ route }: RouteConfigComponentProps) {
@@ -28,6 +29,7 @@ function Layout({ route }: RouteConfigComponentProps) {
         }
       </div>
       <Tabbar isIphoneX={isIphoneX} />
+      <Player />
     </div>
   )
 }

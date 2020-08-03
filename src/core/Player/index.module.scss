@@ -1,0 +1,179 @@
+@import 'styles/variables.scss';
+@import 'styles/global.scss';
+
+@keyframes rotate {
+  0% {
+    transform: rotate (0);
+  }
+  100% {
+    transform: rotate (360deg);
+  }
+}
+
+.normal-player-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 150;
+  background: $theme-background-color;
+  .background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.6;
+    filter: blur(20px);
+    &.layer {
+      background: $font-color-desc;
+      opacity: 0.3;
+      filter: none;
+    }
+  }
+
+  .top {
+    position: relative;
+    margin-bottom: 25px;
+    .back {
+      position: absolute;
+      left: 10px;
+      top: 15px;
+      font-size: 20px;
+      width: 20px;
+      color: $text-color;
+      z-index: 10;
+    }
+    .title {
+      width: 70%;
+      margin: 0 auto;
+      line-height: 52px;
+      text-align: center;
+      font-size: $font-size-l;
+      color: $text-color;
+      @extend .no-wrap;
+    }
+    .subtitle {
+      line-height: 20px;
+      text-align: center;
+      font-size: $font-size-m;
+      color: $font-color-desc-v2;
+      @extend .no-wrap;
+    }
+  }
+
+  .middle {
+    position: fixed;
+    width: 100%;
+    top: 80px;
+    bottom: 170px;
+    white-space: nowrap;
+    font-size: 0;
+    overflow: hidden;
+  }
+
+  .CD-wrapper {
+    position: absolute;
+    margin: auto;
+    top: 10%;
+    left: 0;
+    right: 0;
+    width: 80%;
+    box-sizing: border-box;
+    height: 80vw;
+    .cd {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      .image {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 10px solid rgba(255, 255, 255, 0.1);
+      }
+      .play {
+        animation: rotate 20s linear infinite;
+        &.pause {
+          animation-play-state: paused;
+        }
+      }
+    }
+    .playing_lyric {
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 20px;
+      white-space: normal;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .bottom {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+  }
+
+  .progress-wrapper {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin: 0px auto;
+    padding: 10px 0;
+    .time {
+      color: $font-color-desc;
+      font-size: $font-size-s;
+      flex: 0 0 30px;
+      line-height: 30px;
+      width: 30px;
+      &.time-l {
+        text-align: left;
+      }
+      &.time-r {
+        text-align: right;
+      }
+    }
+    .progress-bar-wrapper {
+      flex: 1;
+    }
+  }
+
+  .operators {
+    display: flex;
+    align-items: center;
+    .icon {
+      font-weight: 300;
+      flex: 1;
+      color: $text-color;
+      &.disable {
+        color: $theme-shadow;
+      }
+      i {
+        font-weight: 300;
+        font-size: 30px;
+      }
+    }
+    .i-left {
+      text-align: right;
+    }
+    .i-center {
+      padding: 0 20px;
+      text-align: center;
+      i {
+        font-size: 40px;
+      }
+    }
+    .i-right {
+      text-align: left;
+    }
+    .icon-favorite {
+      color: $text-color;
+    }
+  }
+}
