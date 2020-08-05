@@ -31,3 +31,26 @@
   transition: transform .3s;
   transform: translate3d(100%, 0, 0);
 }
+
+.normalPlayer-enter,
+.normalPlayer-exit-done {
+  .top {
+    transform: translate3d(0, -100px, 0);
+  }
+  .bottom {
+    transform: translate3d(0, 100px, 0);
+  }
+}
+.normalPlayer-enter-active,
+.normalPlayer-exit-active {
+  .top,
+  .bottom {
+    transform: translate3d(0, 0, 0);
+    transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32);
+  }
+  opacity: 1;
+  transition: all 0.4s;
+}
+.normalPlayer-exit-active {
+  opacity: 0;
+}

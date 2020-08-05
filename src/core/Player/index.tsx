@@ -32,7 +32,7 @@ function Player(props: RouteComponentProps) {
   )
   return (
     <div>
-      <NormalPlayer song={currentSong} />
+      <NormalPlayer song={currentSong} fullScreen={fullScreen} />
     </div>
   )
 }
