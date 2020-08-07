@@ -307,6 +307,44 @@ function Player(props: RouteComponentProps) {
 
   const toastRef = useRef<any>(null)
 
+  const songReady = useRef(true)
+
+  useEffect(() => {
+    if (
+      !playList.length ||
+      currentIndex === -1 ||
+      !playList[currentIndex] ||
+      (playList[currentIndex] as any).id === preSong.id ||
+      !songReady.current // 标志位为 false
+    )
+      return
+    const current: any = playList[currentIndex]
+    setPreSong(current)
+    songReady.current = false // 把标志位置为 false, 表示现在新的资源没有缓冲完成，不能切歌
+    changeCurrentDispatch(current) // 赋值 currentSong
+    audioRef.current!.src = current.id && getSongUrl(current.id)
+    setTimeout(() => {
+      // 注意，play 方法返回的是一个 promise 对象
+      audioRef.current!.play().then(() => {
+        songReady.current = true
+      })
+    })
+    togglePlayingDispatch(true) // 播放状态
+    setCurrentTime(0) // 从头开始播放
+    current.dt && setDuration((current.dt / 1000) | 0) // 时长
+  }, [
+    playList,
+    currentIndex,
+    preSong.id,
+    changeCurrentDispatch,
+    togglePlayingDispatch,
+  ])
+
+  const handleError = () => {
+    songReady.current = true
+    alert('播放出错')
+  }
+
   return (
     <div>
       <NormalPlayer
@@ -325,6 +363,7 @@ function Player(props: RouteComponentProps) {
         ref={audioRef}
         onTimeUpdate={updateTime}
         onEnded={handleEnd}
+        onError={handleError}
       ></audio>
       <Toast text={modeText} ref={toastRef}></Toast>
     </div>
