@@ -11,4 +11,5 @@ export interface playStateType {
   currentIndex: number
   showPlayList: boolean
   currentSong: currentSongType
+  percent: number
 }

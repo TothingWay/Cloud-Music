@@ -1,4 +1,14 @@
 export interface PlayerProps {
-  song: any
-  fullScreen: boolean
+  song?: any
+  fullScreen?: boolean
+  radius?: number
+  percent?: number
+  currentTime?: number
+  duration?: number
+  mode?: number
+  percentChange?: (percent: number) => void
+  onProgressChange?: (percent: number) => void
+  handlePrev?: () => void
+  handleNext?: () => void
+  changeMode?: () => void
 }

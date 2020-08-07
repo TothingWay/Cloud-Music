@@ -12,6 +12,7 @@ const defaultState: playStateType = {
   currentIndex: -1, // 当前歌曲在播放列表的索引位置
   showPlayList: false, // 是否展示播放列表
   currentSong: {},
+  percent: 0,
 }
 
 export default (state = defaultState, action: any) => {
@@ -40,6 +41,9 @@ export default (state = defaultState, action: any) => {
         break
       case actionTypes.SET_SHOW_PLAYLIST:
         draft.showPlayList = action.data
+        break
+      case actionTypes.SET_PERCENT:
+        draft.percent = action.data
         break
     }
   })

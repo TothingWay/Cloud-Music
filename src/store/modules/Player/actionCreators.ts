@@ -40,3 +40,8 @@ export const changeShowPlayList = (data: boolean) => ({
   type: actionTypes.SET_SHOW_PLAYLIST,
   data,
 })
+
+export const changePercent = (data: boolean) => ({
+  type: actionTypes.SET_PERCENT,
+  data,
+})

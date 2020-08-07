@@ -1,17 +1,24 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useRef, useCallback } from 'react'
 import style from './index.module.scss'
-import { getName, prefixStyle } from '@/utils'
+import { getName, prefixStyle, formatPlayTime } from '@/utils'
 import SvgIcon from '@/components/SvgIcon'
 import { CSSTransition } from 'react-transition-group'
 import animations from 'create-keyframe-animation'
 import { PlayerProps } from './data'
 import '@/styles/global.scss'
 import * as actionTypes from '@/store/modules/Player/actionCreators'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import ProgressBar from '@/components/ProgressBar'
+import { storeType } from '@/store/data'
+import { playMode } from '@/api/config'
 
 function NormalPlayer(props: PlayerProps) {
-  const { song, fullScreen } = props
+  const { song, fullScreen, currentTime, duration, percent, mode } = props
+
+  const { onProgressChange, handlePrev, handleNext } = props
+
+  const playing = useSelector((state: storeType) => state.player.playing)
 
   const normalPlayerRef = useRef<HTMLDivElement>(null)
   const cdWrapperRef = useRef<HTMLDivElement>(null)
@@ -93,6 +100,24 @@ function NormalPlayer(props: PlayerProps) {
     dispatch(actionTypes.changeFullScreen(false))
   }, [dispatch])
 
+  const clickPlaying = useCallback(
+    (e: React.MouseEvent, state: boolean) => {
+      e.stopPropagation()
+      dispatch(actionTypes.changePlayingState(state))
+    },
+    [dispatch],
+  )
+
+  const getPlayMode = () => {
+    if (mode === playMode.sequence) {
+      return <SvgIcon iconClass="player-cycle" />
+    } else if (mode === playMode.loop) {
+      return <SvgIcon iconClass="player-single" />
+    } else if (mode === playMode.random) {
+      return <SvgIcon iconClass="player-random" />
+    }
+  }
+
   return (
     <CSSTransition
       classNames="normalPlayer"
@@ -114,38 +139,66 @@ function NormalPlayer(props: PlayerProps) {
           />
         </div>
         <div className={`${style['background']} ${style['layer']}`}></div>
-        <div className={style['top']}>
+        <div className={`${style['top']} top`}>
           <SvgIcon
             iconClass="back"
             className={style['back']}
             onClick={toggleFullScreenDispatch}
           />
           <h1 className={style['title']}>{song.name}</h1>
-          <h1 className={style['subtitle']}>{getName(song.ar)}</h1>
+          <h1 className={style['subtitle']}>{getName(song.ar || [])}</h1>
         </div>
+
         <div ref={cdWrapperRef} className={style['middle']}>
           <div className={style['CD-wrapper']}>
             <div className={style['cd']}>
               <img
-                className={`${style['image']} ${style['play']}`}
-                src={song.al.picUrl + '?param=400x400'}
+                className={`${style['image']} ${style['play']} ${
+                  playing ? '' : style['pause']
+                }`}
+                src={song.al && song.al.picUrl + '?param=400x400'}
                 alt=""
               />
             </div>
           </div>
         </div>
-        <div className={style['bottom']}>
+
+        <div className={`${style['bottom']} bottom`}>
+          <div className={style['progress-wrapper']}>
+            <span className={`${style['time']} ${style['time-l']}`}>
+              {formatPlayTime(currentTime)}
+            </span>
+            <div className={style['progress-bar-wrapper']}>
+              <ProgressBar percentChange={onProgressChange} percent={percent} />
+            </div>
+            <div className={`${style['time']} ${style['time-r']}`}>
+              {formatPlayTime(duration)}
+            </div>
+          </div>
           <div className={style['operators']}>
             <div className={`${style['icon']} ${style['i-left']}`}>
-              <SvgIcon iconClass="player-cycle" />
+              {getPlayMode()}
             </div>
-            <div className={`${style['icon']} ${style['i-left']}`}>
+            <div
+              className={`${style['icon']} ${style['i-left']}`}
+              onClick={handlePrev}
+            >
               <SvgIcon iconClass="player-prev" />
             </div>
-            <div className={`${style['icon']} ${style['i-center']}`}>
-              <SvgIcon iconClass="player-play" />
+            <div
+              className={`${style['icon']} ${style['i-center']}`}
+              onClick={(e) => clickPlaying(e, !playing)}
+            >
+              {playing ? (
+                <SvgIcon iconClass="player-play" />
+              ) : (
+                <SvgIcon iconClass="player-stop" />
+              )}
             </div>
-            <div className={`${style['icon']} ${style['i-right']}`}>
+            <div
+              className={`${style['icon']} ${style['i-right']}`}
+              onClick={handleNext}
+            >
               <SvgIcon iconClass="player-next" />
             </div>
             <div className={`${style['icon']} ${style['i-right']}`}>

@@ -173,14 +173,29 @@
 
 
 .mini-player {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
+  circle {
+    stroke-width: 6px;
+    transform-origin: center;
+    &.progress-background {
+      transform: scale(0.9);
+      stroke: $theme-light-color;
+    }
+    &.progress-bar {
+      transform: scale(0.9) rotate(-90deg);
+      stroke: $text-color;
+    }
+  }
   img {
-    width: 30px;
-    height: 30px;
+    position: absolute;
+    top: 8px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     overflow: hidden;
   }
@@ -189,5 +204,29 @@
     &.pause {
       animation-play-state: paused;
     }
+  }
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 0px auto;
+  padding: 10px 0;
+  .time {
+    color: $theme-light-color;
+    font-size: $font-size-s;
+    flex: 0 0 30px;
+    line-height: 30px;
+    width: 30px;
+    &.time-l {
+      text-align: left;
+    }
+    &.time-r {
+      text-align: right;
+    }
+  }
+  .progress-bar-wrapper {
+    flex: 1;
   }
 }

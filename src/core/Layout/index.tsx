@@ -15,6 +15,7 @@ function Layout({ route }: RouteConfigComponentProps) {
   const currentSong = useSelector(
     (state: storeType) => state.player.currentSong,
   )
+  const percent = useSelector((state: storeType) => state.player.percent)
 
   useEffect(() => {
     if (isIphoneXDevice()) {
@@ -24,11 +25,17 @@ function Layout({ route }: RouteConfigComponentProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   return (
     <div>
       <div className={`${style['header']}`}>
         <span>Cloud Music</span>
-        <MiniPlayer song={currentSong} fullScreen={fullScreen} />
+        <MiniPlayer
+          song={currentSong}
+          fullScreen={fullScreen}
+          radius={30}
+          percent={percent}
+        />
       </div>
       <div
         style={{
