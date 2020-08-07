@@ -16,7 +16,7 @@ import { playMode } from '@/api/config'
 function NormalPlayer(props: PlayerProps) {
   const { song, fullScreen, currentTime, duration, percent, mode } = props
 
-  const { onProgressChange, handlePrev, handleNext } = props
+  const { onProgressChange, handlePrev, handleNext, changeMode } = props
 
   const playing = useSelector((state: storeType) => state.player.playing)
 
@@ -176,7 +176,10 @@ function NormalPlayer(props: PlayerProps) {
             </div>
           </div>
           <div className={style['operators']}>
-            <div className={`${style['icon']} ${style['i-left']}`}>
+            <div
+              className={`${style['icon']} ${style['i-left']}`}
+              onClick={changeMode}
+            >
               {getPlayMode()}
             </div>
             <div

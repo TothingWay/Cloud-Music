@@ -6,6 +6,8 @@ import { storeType } from '@/store/data'
 import NormalPlayer from './normalPlayer'
 import * as actionTypes from '@/store/modules/Player/actionCreators'
 import { getSongUrl, findIndex, shuffle } from '@/utils'
+import Toast from '@/components/Toast'
+import { playMode } from '@/api/config'
 
 /* const currentSong = {
   al: {
@@ -168,17 +170,21 @@ function Player(props: RouteComponentProps) {
       changePlayListDispatch(sequencePlayList)
       const index = findIndex(currentSong, sequencePlayList)
       changeCurrentIndexDispatch(index)
+      setModeText('顺序循环')
     } else if (newMode === 1) {
       //单曲循环
       changePlayListDispatch(sequencePlayList)
+      setModeText('单曲循环')
     } else if (newMode === 2) {
       //随机播放
       const newList = shuffle(sequencePlayList)
       const index = findIndex(currentSong, newList)
       changePlayListDispatch(newList)
       changeCurrentIndexDispatch(index)
+      setModeText('随机播放')
     }
     changeModeDispatch(newMode)
+    toastRef.current!.show()
   }, [
     changeCurrentIndexDispatch,
     changeModeDispatch,
@@ -289,6 +295,18 @@ function Player(props: RouteComponentProps) {
     playing ? audioRef.current!.play() : audioRef.current!.pause()
   }, [playing])
 
+  const handleEnd = () => {
+    if (mode === playMode.loop) {
+      handleLoop()
+    } else {
+      handleNext()
+    }
+  }
+
+  const [modeText, setModeText] = useState<string>('')
+
+  const toastRef = useRef<any>(null)
+
   return (
     <div>
       <NormalPlayer
@@ -303,7 +321,12 @@ function Player(props: RouteComponentProps) {
         mode={mode}
         changeMode={changeMode}
       />
-      <audio ref={audioRef} onTimeUpdate={updateTime}></audio>
+      <audio
+        ref={audioRef}
+        onTimeUpdate={updateTime}
+        onEnded={handleEnd}
+      ></audio>
+      <Toast text={modeText} ref={toastRef}></Toast>
     </div>
   )
 }
