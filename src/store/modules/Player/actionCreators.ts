@@ -45,3 +45,13 @@ export const changePercent = (data: boolean) => ({
   type: actionTypes.SET_PERCENT,
   data,
 })
+
+export const insertSong = (data: any) => ({
+  type: actionTypes.INSERT_SONG,
+  data,
+})
+
+export const deleteSong = (data: any) => ({
+  type: actionTypes.DELETE_SONG,
+  data,
+})

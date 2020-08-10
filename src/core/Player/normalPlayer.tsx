@@ -100,6 +100,18 @@ function NormalPlayer(props: PlayerProps) {
     dispatch(actionTypes.changeFullScreen(false))
   }, [dispatch])
 
+  const togglePlayListDispatch = useCallback(
+    (state) => {
+      dispatch(actionTypes.changeShowPlayList(state))
+    },
+    [dispatch],
+  )
+
+  const handleTogglePlayList = (e: React.MouseEvent) => {
+    togglePlayListDispatch(true)
+    e.stopPropagation()
+  }
+
   const clickPlaying = useCallback(
     (e: React.MouseEvent, state: boolean) => {
       e.stopPropagation()
@@ -204,7 +216,10 @@ function NormalPlayer(props: PlayerProps) {
             >
               <SvgIcon iconClass="player-next" />
             </div>
-            <div className={`${style['icon']} ${style['i-right']}`}>
+            <div
+              className={`${style['icon']} ${style['i-right']}`}
+              onClick={handleTogglePlayList}
+            >
               <SvgIcon iconClass="player-list" />
             </div>
           </div>

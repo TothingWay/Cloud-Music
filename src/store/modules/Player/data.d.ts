@@ -12,4 +12,6 @@ export interface playStateType {
   showPlayList: boolean
   currentSong: currentSongType
   percent: number
+  speed: number
+  merge?: (obj: any) => void
 }

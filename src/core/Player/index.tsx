@@ -8,6 +8,7 @@ import * as actionTypes from '@/store/modules/Player/actionCreators'
 import { getSongUrl, findIndex, shuffle } from '@/utils'
 import Toast from '@/components/Toast'
 import { playMode } from '@/api/config'
+import PlayList from './playerList'
 
 /* const currentSong = {
   al: {
@@ -365,6 +366,7 @@ function Player(props: RouteComponentProps) {
         onEnded={handleEnd}
         onError={handleError}
       ></audio>
+      <PlayList clearPreSong={setPreSong.bind(null, {})} />
       <Toast text={modeText} ref={toastRef}></Toast>
     </div>
   )

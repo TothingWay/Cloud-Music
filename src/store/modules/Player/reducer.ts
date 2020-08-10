@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { findIndex } from '@/utils/index'
 import * as actionTypes from './constants'
 import { playStateType } from './data'
 import produce from 'immer'
@@ -13,6 +15,65 @@ const defaultState: playStateType = {
   showPlayList: false, // 是否展示播放列表
   currentSong: {},
   percent: 0,
+  speed: 1,
+}
+
+const handleInsertSong = (state: playStateType, song: any) => {
+  const playList = JSON.parse(JSON.stringify(state.playList))
+  const sequenceList = JSON.parse(JSON.stringify(state.sequencePlayList))
+  let currentIndex = state.currentIndex
+  //看看有没有同款
+  const fpIndex = findIndex(song, playList)
+  // 如果是当前歌曲直接不处理
+  if (fpIndex === currentIndex && currentIndex !== -1) return state
+  currentIndex++
+  // 把歌放进去,放到当前播放曲目的下一个位置
+  playList.splice(currentIndex, 0, song)
+  // 如果列表中已经存在要添加的歌
+  if (fpIndex > -1) {
+    if (currentIndex > fpIndex) {
+      playList.splice(fpIndex, 1)
+      currentIndex--
+    } else {
+      playList.splice(fpIndex + 1, 1)
+    }
+  }
+
+  let sequenceIndex = findIndex(playList[currentIndex], sequenceList) + 1
+  const fsIndex = findIndex(song, sequenceList)
+  sequenceList.splice(sequenceIndex, 0, song)
+  if (fsIndex > -1) {
+    if (sequenceIndex > fsIndex) {
+      sequenceList.splice(fsIndex, 1)
+      sequenceIndex--
+    } else {
+      sequenceList.splice(fsIndex + 1, 1)
+    }
+  }
+  return state.merge!({
+    playList,
+    sequencePlayList: sequenceList,
+    currentIndex,
+  })
+}
+
+const handleDeleteSong = (state: playStateType, song: any) => {
+  const playList = JSON.parse(JSON.stringify(state.playList))
+  const sequenceList = JSON.parse(JSON.stringify(state.sequencePlayList))
+  let currentIndex = state.currentIndex
+
+  const fpIndex = findIndex(song, playList)
+  playList.splice(fpIndex, 1)
+  if (fpIndex < currentIndex) currentIndex--
+
+  const fsIndex = findIndex(song, sequenceList)
+  sequenceList.splice(fsIndex, 1)
+
+  return state.merge!({
+    playList,
+    sequencePlayList: sequenceList,
+    currentIndex,
+  })
 }
 
 export default (state = defaultState, action: any) => {
@@ -44,6 +105,15 @@ export default (state = defaultState, action: any) => {
         break
       case actionTypes.SET_PERCENT:
         draft.percent = action.data
+        break
+      case actionTypes.INSERT_SONG:
+        handleInsertSong(state, action.data)
+        break
+      case actionTypes.DELETE_SONG:
+        handleDeleteSong(state, action.data)
+        break
+      case actionTypes.CHANGE_SPEED:
+        state.speed = action.data
         break
     }
   })
