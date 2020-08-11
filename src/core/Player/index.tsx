@@ -9,90 +9,8 @@ import { getSongUrl, findIndex, shuffle } from '@/utils'
 import Toast from '@/components/Toast'
 import { playMode } from '@/api/config'
 import PlayList from './playerList'
-
-/* const currentSong = {
-  al: {
-    picUrl:
-      'https://p1.music.126.net/JL_id1CFwNJpzgrXwemh4Q==/109951164172892390.jpg',
-  },
-  name: '木偶人',
-  ar: [{ name: '薛之谦' }],
-} */
-
-/* const playList = [
-  {
-    ftype: 0,
-    djId: 0,
-    a: null,
-    cd: '01',
-    crbt: null,
-    no: 1,
-    st: 0,
-    rt: '',
-    cf: '',
-    alia: ['手游《梦幻花园》苏州园林版推广曲'],
-    rtUrls: [],
-    fee: 0,
-    s_id: 0,
-    copyright: 0,
-    h: {
-      br: 320000,
-      fid: 0,
-      size: 9400365,
-      vd: -45814,
-    },
-    mv: 0,
-    al: {
-      id: 84991301,
-      name: '拾梦纪',
-      picUrl:
-        'http://p1.music.126.net/M19SOoRMkcHmJvmGflXjXQ==/109951164627180052.jpg',
-      tns: [],
-      pic_str: '109951164627180052',
-      pic: 109951164627180050,
-    },
-    name: '拾梦纪',
-    l: {
-      br: 128000,
-      fid: 0,
-      size: 3760173,
-      vd: -41672,
-    },
-    rtype: 0,
-    m: {
-      br: 192000,
-      fid: 0,
-      size: 5640237,
-      vd: -43277,
-    },
-    cp: 1416668,
-    mark: 0,
-    rtUrl: null,
-    mst: 9,
-    dt: 234947,
-    ar: [
-      {
-        id: 12084589,
-        name: '妖扬',
-        tns: [],
-        alias: [],
-      },
-      {
-        id: 12578371,
-        name: '金天',
-        tns: [],
-        alias: [],
-      },
-    ],
-    pop: 5,
-    pst: 0,
-    t: 0,
-    v: 3,
-    id: 1416767593,
-    publishTime: 0,
-    rurl: null,
-  },
-] */
+import { getLyricRequest } from '@/api/player'
+import Lyric from '@/utils/lyricParser'
 
 function Player(props: RouteComponentProps) {
   const dispatch = useDispatch()
@@ -101,11 +19,24 @@ function Player(props: RouteComponentProps) {
   const [currentTime, setCurrentTime] = useState(0)
   //歌曲总时长
   const [duration, setDuration] = useState(0)
+  const [modeText, setModeText] = useState<string>('')
+
+  const toastRef = useRef<any>(null)
+
+  const songReady = useRef(true)
 
   const audioRef = useRef<HTMLAudioElement>(null)
 
+  const [preSong, setPreSong] = useState<any>({})
+
+  const [currentPlayingLyric, setPlayingLyric] = useState('')
+
+  const currentLyric = useRef<any>()
+  const currentLineNum = useRef(0)
+
   const fullScreen = useSelector((state: storeType) => state.player.fullScreen)
   const percent = useSelector((state: storeType) => state.player.percent)
+  const speed = useSelector((state: storeType) => state.player.speed)
   const currentSong = useSelector(
     (state: storeType) => state.player.currentSong,
   )
@@ -118,9 +49,6 @@ function Player(props: RouteComponentProps) {
   const sequencePlayList = useSelector(
     (state: storeType) => state.player.sequencePlayList,
   )
-  // const showPlayList = useSelector(
-  //   (state: storeType) => state.player.showPlayList,
-  // )
 
   const changePercentDispatch = useCallback(
     (percent) => {
@@ -186,14 +114,8 @@ function Player(props: RouteComponentProps) {
     }
     changeModeDispatch(newMode)
     toastRef.current!.show()
-  }, [
-    changeCurrentIndexDispatch,
-    changeModeDispatch,
-    changePlayListDispatch,
-    currentSong,
-    mode,
-    sequencePlayList,
-  ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     //歌曲播放进度
@@ -210,27 +132,90 @@ function Player(props: RouteComponentProps) {
       if (!playing) {
         togglePlayingDispatch(true)
       }
+      if (currentLyric.current) {
+        currentLyric.current.seek(newTime * 1000)
+      }
     },
-    [duration, playing, togglePlayingDispatch],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   )
 
   useEffect(() => {
-    if (!currentSong) return
-    changeCurrentIndexDispatch(0) // currentIndex默认为-1，临时改成0
-    const current: any = playList[0]
-    if (!current) return
-    changeCurrentDispatch(current) // 赋值currentSong
-
+    if (
+      !playList.length ||
+      currentIndex === -1 ||
+      !playList[currentIndex] ||
+      (playList[currentIndex] as any).id === preSong.id ||
+      !songReady.current
+    )
+      return
+    songReady.current = false
+    const current: any = playList[currentIndex]
+    changeCurrentDispatch(current)
+    setPreSong(current)
+    setPlayingLyric('')
     audioRef.current!.src = getSongUrl(current.id)
-    setCurrentTime(0) //从头开始播放
-    setDuration((current.dt / 1000) | 0) //时长
-  }, [
-    changeCurrentDispatch,
-    changeCurrentIndexDispatch,
-    currentSong,
-    dispatch,
-    playList,
-  ])
+    audioRef.current!.autoplay = true
+    audioRef.current!.playbackRate = speed
+    togglePlayingDispatch(true)
+    getLyric(current.id)
+    setCurrentTime(0)
+    setDuration((current.dt / 1000) | 0)
+    // eslint-disable-next-line
+  }, [currentIndex, playList]);
+
+  useEffect(() => {
+    if (!fullScreen) return
+    if (currentLyric.current && currentLyric.current.lines.length) {
+      handleLyric({
+        lineNum: currentLineNum.current,
+        txt: currentLyric.current.lines[currentLineNum.current].txt,
+      })
+    }
+  }, [fullScreen])
+
+  const handleLyric = ({ lineNum, txt }: { lineNum: number; txt: string }) => {
+    if (!currentLyric.current) return
+    currentLineNum.current = lineNum
+    setPlayingLyric(txt)
+  }
+
+  const getLyric = (id: number) => {
+    let lyric = ''
+    if (currentLyric.current) {
+      const lyricCurrent: any = currentLyric.current
+      lyricCurrent.stop()
+    }
+    // 避免songReady恒为false的情况
+    setTimeout(() => {
+      songReady.current = true
+    }, 3000)
+    getLyricRequest(id)
+      .then((data: any) => {
+        lyric = data.lrc && data.lrc.lyric
+        if (!lyric) {
+          currentLyric.current = null
+          return
+        }
+        currentLyric.current = new Lyric(lyric, handleLyric, speed)
+        currentLyric.current.play()
+        currentLineNum.current = 0
+        currentLyric.current.seek(0)
+      })
+      .catch(() => {
+        currentLyric.current = ''
+        songReady.current = true
+        audioRef.current!.play()
+      })
+  }
+
+  const clickPlaying = (e: React.MouseEvent, state: boolean) => {
+    e.stopPropagation()
+    togglePlayingDispatch(state)
+    if (currentLyric.current) {
+      currentLyric.current.togglePlay(currentTime * 1000)
+    }
+  }
 
   const updateTime = (e: React.SyntheticEvent) => {
     const target = e.target as HTMLAudioElement
@@ -242,6 +227,9 @@ function Player(props: RouteComponentProps) {
     audioRef.current!.currentTime = 0
     togglePlayingDispatch(true)
     audioRef.current!.play()
+    if (currentLyric.current) {
+      currentLyric.current.seek(0)
+    }
   }
 
   const handlePrev = () => {
@@ -268,30 +256,6 @@ function Player(props: RouteComponentProps) {
     changeCurrentIndexDispatch(index)
   }
 
-  const [preSong, setPreSong] = useState<any>({})
-
-  useEffect(() => {
-    if (
-      !playList.length ||
-      currentIndex === -1 ||
-      !playList[currentIndex] ||
-      (playList[currentIndex] as any).id === preSong.id
-    )
-      return
-    const current: any = playList[currentIndex]
-    changeCurrentDispatch(current) //赋值currentSong
-    setPreSong(current)
-    audioRef.current!.src = current.id && getSongUrl(current.id)
-    setCurrentTime(0) //从头开始播放
-    setDuration((current.dt / 1000) | 0) //时长
-  }, [
-    currentIndex,
-    changeCurrentDispatch,
-    togglePlayingDispatch,
-    preSong.id,
-    playList,
-  ])
-
   useEffect(() => {
     playing ? audioRef.current!.play() : audioRef.current!.pause()
   }, [playing])
@@ -303,43 +267,6 @@ function Player(props: RouteComponentProps) {
       handleNext()
     }
   }
-
-  const [modeText, setModeText] = useState<string>('')
-
-  const toastRef = useRef<any>(null)
-
-  const songReady = useRef(true)
-
-  useEffect(() => {
-    if (
-      !playList.length ||
-      currentIndex === -1 ||
-      !playList[currentIndex] ||
-      (playList[currentIndex] as any).id === preSong.id ||
-      !songReady.current // 标志位为 false
-    )
-      return
-    const current: any = playList[currentIndex]
-    setPreSong(current)
-    songReady.current = false // 把标志位置为 false, 表示现在新的资源没有缓冲完成，不能切歌
-    changeCurrentDispatch(current) // 赋值 currentSong
-    audioRef.current!.src = current.id && getSongUrl(current.id)
-    setTimeout(() => {
-      // 注意，play 方法返回的是一个 promise 对象
-      audioRef.current!.play().then(() => {
-        songReady.current = true
-      })
-    })
-    togglePlayingDispatch(true) // 播放状态
-    setCurrentTime(0) // 从头开始播放
-    current.dt && setDuration((current.dt / 1000) | 0) // 时长
-  }, [
-    playList,
-    currentIndex,
-    preSong.id,
-    changeCurrentDispatch,
-    togglePlayingDispatch,
-  ])
 
   const handleError = () => {
     songReady.current = true
@@ -357,6 +284,10 @@ function Player(props: RouteComponentProps) {
         onProgressChange={onProgressChange}
         handlePrev={handlePrev}
         handleNext={handleNext}
+        clickPlaying={clickPlaying}
+        currentLyric={currentLyric.current}
+        currentPlayingLyric={currentPlayingLyric}
+        currentLineNum={currentLineNum.current}
         mode={mode}
         changeMode={changeMode}
       />

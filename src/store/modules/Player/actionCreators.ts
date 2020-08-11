@@ -55,3 +55,8 @@ export const deleteSong = (data: any) => ({
   type: actionTypes.DELETE_SONG,
   data,
 })
+
+export const changeSpeed = (data: number) => ({
+  type: actionTypes.CHANGE_SPEED,
+  data,
+})

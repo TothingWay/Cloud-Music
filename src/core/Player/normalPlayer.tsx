@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useRef, useCallback } from 'react'
+import React, { useRef, useCallback, useState, useEffect } from 'react'
 import style from './index.module.scss'
 import { getName, prefixStyle, formatPlayTime } from '@/utils'
 import SvgIcon from '@/components/SvgIcon'
@@ -12,11 +12,28 @@ import { useSelector, useDispatch } from 'react-redux'
 import ProgressBar from '@/components/ProgressBar'
 import { storeType } from '@/store/data'
 import { playMode } from '@/api/config'
+import Scroll from '@/components/Scroll'
 
 function NormalPlayer(props: PlayerProps) {
-  const { song, fullScreen, currentTime, duration, percent, mode } = props
+  const {
+    song,
+    fullScreen,
+    currentTime,
+    duration,
+    percent,
+    mode,
+    currentLineNum,
+    currentPlayingLyric,
+    currentLyric,
+  } = props
 
-  const { onProgressChange, handlePrev, handleNext, changeMode } = props
+  const {
+    onProgressChange,
+    handlePrev,
+    handleNext,
+    changeMode,
+    clickPlaying,
+  } = props
 
   const playing = useSelector((state: storeType) => state.player.playing)
 
@@ -24,6 +41,10 @@ function NormalPlayer(props: PlayerProps) {
   const cdWrapperRef = useRef<HTMLDivElement>(null)
 
   const transform: any = prefixStyle('transform')
+
+  const [currentState, setCurrentState] = useState<any>(0)
+  const lyricScrollRef = useRef<any>(null)
+  const lyricLineRefs = useRef<any>([])
 
   const _getPosAndScale = () => {
     const targetWidth = 40
@@ -91,7 +112,7 @@ function NormalPlayer(props: PlayerProps) {
     cdWrapperDom.style.transition = ''
     cdWrapperDom.style[transform] = ''
     normalPlayerRef.current!.style.display = 'none'
-    // setCurrentState('')
+    setCurrentState('')
   }
 
   const dispatch = useDispatch()
@@ -112,13 +133,23 @@ function NormalPlayer(props: PlayerProps) {
     e.stopPropagation()
   }
 
-  const clickPlaying = useCallback(
-    (e: React.MouseEvent, state: boolean) => {
-      e.stopPropagation()
-      dispatch(actionTypes.changePlayingState(state))
+  const clickPlayingCB = useCallback(
+    (e) => {
+      clickPlaying!(e, !playing)
     },
-    [dispatch],
+    [clickPlaying, playing],
   )
+
+  useEffect(() => {
+    if (!lyricScrollRef.current) return
+    const bScroll = lyricScrollRef.current.getBScroll()
+    if (currentLineNum! > 5) {
+      const lineEl = lyricLineRefs.current[currentLineNum! - 5].current
+      bScroll.scrollToElement(lineEl, 1000)
+    } else {
+      bScroll.scrollTo(0, 0, 1000)
+    }
+  }, [currentLineNum])
 
   const getPlayMode = () => {
     if (mode === playMode.sequence) {
@@ -128,6 +159,16 @@ function NormalPlayer(props: PlayerProps) {
     } else if (mode === playMode.random) {
       return <SvgIcon iconClass="player-random" />
     }
+  }
+
+  const toggleCurrentState = () => {
+    let nextState = ''
+    if (currentState !== 'lyric') {
+      nextState = 'lyric'
+    } else {
+      nextState = ''
+    }
+    setCurrentState(nextState)
   }
 
   return (
@@ -161,18 +202,69 @@ function NormalPlayer(props: PlayerProps) {
           <h1 className={style['subtitle']}>{getName(song.ar || [])}</h1>
         </div>
 
-        <div ref={cdWrapperRef} className={style['middle']}>
-          <div className={style['CD-wrapper']}>
-            <div className={style['cd']}>
-              <img
-                className={`${style['image']} ${style['play']} ${
-                  playing ? '' : style['pause']
-                }`}
-                src={song.al && song.al.picUrl + '?param=400x400'}
-                alt=""
-              />
+        <div
+          ref={cdWrapperRef}
+          className={style['middle']}
+          onClick={toggleCurrentState}
+        >
+          <CSSTransition
+            timeout={400}
+            classNames="fade"
+            in={currentState !== 'lyric'}
+          >
+            <div
+              className={style['CD-wrapper']}
+              style={{
+                visibility: currentState !== 'lyric' ? 'visible' : 'hidden',
+              }}
+            >
+              <div className={style['cd']}>
+                <img
+                  className={`${style['image']} ${style['play']} ${
+                    playing ? '' : style['pause']
+                  }`}
+                  src={song.al && song.al.picUrl + '?param=400x400'}
+                  alt=""
+                />
+              </div>
+              <p className={style['playing-lyric']}>{currentPlayingLyric}</p>
             </div>
-          </div>
+          </CSSTransition>
+          <CSSTransition
+            timeout={400}
+            classNames="fade"
+            in={currentState === 'lyric'}
+          >
+            <div className={style['lyric-container']}>
+              <Scroll className={style['scroll-lyric']} ref={lyricScrollRef}>
+                <div
+                  style={{
+                    visibility: currentState === 'lyric' ? 'visible' : 'hidden',
+                  }}
+                  className={style['lyric-wrapper']}
+                >
+                  {currentLyric ? (
+                    currentLyric.lines.map((item: any, index: number) => {
+                      lyricLineRefs.current[index] = React.createRef()
+                      return (
+                        <p
+                          className={`text ${
+                            currentLineNum === index ? 'current' : ''
+                          }`}
+                          key={item + index}
+                          ref={lyricLineRefs.current[index]}
+                        >
+                          {item.txt}
+                        </p>
+                      )
+                    })
+                  ) : (
+                    <p className="text pure">纯音乐，请欣赏。</p>
+                  )}
+                </div>
+              </Scroll>
+            </div>
+          </CSSTransition>
         </div>
 
         <div className={`${style['bottom']} bottom`}>
@@ -202,7 +294,7 @@ function NormalPlayer(props: PlayerProps) {
             </div>
             <div
               className={`${style['icon']} ${style['i-center']}`}
-              onClick={(e) => clickPlaying(e, !playing)}
+              onClick={clickPlayingCB}
             >
               {playing ? (
                 <SvgIcon iconClass="player-play" />

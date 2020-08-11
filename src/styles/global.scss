@@ -85,3 +85,20 @@
   opacity: 0;
   transition: all 0.3s;
 }
+
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: all 0.4s;
+}
+.fade-enter-done {
+  transition: none;
+}
+.fade-exit-active {
+  opacity: 0;
+}
+.fade-exit-done {
+  opacity: 0;
+}

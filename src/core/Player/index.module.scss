@@ -103,7 +103,7 @@
         }
       }
     }
-    .playing_lyric {
+    .playing-lyric {
       margin-top: 20px;
       font-size: 14px;
       line-height: 20px;
@@ -171,6 +171,38 @@
   }
 }
 
+.lyric-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  .scroll-lyric {
+    background-color: transparent;
+  }
+}
+
+.lyric-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  p {
+    line-height: 32px;
+    color: rgba (255, 255, 255, 0.5);
+    white-space: normal;
+    font-size: $font-size-l;
+    &.current {
+      color: #fff;
+    }
+    &.pure {
+      position: relative;
+      top: 30vh;
+    }
+  }
+}
 
 .mini-player {
   position: relative;
