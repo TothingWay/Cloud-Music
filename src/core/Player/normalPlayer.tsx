@@ -143,6 +143,7 @@ function NormalPlayer(props: PlayerProps) {
   useEffect(() => {
     if (!lyricScrollRef.current) return
     const bScroll = lyricScrollRef.current.getBScroll()
+
     if (currentLineNum! > 5) {
       const lineEl = lyricLineRefs.current[currentLineNum! - 5].current
       bScroll.scrollToElement(lineEl, 1000)
@@ -248,8 +249,8 @@ function NormalPlayer(props: PlayerProps) {
                       lyricLineRefs.current[index] = React.createRef()
                       return (
                         <p
-                          className={`text ${
-                            currentLineNum === index ? 'current' : ''
+                          className={`${style['text']} ${
+                            currentLineNum === index ? style['current'] : ''
                           }`}
                           key={item + index}
                           ref={lyricLineRefs.current[index]}
@@ -259,7 +260,9 @@ function NormalPlayer(props: PlayerProps) {
                       )
                     })
                   ) : (
-                    <p className="text pure">纯音乐，请欣赏。</p>
+                    <p className={`${style['text']} ${style['pure']}`}>
+                      纯音乐，请欣赏。
+                    </p>
                   )}
                 </div>
               </Scroll>
