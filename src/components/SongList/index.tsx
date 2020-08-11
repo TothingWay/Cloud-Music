@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import style from './index.module.scss'
 import { getName } from '@/utils'
 import SvgIcon from '@/components/SvgIcon'
+import { useDispatch } from 'react-redux'
+import * as actionTypes from '@/store/modules/Player/actionCreators'
 
 interface songListProps {
   songs: Array<any>
@@ -13,8 +15,46 @@ const SongsList = React.forwardRef<HTMLDivElement, songListProps>(
 
     const totalCount = songs.length
 
+    const dispatch = useDispatch()
+
+    const changePlayListDispatch = useCallback(
+      (list) => {
+        dispatch(actionTypes.changePlayList(list))
+      },
+      [dispatch],
+    )
+
+    const changeSequecePlayListDispatch = useCallback(
+      (list) => {
+        dispatch(actionTypes.changeSequecePlayList(list))
+      },
+      [dispatch],
+    )
+
+    const changeCurrentIndexDispatch = useCallback(
+      (index) => {
+        dispatch(actionTypes.changeCurrentIndex(index))
+      },
+      [dispatch],
+    )
+
+    const toggleFullScreenDispatch = useCallback(() => {
+      dispatch(actionTypes.changeFullScreen(true))
+    }, [dispatch])
+
+    const togglePlayingDispatch = useCallback(
+      (state) => {
+        dispatch(actionTypes.changePlayingState(state))
+      },
+      [dispatch],
+    )
+
     const selectItem = (e: React.MouseEvent, index: number) => {
-      console.log(index)
+      changePlayListDispatch(songs)
+      changeSequecePlayListDispatch(songs)
+      changeCurrentIndexDispatch(index)
+      toggleFullScreenDispatch()
+      togglePlayingDispatch(true)
     }
 
     const songList = (list: Array<any>) => {

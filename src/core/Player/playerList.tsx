@@ -201,8 +201,8 @@ function PlayList(props: { clearPreSong: () => void }) {
 
   const getCurrentIcon = (item: any) => {
     const current = currentSong.id === item.id
-    const className = current ? 'icon-play' : ''
-    const iconClass = current ? 'player-play' : ''
+    const className = current ? style['icon-play'] : ''
+    const iconClass = current ? 'player-stop' : ''
     return <SvgIcon className={className} iconClass={iconClass} />
   }
 

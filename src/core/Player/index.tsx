@@ -115,14 +115,15 @@ function Player(props: RouteComponentProps) {
     changeModeDispatch(newMode)
     toastRef.current!.show()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [mode])
 
   useEffect(() => {
     //歌曲播放进度
     changePercentDispatch(
       isNaN(currentTime / duration) ? 0 : currentTime / duration,
     )
-  }, [changePercentDispatch, currentTime, duration])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTime])
 
   const onProgressChange = useCallback(
     (curPercent) => {
@@ -137,7 +138,7 @@ function Player(props: RouteComponentProps) {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [currentTime],
   )
 
   useEffect(() => {
@@ -162,7 +163,7 @@ function Player(props: RouteComponentProps) {
     setCurrentTime(0)
     setDuration((current.dt / 1000) | 0)
     // eslint-disable-next-line
-  }, [currentIndex, playList]);
+  }, [currentIndex, currentIndex, playList]);
 
   useEffect(() => {
     if (!fullScreen) return

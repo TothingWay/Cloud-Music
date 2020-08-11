@@ -126,7 +126,7 @@
     margin: 0px auto;
     padding: 10px 0;
     .time {
-      color: $font-color-desc;
+      color: $text-color;
       font-size: $font-size-s;
       flex: 0 0 30px;
       line-height: 30px;
@@ -324,6 +324,12 @@
   }
 
   .list-content {
+    padding: 0;
+    margin: 0;
+    .icon-play {
+      position: relative;
+      left: -5px;
+    }
     .item {
       display: flex;
       align-items: center;

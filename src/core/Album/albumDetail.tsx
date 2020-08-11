@@ -1,11 +1,55 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import style from './index.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { AlbumDetailProps, AlbumTracks } from '@/store/modules/Album/data'
 import { calculateCount, getName } from '@/utils'
+import { useDispatch } from 'react-redux'
+import * as actionTypes from '@/store/modules/Player/actionCreators'
 
 function AlbumDetail(props: AlbumDetailProps) {
   const { currentAlbum } = props
+
+  const dispatch = useDispatch()
+
+  const changePlayListDispatch = useCallback(
+    (list) => {
+      dispatch(actionTypes.changePlayList(list))
+    },
+    [dispatch],
+  )
+
+  const changeSequecePlayListDispatch = useCallback(
+    (list) => {
+      dispatch(actionTypes.changeSequecePlayList(list))
+    },
+    [dispatch],
+  )
+
+  const changeCurrentIndexDispatch = useCallback(
+    (index) => {
+      dispatch(actionTypes.changeCurrentIndex(index))
+    },
+    [dispatch],
+  )
+
+  const toggleFullScreenDispatch = useCallback(() => {
+    dispatch(actionTypes.changeFullScreen(true))
+  }, [dispatch])
+
+  const togglePlayingDispatch = useCallback(
+    (state) => {
+      dispatch(actionTypes.changePlayingState(state))
+    },
+    [dispatch],
+  )
+
+  const selectItem = (e: React.MouseEvent, index: number) => {
+    changePlayListDispatch(currentAlbum.tracks)
+    changeSequecePlayListDispatch(currentAlbum.tracks)
+    changeCurrentIndexDispatch(index)
+    toggleFullScreenDispatch()
+    togglePlayingDispatch(true)
+  }
 
   return (
     <>
@@ -77,7 +121,7 @@ function AlbumDetail(props: AlbumDetailProps) {
           {currentAlbum.tracks &&
             currentAlbum.tracks.map((item: AlbumTracks, index: number) => {
               return (
-                <li key={index}>
+                <li key={index} onClick={(e) => selectItem(e, index)}>
                   <span className={style['index']}>{index + 1}</span>
                   <div className={style['info']}>
                     <span>{item.name}</span>
