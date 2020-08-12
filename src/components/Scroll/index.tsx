@@ -24,6 +24,7 @@ type ScrollProps = {
   children?: ReactNode
   direction?: 'vertical' | 'horizental'
   click?: boolean
+  stopPropagation?: boolean
   refresh?: boolean
   onScroll?: (pos: any) => void
   pullUpLoading?: boolean
@@ -55,6 +56,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
     bounceBottom = true,
     threshold = 70,
     stop = 80,
+    stopPropagation = true,
     className,
   } = props
 
@@ -93,7 +95,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
           }
         : false,
       pullUpLoad: pullUpLoading,
-      stopPropagation: true,
+      stopPropagation: stopPropagation,
     })
     setBScroll(scroll)
     return () => {
