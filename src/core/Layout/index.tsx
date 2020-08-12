@@ -30,12 +30,16 @@ function Layout({ route }: RouteConfigComponentProps) {
     <div>
       <div className={`${style['header']}`}>
         <span>Cloud Music</span>
-        <MiniPlayer
-          song={currentSong}
-          fullScreen={fullScreen}
-          radius={30}
-          percent={percent}
-        />
+        <div>
+          {currentSong.id ? (
+            <MiniPlayer
+              song={currentSong}
+              fullScreen={fullScreen}
+              radius={30}
+              percent={percent}
+            />
+          ) : null}
+        </div>
       </div>
       <div
         style={{
