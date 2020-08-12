@@ -1,6 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import style from './index.module.scss'
+import '@/styles/global.scss'
 
 interface ConfirmProps {
   handleConfirm: () => void
@@ -33,7 +34,7 @@ const Confirm = forwardRef<any, ConfirmProps>((props, ref) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div>
-          <div className={style['confirm-content']}>
+          <div className={`${style['confirm-content']} confirm-content`}>
             <p className={style['text']}>{text}</p>
             <div className={style['operate']}>
               <div

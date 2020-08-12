@@ -102,3 +102,31 @@
 .fade-exit-done {
   opacity: 0;
 }
+
+@keyframes confirmFadeIn {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+@keyframes confirmZoom {
+  0%{
+    transform: scale(0);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+.confirm-fade-enter-active{
+  animation: confirmFadeIn 0.3s;
+  .confirm-content{
+    animation: confirmZoom 0.3s;
+  }
+}

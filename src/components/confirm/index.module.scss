@@ -1,26 +1,5 @@
 @import 'styles/variables.scss';
 
-@keyframes confirmFadeIn {
-  0%{
-    opacity: 0;
-  }
-  100%{
-    opacity: 1;
-  }
-}
-
-@keyframes confirmZoom {
-  0%{
-    transform: scale(0);
-  }
-  50%{
-    transform: scale(1.1);
-  }
-  100%{
-    transform: scale(1);
-  }
-}
-
 .confirm-wrapper {
   position: fixed;
   left: 0;
@@ -29,12 +8,6 @@
   bottom: 0;
   z-index: 1000;
   background: rgba(0, 0, 0, .3);
-  &.confirm-fade-enter-active{
-    animation: confirmFadeIn 0.3s;
-    .confirm-content{
-      animation: confirmZoom 0.3s;
-    }
-  }
   >div{
     position: absolute;
     top: 50%;
@@ -51,6 +24,7 @@
         text-align: center;
         font-size: $font-size-l;
         color: $text-color;
+        margin: 0;
       }
       .operate{
         display: flex;
