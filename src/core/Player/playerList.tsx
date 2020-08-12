@@ -208,7 +208,7 @@ function PlayList(props: { clearPreSong: () => void }) {
   }
 
   const [canTouch, setCanTouch] = useState(true)
-  const [initialed, setInitialed] = useState<boolean>()
+  const [initialed, setInitialed] = useState<boolean>(false)
   const [startY, setStartY] = useState(0)
 
   const handleTouchStart = useCallback(
@@ -246,10 +246,10 @@ function PlayList(props: { clearPreSong: () => void }) {
     [distance, togglePlayListDispatch, transform],
   )
 
-  const handleScroll = (pos: any) => {
+  const handleScroll = useCallback((pos: any) => {
     const state = pos.y === 0
     setCanTouch(state)
-  }
+  }, [])
 
   return (
     <CSSTransition
@@ -287,7 +287,11 @@ function PlayList(props: { clearPreSong: () => void }) {
             </h1>
           </div>
           <div className={style['scroll-wrapper']}>
-            <Scroll onScroll={(pos) => handleScroll(pos)} bounceTop={false}>
+            <Scroll
+              onScroll={(pos) => handleScroll(pos)}
+              bounceTop={false}
+              stopPropagation={false}
+            >
               <ul className={style['list-content']}>
                 {playList.map((item: any, index) => {
                   return (
