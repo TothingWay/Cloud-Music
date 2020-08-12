@@ -18,7 +18,11 @@ const defaultState: playStateType = {
   speed: 1,
 }
 
-const handleInsertSong = (state: playStateType, song: any) => {
+const handleInsertSong = (
+  state: playStateType,
+  song: any,
+  draft: playStateType,
+) => {
   const playList = JSON.parse(JSON.stringify(state.playList))
   const sequenceList = JSON.parse(JSON.stringify(state.sequencePlayList))
   let currentIndex = state.currentIndex
@@ -50,14 +54,17 @@ const handleInsertSong = (state: playStateType, song: any) => {
       sequenceList.splice(fsIndex + 1, 1)
     }
   }
-  return state.merge!({
-    playList,
-    sequencePlayList: sequenceList,
-    currentIndex,
-  })
+
+  draft.playList = playList
+  draft.sequencePlayList = sequenceList
+  draft.currentIndex = currentIndex
 }
 
-const handleDeleteSong = (state: playStateType, song: any) => {
+const handleDeleteSong = (
+  state: playStateType,
+  song: any,
+  draft: playStateType,
+) => {
   const playList = JSON.parse(JSON.stringify(state.playList))
   const sequenceList = JSON.parse(JSON.stringify(state.sequencePlayList))
   let currentIndex = state.currentIndex
@@ -69,11 +76,9 @@ const handleDeleteSong = (state: playStateType, song: any) => {
   const fsIndex = findIndex(song, sequenceList)
   sequenceList.splice(fsIndex, 1)
 
-  return state.merge!({
-    playList,
-    sequencePlayList: sequenceList,
-    currentIndex,
-  })
+  draft.playList = playList
+  draft.sequencePlayList = sequenceList
+  draft.currentIndex = currentIndex
 }
 
 export default (state = defaultState, action: any) => {
@@ -107,10 +112,10 @@ export default (state = defaultState, action: any) => {
         draft.percent = action.data
         break
       case actionTypes.INSERT_SONG:
-        handleInsertSong(state, action.data)
+        handleInsertSong(state, action.data, draft)
         break
       case actionTypes.DELETE_SONG:
-        handleDeleteSong(state, action.data)
+        handleDeleteSong(state, action.data, draft)
         break
       case actionTypes.CHANGE_SPEED:
         state.speed = action.data

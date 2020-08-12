@@ -94,21 +94,14 @@ function PlayList(props: { clearPreSong: () => void }) {
   )
 
   const clearDispatch = useCallback(() => {
-    dispatch(changePlayListDispatch([]))
-    dispatch(changeSequecePlayListDispatch([]))
-    dispatch(changeCurrentIndexDispatch(-1))
-    dispatch(togglePlayListDispatch(false))
-    dispatch(changeCurrentSongDispatch({}))
-    dispatch(togglePlayingStateDispatch(false))
-  }, [
-    changeCurrentIndexDispatch,
-    changeCurrentSongDispatch,
-    changePlayListDispatch,
-    changeSequecePlayListDispatch,
-    dispatch,
-    togglePlayListDispatch,
-    togglePlayingStateDispatch,
-  ])
+    changePlayListDispatch([])
+    changeSequecePlayListDispatch([])
+    changeCurrentIndexDispatch(-1)
+    togglePlayListDispatch(false)
+    changeCurrentSongDispatch({})
+    togglePlayingStateDispatch(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const changeMode = () => {
     const newMode = (mode + 1) % 3
@@ -188,16 +181,19 @@ function PlayList(props: { clearPreSong: () => void }) {
     ref.show()
   }
 
-  const handleConfirmClear = () => {
+  const handleConfirmClear = useCallback(() => {
     clearDispatch()
     // 修复清空播放列表后点击同样的歌曲，播放器不出现的bug
     clearPreSong()
-  }
+  }, [clearDispatch, clearPreSong])
 
-  const handleDeleteSong = (e: React.MouseEvent, song: any) => {
-    e.stopPropagation()
-    deleteSongDispatch(song)
-  }
+  const handleDeleteSong = useCallback(
+    (e: React.MouseEvent, song: any) => {
+      e.stopPropagation()
+      deleteSongDispatch(song)
+    },
+    [deleteSongDispatch],
+  )
 
   const getCurrentIcon = (item: any) => {
     const current = currentSong.id === item.id
@@ -215,31 +211,40 @@ function PlayList(props: { clearPreSong: () => void }) {
   const [initialed, setInitialed] = useState<boolean>()
   const [startY, setStartY] = useState(0)
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!canTouch || initialed) return
-    listWrapperRef.current!.style['transition'] = ''
-    setDistance(0)
-    setStartY(e.nativeEvent.touches[0].pageY)
-    setInitialed(true)
-  }
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (!canTouch || initialed) return
+      listWrapperRef.current!.style['transition'] = ''
+      setDistance(0)
+      setStartY(e.nativeEvent.touches[0].pageY)
+      setInitialed(true)
+    },
+    [canTouch, initialed],
+  )
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!canTouch || !initialed) return
-    const distance = e.nativeEvent.touches[0].pageY - startY
-    if (distance < 0) return
-    setDistance(distance)
-    listWrapperRef.current!.style.transform = `translate3d(0, ${distance}px, 0)`
-  }
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (!canTouch || !initialed) return
+      const distance = e.nativeEvent.touches[0].pageY - startY
+      if (distance < 0) return
+      setDistance(distance)
+      listWrapperRef.current!.style.transform = `translate3d(0, ${distance}px, 0)`
+    },
+    [canTouch, initialed, startY],
+  )
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    setInitialed(false)
-    if (distance >= 150) {
-      togglePlayListDispatch(false)
-    } else {
-      listWrapperRef.current!.style['transition'] = 'all 0.3s'
-      listWrapperRef.current!.style[transform] = `translate3d(0px, 0px, 0px)`
-    }
-  }
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      setInitialed(false)
+      if (distance >= 150) {
+        togglePlayListDispatch(false)
+      } else {
+        listWrapperRef.current!.style['transition'] = 'all 0.3s'
+        listWrapperRef.current!.style[transform] = `translate3d(0px, 0px, 0px)`
+      }
+    },
+    [distance, togglePlayListDispatch, transform],
+  )
 
   const handleScroll = (pos: any) => {
     const state = pos.y === 0

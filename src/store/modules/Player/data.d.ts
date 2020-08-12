@@ -13,5 +13,4 @@ export interface playStateType {
   currentSong: currentSongType
   percent: number
   speed: number
-  merge?: (obj: any) => void
 }
