@@ -74,37 +74,67 @@
   }
 
   .CD-wrapper {
-    position: absolute;
     margin: auto;
-    top: 10%;
-    left: 0;
-    right: 0;
-    width: 80%;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
     box-sizing: border-box;
-    height: 80vw;
+    .needle{
+      position: absolute;
+      top: -1vw;
+      width: 25vw;
+      height: 40vw;
+      left: 46vw;
+      margin: 0 auto;
+      z-index: 100;
+      background-image: url('../../assets/needle.png');
+      background-position: 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      transform-origin: 4.5vw 5vw;
+      transition: all 0.3s;
+      transform: rotate(-7deg);
+      &.pause{
+        transform: rotate(-40deg);
+      }
+    }
     .cd {
-      width: 100%;
-      height: 100%;
+      top: 16%;
+      position: absolute;
+      width: 70%;
+      height: 70vw;
+      background-image: url('../../assets/disc.png');
+      border: 4px solid rgba(228, 228, 228, 0.1);
       border-radius: 50%;
+      background-position: 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
       .image {
         position: absolute;
         left: 0;
+        right: 0;
         top: 0;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
+        bottom: 0;
+        width: 68%;
+        height: 68%;
+        margin: auto;
         border-radius: 50%;
-        border: 10px solid rgba(255, 255, 255, 0.1);
       }
       .play {
         animation: rotate 20s linear infinite;
-        &.pause {
+        &.pause{
           animation-play-state: paused;
         }
       }
     }
     .playing-lyric {
-      margin-top: 20px;
+      position: absolute;
+      margin: auto;
+      width: 80%;
+      top: 95vw;
       font-size: 14px;
       line-height: 20px;
       white-space: normal;
@@ -117,6 +147,33 @@
     position: absolute;
     bottom: 50px;
     width: 100%;
+  }
+
+  .speed-list {
+    width: 70%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    justify-content: space-around;
+    overflow: hidden;
+    >span:first-of-type{
+      display: block;
+      flex: 0 0 auto;
+      padding: 5px 0;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: $font-size-m;
+    }
+    .list-item {
+      flex: 0 0 auto;
+      font-size: $font-size-m;
+      padding: 5px 5px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      &.selected{
+        color: $text-color;
+      }
+    }
   }
 
   .progress-wrapper {

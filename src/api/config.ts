@@ -168,3 +168,26 @@ export const playMode = {
   loop: 1,
   random: 2,
 }
+
+export const speedList = [
+  {
+    key: 0.75,
+    name: 'x0.75',
+  },
+  {
+    key: 1,
+    name: 'x1',
+  },
+  {
+    key: 1.25,
+    name: 'x1.25',
+  },
+  {
+    key: 1.5,
+    name: 'x1.5',
+  },
+  {
+    key: 2,
+    name: 'x2',
+  },
+]

@@ -12,6 +12,7 @@ export interface PlayerProps {
   handleNext?: () => void
   changeMode?: () => void
   clickPlaying?: (e, state) => void
+  clickSpeed?: (speed) => void
   currentLineNum?: number
   currentPlayingLyric?: string
   currentLyric?: any

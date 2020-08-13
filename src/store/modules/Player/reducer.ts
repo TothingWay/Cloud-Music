@@ -118,7 +118,7 @@ export default (state = defaultState, action: any) => {
         handleDeleteSong(state, action.data, draft)
         break
       case actionTypes.CHANGE_SPEED:
-        state.speed = action.data
+        draft.speed = action.data
         break
     }
   })

@@ -13,6 +13,7 @@ import ProgressBar from '@/components/ProgressBar'
 import { storeType } from '@/store/data'
 import { playMode } from '@/api/config'
 import Scroll from '@/components/Scroll'
+import { speedList } from '@/api/config'
 
 function NormalPlayer(props: PlayerProps) {
   const {
@@ -33,9 +34,11 @@ function NormalPlayer(props: PlayerProps) {
     handleNext,
     changeMode,
     clickPlaying,
+    clickSpeed,
   } = props
 
   const playing = useSelector((state: storeType) => state.player.playing)
+  const speed = useSelector((state: storeType) => state.player.speed)
 
   const normalPlayerRef = useRef<HTMLDivElement>(null)
   const cdWrapperRef = useRef<HTMLDivElement>(null)
@@ -219,6 +222,11 @@ function NormalPlayer(props: PlayerProps) {
                 visibility: currentState !== 'lyric' ? 'visible' : 'hidden',
               }}
             >
+              <div
+                className={`${style['needle']} ${
+                  playing ? '' : style['pause']
+                }`}
+              ></div>
               <div className={style['cd']}>
                 <img
                   className={`${style['image']} ${style['play']} ${
@@ -228,6 +236,15 @@ function NormalPlayer(props: PlayerProps) {
                   alt=""
                 />
               </div>
+              {/* <div className={style['cd']}>
+                <img
+                  className={`${style['image']} ${style['play']} ${
+                    playing ? '' : style['pause']
+                  }`}
+                  src={song.al && song.al.picUrl + '?param=400x400'}
+                  alt=""
+                />
+              </div> */}
               <p className={style['playing-lyric']}>{currentPlayingLyric}</p>
             </div>
           </CSSTransition>
@@ -271,6 +288,22 @@ function NormalPlayer(props: PlayerProps) {
         </div>
 
         <div className={`${style['bottom']} bottom`}>
+          <div className={style['speed-list']}>
+            <span>倍速听歌</span>
+            {speedList.map((item) => {
+              return (
+                <div
+                  key={item.key}
+                  className={`${style['list-item']} ${
+                    speed === item.key ? style['selected'] : ''
+                  }`}
+                  onClick={() => clickSpeed!(item.key)}
+                >
+                  {item.name}
+                </div>
+              )
+            })}
+          </div>
           <div className={style['progress-wrapper']}>
             <span className={`${style['time']} ${style['time-l']}`}>
               {formatPlayTime(currentTime)}

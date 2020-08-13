@@ -92,6 +92,20 @@ function Player(props: RouteComponentProps) {
     [dispatch],
   )
 
+  const changeSpeedDispatch = useCallback(
+    (speed) => {
+      dispatch(actionTypes.changeSpeed(speed))
+    },
+    [dispatch],
+  )
+
+  const clickSpeed = (newSpeed: number) => {
+    changeSpeedDispatch(newSpeed)
+    audioRef.current!.playbackRate = newSpeed
+    currentLyric.current.changeSpeed(newSpeed)
+    currentLyric.current.seek(currentTime * 1000)
+  }
+
   const changeMode = useCallback(() => {
     const newMode = (mode + 1) % 3
     if (newMode === 0) {
@@ -291,6 +305,7 @@ function Player(props: RouteComponentProps) {
         currentLineNum={currentLineNum.current}
         mode={mode}
         changeMode={changeMode}
+        clickSpeed={clickSpeed}
       />
       <audio
         ref={audioRef}
