@@ -7,8 +7,13 @@ import { isIphoneXDevice } from '@/utils/index'
 import MiniPlayer from '@/core/Player/miniPlayer'
 import { storeType } from '@/store/data'
 import { useSelector } from 'react-redux'
+import SvgIcon from '@/components/SvgIcon'
+import { withRouter, RouteComponentProps } from 'react-router'
 
-function Layout({ route }: RouteConfigComponentProps) {
+function Layout({
+  route,
+  history,
+}: RouteConfigComponentProps & RouteComponentProps) {
   const [isIphoneX, setIsIphoneX] = useState<boolean>(false)
 
   const fullScreen = useSelector((state: storeType) => state.player.fullScreen)
@@ -29,6 +34,11 @@ function Layout({ route }: RouteConfigComponentProps) {
   return (
     <div>
       <div className={`${style['header']}`}>
+        <SvgIcon
+          iconClass="search"
+          className={style['search']}
+          onClick={() => history.push('/search')}
+        />
         <span>Cloud Music</span>
         <div>
           {currentSong.id ? (
@@ -57,4 +67,4 @@ function Layout({ route }: RouteConfigComponentProps) {
   )
 }
 
-export default React.memo(Layout)
+export default React.memo(withRouter(Layout))
