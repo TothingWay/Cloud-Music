@@ -29,6 +29,12 @@ export default function Tabbar({ isIphoneX }: Tabbar) {
           <span>排行榜</span>
         </div>
       </NavLink>
+      <NavLink to="/search" activeClassName={style['selected']}>
+        <div className={style['tabbar-item']}>
+          <SvgIcon iconClass="search" className={style['tabbar-icon']} />
+          <span>搜索</span>
+        </div>
+      </NavLink>
     </div>
   )
 }
