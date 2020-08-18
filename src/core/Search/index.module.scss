@@ -1,4 +1,42 @@
 @import 'styles/variables.scss';
 .container {
+  width: 100%;
   color: $text-color;
+  .search-wrapper {
+    padding: 5px;
+    position: relative;
+    .placeholder {
+      width: calc(100% - 30px);
+      position: absolute;
+      top: 11px;
+      left: 14px;
+      color: rgba(26,26,26,.5);
+      text-align: center;
+      span {
+        padding-left: 5px;
+      }
+    }
+    .search-focus-icon {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      color: rgba(26,26,26,.5);
+    }
+    .close-icon {
+      position: absolute;
+      right: 14px;
+      top: 10px;
+      font-size: 19px;
+      color: rgba(26,26,26,.5);
+    }
+    .search-input {
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 15px;
+      padding: 5px 30px;
+      outline: none;
+      border: none;
+      height: 30px;
+    }
+  }
 }

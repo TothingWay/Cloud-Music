@@ -1,7 +1,7 @@
 import { rankListType } from './../store/modules/Rank/data.d'
 //防抖函数
 export const debounce = (
-  func: (func: () => void) => void,
+  func: (func: any) => void,
   delay: number,
 ): (() => void) => {
   let timer: any
