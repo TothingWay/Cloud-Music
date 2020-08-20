@@ -9,3 +9,13 @@ export const getLyricRequest = (id: number) => {
     },
   })
 }
+
+export const getSongDetailRequest = (id: number) => {
+  return request({
+    url: `/song/detail`,
+    method: 'get',
+    params: {
+      ids: id,
+    },
+  })
+}

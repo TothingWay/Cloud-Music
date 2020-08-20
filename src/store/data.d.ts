@@ -1,3 +1,4 @@
+import { searchStateType } from './modules/Search/data'
 import { singersStateType } from '@/store/modules/Singers/data'
 import { recommendStateType } from '@/store/modules/Recommend/data'
 import { rankStateType } from '@/store/modules/Rank/data'
@@ -12,4 +13,5 @@ export type storeType = {
   album: AlbumDetailProps
   singer: singerStateType
   player: playStateType
+  search: searchStateType
 }
