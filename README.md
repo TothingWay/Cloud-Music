@@ -1,7 +1,5 @@
 ## Cloud-Music
 
-TypeScript + React Hooks + Redux + Immer.js 实现移动端 webapp
-
 <p>
   <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-16.13.1-blue" alt="React"></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-3.7.2-blue" alt="TypeScript"></a>
@@ -9,6 +7,8 @@ TypeScript + React Hooks + Redux + Immer.js 实现移动端 webapp
   <a href="https://immerjs.github.io/immer/docs/introduction"><img src="https://img.shields.io/badge/Immer.js-7.0.5-blue" alt="Immer"></a>
   <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
 </p>
+
+TypeScript + React Hooks + Redux + Immer.js 实现移动端 webapp
 
 ## 功能介绍
 
