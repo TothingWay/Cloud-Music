@@ -1,44 +1,71 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Cloud-Music
 
-## Available Scripts
+TypeScript + React Hooks + Redux + Immer.js 实现移动端 webapp
 
-In the project directory, you can run:
+<p>
+  <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-16.13.1-blue" alt="React"></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-3.7.2-blue" alt="TypeScript"></a>
+  <a href="https://redux.js.org/"><img src="https://img.shields.io/badge/Redux-7.1.9-blue" alt="Redux"></a>
+  <a href="https://immerjs.github.io/immer/docs/introduction"><img src="https://img.shields.io/badge/Immer.js-7.0.5-blue" alt="Immer"></a>
+  <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+</p>
 
-### `yarn start`
+## 功能介绍
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* 歌曲音乐
+    * 播放
+    * 倍速播放
+    * 暂停
+    * 上一曲
+    * 下一曲
+    * 播放模式切换
+    * 播放进度条
+    * 圆形mini进度条
+    * 歌曲歌词显示
+    * 歌词自动滚动
+    * 播放列表显示
+    * 添加到播放列表
+* 歌手
+    * 歌手榜
+    * 歌手单曲
+    * 歌手首字母筛选
+    * 歌手地区筛选
+    * 歌手种类筛选
+* 搜索
+    * 搜索提示
+    * 热门搜索
+    * 单曲搜索
+    * 歌手搜索
+    * 歌单搜索
+* 排行榜
+* 推荐歌单
+* 下拉刷新（仿网易云音乐app下拉动态勾勒效果）
+* 上拉加载 & 动画
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## 环境要求
 
-### `yarn test`
+建议 NodeJS 12+ 环境
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 安装
 
-### `yarn build`
+```shell
+$ git clone --recursive https://github.com/TothingWay/Cloud-Music.git
+$ cd Cloud-Music
+$ git submodule update
+$ npm install 
+$ cd NeteaseCloudMusicApi
+$ npm install
+$ cd ../
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 运行
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```shell
+$ npm start  // api默认端口：3300，项目默认端口：3000
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 构建
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```shell
+$ npm run build
+```
