@@ -2,6 +2,7 @@
   "name": "cloud-music",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@babel/core": "7.9.0",
     "@better-scroll/core": "^2.0.0-beta.10",
