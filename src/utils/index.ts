@@ -36,7 +36,19 @@ export const isIphoneXDevice = () => {
     window.screen.width === 375 &&
     navigator.userAgent.indexOf('iPhone') > -1
 
-  return device
+  if (device) {
+    const ua = window.navigator.userAgent.toLowerCase()
+    const match = ua.match(/MicroMessenger/i)
+    if (match === null) {
+      return true
+    }
+    if (match.includes('micromessenger')) {
+      return false
+    } else {
+      return true
+    }
+  }
+  return false
 }
 
 //处理数据，找出第一个没有歌名的排行榜的索引
