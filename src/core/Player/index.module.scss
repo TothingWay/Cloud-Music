@@ -351,6 +351,9 @@
   .scroll-wrapper {
     height: 400px;
     overflow: hidden;
+    &.isIphoneX {
+      padding-bottom: 34px;
+    }
   }
 
   .list-header {

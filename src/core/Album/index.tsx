@@ -11,6 +11,7 @@ import { storeType } from '@/store/data'
 import { getAlbumDetailRequest } from '@/api/album'
 import * as actionTypes from '@/store/modules/Album/actionCreators'
 import Loading from '@/components/Loading'
+import { isIphoneXDevice } from '@/utils/index'
 
 const HEADER_HEIGHT = 45
 
@@ -20,6 +21,16 @@ export default memo(
     const [showStatus, setShowStatus] = useState(true)
     const [isMarquee, setIsMarquee] = useState(false)
     const [title, setTitle] = useState('歌单')
+    const [isIphoneX, setIsIphoneX] = useState<boolean>(false)
+
+    useEffect(() => {
+      if (isIphoneXDevice()) {
+        setIsIphoneX(true)
+      } else {
+        setIsIphoneX(false)
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const dispatch = useDispatch()
 
@@ -79,7 +90,12 @@ export default memo(
         unmountOnExit
         onExited={onExited}
       >
-        <div className={style['album']}>
+        <div
+          className={style['album']}
+          style={{
+            height: isIphoneX ? 'calc(100vh - 94px)' : 'calc(100vh - 60px)',
+          }}
+        >
           <Header
             title={title}
             handleClick={handleBack}

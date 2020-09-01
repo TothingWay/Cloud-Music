@@ -13,6 +13,7 @@ import * as actionTypes from '@/store/modules/Singer/actionCreators'
 import { getSingerInfoRequest } from '@/api/singer'
 import { withRouter, RouteComponentProps } from 'react-router'
 import Loading from '@/components/Loading'
+import { isIphoneXDevice } from '@/utils/index'
 
 function Singer(props: RouteComponentProps<any>) {
   const [showStatus, setShowStatus] = useState(true)
@@ -26,6 +27,17 @@ function Singer(props: RouteComponentProps<any>) {
   const initialHeight = useRef(0)
   // 往上偏移的尺寸，露出圆角
   const OFFSET = 5
+
+  const [isIphoneX, setIsIphoneX] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (isIphoneXDevice()) {
+      setIsIphoneX(true)
+    } else {
+      setIsIphoneX(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleBack = useCallback(() => {
     setShowStatus(false)
@@ -115,7 +127,12 @@ function Singer(props: RouteComponentProps<any>) {
       unmountOnExit
       onExited={() => props.history.goBack()}
     >
-      <div className={style['container']}>
+      <div
+        className={style['container']}
+        style={{
+          height: isIphoneX ? 'calc(100vh - 94px)' : 'calc(100vh - 60px)',
+        }}
+      >
         <Header
           blur={false}
           ref={header}

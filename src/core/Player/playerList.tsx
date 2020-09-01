@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { memo, useCallback, useRef, useState } from 'react'
+import React, { memo, useCallback, useRef, useState, useEffect } from 'react'
 import style from './index.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import { storeType } from '@/store/data'
@@ -11,8 +11,19 @@ import { prefixStyle, findIndex, shuffle, getName } from '@/utils'
 import '@/styles/global.scss'
 import SvgIcon from '@/components/SvgIcon'
 import Confirm from '@/components/confirm'
+import { isIphoneXDevice } from '@/utils/index'
 
 function PlayList(props: { clearPreSong: () => void }) {
+  const [isIphoneX, setIsIphoneX] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (isIphoneXDevice()) {
+      setIsIphoneX(true)
+    } else {
+      setIsIphoneX(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const { clearPreSong } = props
 
   const showPlayList = useSelector(
@@ -266,7 +277,7 @@ function PlayList(props: { clearPreSong: () => void }) {
         ref={playListRef}
         style={isShow === true ? { display: 'block' } : { display: 'none' }}
         onClick={() => togglePlayListDispatch(false)}
-        className={style['play-list-wrapper']}
+        className={`${style['play-list-wrapper']}`}
       >
         <div
           className={style['list-wrapper']}
@@ -286,7 +297,11 @@ function PlayList(props: { clearPreSong: () => void }) {
               />
             </h1>
           </div>
-          <div className={style['scroll-wrapper']}>
+          <div
+            className={`${style['scroll-wrapper']} ${
+              isIphoneX ? style['isIphoneX'] : ''
+            }`}
+          >
             <Scroll
               onScroll={(pos) => handleScroll(pos)}
               bounceTop={false}
