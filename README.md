@@ -81,3 +81,7 @@ $ npm start  // api默认端口：3300，项目默认端口：3000
 ```shell
 $ npm run build
 ```
+
+## Licence
+
+[MIT](https://github.com/TothingWay/Cloud-Music/blob/react/LICENSE)
