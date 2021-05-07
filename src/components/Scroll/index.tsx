@@ -96,7 +96,7 @@ const Scroll = forwardRef<scrollFunc, ScrollProps>((props, ref) => {
         : false,
       pullUpLoad: pullUpLoading,
       stopPropagation: stopPropagation,
-    })
+    } as any)
     setBScroll(scroll)
     return () => {
       setBScroll(null)
