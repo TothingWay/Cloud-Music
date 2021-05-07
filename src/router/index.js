@@ -1,11 +1,26 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '@/components/HelloWorld.vue'
+const Recommend = () => import('@/views/recommend.vue')
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/recommend'
+  },
+  {
+    path: '/recommend',
+    component: Recommend
+  },
+  {
+    path: '/singer',
+    component: Recommend
+  },
+  {
+    path: '/rank',
+    component: Recommend
+  },
+  {
+    path: '/search',
+    component: Recommend
   }
 ]
 

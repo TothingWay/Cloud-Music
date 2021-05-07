@@ -2,7 +2,9 @@
   "name": "cloud-music",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "start:server": "cd NeteaseCloudMusicApi && cross-env PORT=3302 node app.js",
+    "start:vue": "vite",
+    "dev": "concurrently \"npm run start:server\" \"npm run start:vue\"",
     "build": "vite build",
     "serve": "vite preview"
   },
@@ -15,6 +17,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.2.2",
     "@vue/compiler-sfc": "^3.0.5",
+    "concurrently": "^6.0.2",
+    "cross-env": "^7.0.3",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.2",
