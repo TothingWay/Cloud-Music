@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@better-scroll/core": "^2.3.0",
+    "@better-scroll/observe-dom": "^2.3.0",
     "@better-scroll/slide": "^2.3.0",
     "axios": "^0.21.1",
     "vue": "^3.0.5",
     "vue-router": "^4.0.6",
+    "vue3-lazy": "^1.0.0-alpha.1",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
