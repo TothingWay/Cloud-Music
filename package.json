@@ -2,7 +2,7 @@
   "name": "cloud-music",
   "version": "0.0.0",
   "scripts": {
-    "start:server": "cd NeteaseCloudMusicApi && cross-env PORT=3302 node app.js",
+    "start:server": "cd NeteaseCloudMusicApi && cross-env PORT=3300 node app.js",
     "start:vue": "vite",
     "dev": "concurrently \"npm run start:server\" \"npm run start:vue\"",
     "build": "vite build",
