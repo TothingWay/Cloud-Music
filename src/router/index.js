@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 const Recommend = () => import('@/views/recommend.vue')
+const Singer = () => import('@/views/singer.vue')
 
 const routes = [
   {
@@ -12,7 +13,7 @@ const routes = [
   },
   {
     path: '/singer',
-    component: Recommend
+    component: Singer
   },
   {
     path: '/rank',
